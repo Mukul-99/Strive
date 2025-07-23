@@ -73,7 +73,8 @@ class TriangulationAgent:
     def __init__(self):
         self.llm = ChatOpenAI(
             model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-            temperature=0.1
+            temperature=0.1,
+            base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
         )
     
     def triangulate_results(self, state: SpecExtractionState) -> SpecExtractionState:
@@ -317,7 +318,8 @@ class FinalTriangulationAgent:
     def __init__(self):
         self.llm = ChatOpenAI(
             model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-            temperature=0.1
+            temperature=0.1,
+            base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
         )
     
     def final_triangulate(self, state: SpecExtractionState) -> SpecExtractionState:

@@ -109,3 +109,8 @@ Thumbs.db
 *.temp
 *.log
 GUIDE.md 
+
+# Environment variables
+.env
+.env.local
+.env.*.local 
