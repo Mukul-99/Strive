@@ -323,7 +323,7 @@ class FinalTriangulationAgent:
         )
     
     def final_triangulate(self, state: SpecExtractionState) -> SpecExtractionState:
-        """Perform final triangulation between CSV triangulated result and PNS specs"""
+        """Perform final triangulation between CSV triangulated result and PNS specs with validation"""
         start_time = time.time()
         
         try:
@@ -335,33 +335,24 @@ class FinalTriangulationAgent:
             if not csv_result and not pns_specs:
                 raise ValueError("No data available for final triangulation")
             
-            # Build final triangulation prompt
-            prompt = self._build_final_triangulation_prompt(
+            # Attempt final triangulation with validation and single retry
+            final_result, final_table, processing_logs = self._triangulate_with_validation(
                 product_name=state["product_name"],
                 csv_result=csv_result,
                 pns_specs=pns_specs
             )
             
-            logger.info("Sending final triangulation request")
-            
-            # Call LLM for final triangulation
-            response = self.llm.invoke([HumanMessage(content=prompt)])
-            final_result = response.content
-            
-            # Parse the final result into table format
-            final_table = self._parse_final_triangulation_result(final_result)
-            
             # Calculate processing time
             processing_time = time.time() - start_time
             
-            logger.info(f"Final triangulation completed in {processing_time:.2f}s")
+            logger.info(f"Final triangulation with validation completed in {processing_time:.2f}s")
             
             return {
                 "final_triangulated_result": final_result,
                 "final_triangulated_table": final_table,
                 "current_step": "final_triangulation_completed",
                 "progress_percentage": 100,
-                "logs": [f"Final triangulation completed successfully in {processing_time:.2f}s"]
+                "logs": processing_logs + [f"Final triangulation completed successfully in {processing_time:.2f}s"]
             }
             
         except Exception as e:
@@ -373,17 +364,78 @@ class FinalTriangulationAgent:
                 "logs": [f"Final triangulation failed: {error_msg}"]
             }
     
+    def _triangulate_with_validation(self, product_name: str, csv_result: str, pns_specs: List[Dict[str, Any]]) -> tuple:
+        """Perform final triangulation with validation and single retry"""
+        processing_logs = []
+        
+        # First attempt
+        logger.info("First triangulation attempt")
+        processing_logs.append("Starting final triangulation (1st attempt)")
+        
+        prompt = self._build_final_triangulation_prompt(product_name, csv_result, pns_specs)
+        response = self.llm.invoke([HumanMessage(content=prompt)])
+        final_result = response.content
+        final_table = self._parse_final_triangulation_result(final_result)
+        
+        # Validate the result
+        logger.info("Validating triangulation result")
+        processing_logs.append("Validating triangulation result")
+        
+        validation_result = self._validate_final_result(final_result, csv_result, pns_specs, product_name)
+        logger.debug(f"Validation result: {validation_result}")
+        
+        if validation_result["is_valid"]:
+            logger.info("Validation passed - using first attempt result")
+            processing_logs.append("✅ Validation passed - final triangulation successful")
+            return final_result, final_table, processing_logs
+        
+        # Validation failed - retry once with feedback
+        logger.info(f"Validation failed: {validation_result['errors']}. Retrying with feedback.")
+        processing_logs.append(f"⚠️ Validation failed: {validation_result['summary']}. Retrying...")
+        
+        retry_prompt = self._build_retry_prompt(
+            product_name, csv_result, pns_specs, 
+            first_attempt=final_result, 
+            validation_errors=validation_result['errors']
+        )
+        
+        try:
+            retry_response = self.llm.invoke([HumanMessage(content=retry_prompt)])
+            retry_result = retry_response.content
+            retry_table = self._parse_final_triangulation_result(retry_result)
+            
+            logger.info("Retry attempt completed - using retry result")
+            processing_logs.append("🔄 Retry completed - using corrected result")
+            
+            return retry_result, retry_table, processing_logs
+            
+        except Exception as e:
+            logger.error(f"Retry attempt failed: {str(e)}")
+            processing_logs.append(f"❌ Retry failed: {str(e)} - using original result")
+            
+            # Return original result if retry fails
+            return final_result, final_table, processing_logs
+    
     def _build_final_triangulation_prompt(self, product_name: str, csv_result: str, pns_specs: List[Dict[str, Any]]) -> str:
         """Build prompt for final triangulation between CSV and PNS data"""
         
-        # Prepare CSV data
-        csv_data = f"\n=== CSV TRIANGULATED RESULT ===\n{csv_result}\n" if csv_result else "\n=== CSV TRIANGULATED RESULT ===\nNo CSV data available\n"
+        # Convert both sources to standardized format for consistent LLM processing
+        csv_structured = self._parse_csv_to_structured_format(csv_result)
+        pns_structured = self._parse_pns_to_structured_format(pns_specs)
         
-        # Prepare PNS data
+        # Prepare standardized CSV data
+        csv_data = "\n=== CSV TRIANGULATED SPECIFICATIONS ===\n"
+        if csv_structured:
+            for i, spec in enumerate(csv_structured, 1):
+                csv_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Source: CSV\n"
+        else:
+            csv_data += "No CSV specifications available\n"
+        
+        # Prepare standardized PNS data
         pns_data = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
-        if pns_specs:
-            for i, spec in enumerate(pns_specs, 1):
-                pns_data += f"{i}. {spec.get('spec_name', 'N/A')} | {spec.get('option', 'N/A')} | Freq: {spec.get('frequency', 0)} | Status: {spec.get('spec_status', 'N/A')} | Priority: {spec.get('importance_level', 'N/A')}\n"
+        if pns_structured:
+            for i, spec in enumerate(pns_structured, 1):
+                pns_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
         else:
             pns_data += "No PNS specifications available\n"
         
@@ -399,9 +451,10 @@ Create the final CONSENSUS specification table showing ONLY specifications that 
 Apply this strict consensus process:
 
 STEP 1 - IDENTIFY OVERLAPS ONLY:
-• CSV Results: Frequency-based specifications from multiple data sources
-• PNS Specs: Expert-validated specifications with high confidence
+• CSV Results: Frequency-based specifications from multiple data sources  
+• PNS Specs: Expert-validated specifications with frequency, status, and priority data
 • ONLY include specifications that exist in BOTH sources (semantic matching allowed)
+• Use PNS frequency and priority data to guide selection when multiple options exist
 
 STEP 2 - SEMANTIC MATCHING:
 • Match similar specifications: "Power" = "Motor Power" = "Power Rating"
@@ -428,7 +481,7 @@ STEP 4 - FINAL RANKING:
 <consensus_rules>
 STRICT INCLUSION CRITERIA:
 • Specification MUST appear semantically in both CSV and PNS data
-• Use PNS naming convention when both sources have the same spec
+• ALWAYS use PNS specification names for consensus specs (PNS is pre-validated)
 • Use PNS option values when both sources cover the same specification
 • NO padding with unique specs from either source
 
@@ -468,6 +521,346 @@ Before submitting, ensure:
 □ No padding with unique specifications from either source
 □ Output matches the required table format exactly
 </final_validation>"""
+        
+        return prompt
+    
+    def _validate_final_result(self, final_result: str, csv_result: str, pns_specs: List[Dict[str, Any]], product_name: str) -> Dict[str, Any]:
+        """
+        Validate final triangulation result to ensure only common specs with common options.
+        
+        Validation checks:
+        1. Each spec exists semantically in both CSV and PNS data
+        2. Each option exists in both matched CSV and PNS specifications  
+        3. Specification names use PNS terminology (preferred)
+        4. No extra specifications from only one source
+        
+        Returns: {"is_valid": bool, "summary": str, "errors": List[str], "correction_needed": str}
+        """
+        
+        # Build validation prompt
+        validation_prompt = self._build_validation_prompt(final_result, csv_result, pns_specs, product_name)
+        
+        logger.info("Sending validation request to LLM")
+        
+        # Get validation response
+        response = self.llm.invoke([HumanMessage(content=validation_prompt)])
+        validation_response = response.content
+        
+        # Parse validation response
+        return self._parse_validation_response(validation_response)
+    
+    def _build_validation_prompt(self, final_result: str, csv_result: str, pns_specs: List[Dict[str, Any]], product_name: str) -> str:
+        """Build validation prompt for checking final triangulation result"""
+        
+        # Convert both sources to standardized format for easier LLM comparison
+        csv_structured = self._parse_csv_to_structured_format(csv_result)
+        pns_structured = self._parse_pns_to_structured_format(pns_specs)
+        
+        # Prepare standardized CSV data
+        csv_data = "\n=== CSV TRIANGULATED SPECIFICATIONS ===\n"
+        if csv_structured:
+            for i, spec in enumerate(csv_structured, 1):
+                csv_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Source: CSV\n"
+        else:
+            csv_data += "No CSV specifications available\n"
+        
+        # Prepare standardized PNS data  
+        pns_data = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
+        if pns_structured:
+            for i, spec in enumerate(pns_structured, 1):
+                pns_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
+        else:
+            pns_data += "No PNS specifications available\n"
+        
+        prompt = f"""<role>
+You are a validation specialist checking if a final triangulation result is correct. Your job is to verify that ONLY specifications present in BOTH sources are included, with ONLY common options.
+</role>
+
+<task>
+Validate this final triangulation result by checking each specification individually.
+</task>
+
+<validation_rules>
+For each specification in the final result:
+1. SEMANTIC MATCHING: The spec must exist in both CSV and PNS (names can differ but meaning should be similar)
+2. COMMON OPTIONS ONLY: All options in final result must be present in BOTH the matched CSV spec AND matched PNS spec
+3. PNS NAMING: Specification names should use PNS terminology (since PNS is pre-validated)
+4. NO EXTRA SPECS: No specifications that don't exist in both sources
+5. FREQUENCY CONSIDERATION: Higher frequency PNS options indicate greater market importance
+</validation_rules>
+
+<original_sources>
+{csv_data}
+{pns_data}
+</original_sources>
+
+<final_result_to_validate>
+{final_result}
+</final_result_to_validate>
+
+<validation_instructions>
+For each specification in the final result, check:
+
+1. Does this specification exist semantically in CSV data? (YES/NO + explanation)
+2. Does this specification exist semantically in PNS data? (YES/NO + explanation)  
+3. Are the options in final result common to BOTH matched specs? (YES/NO + explanation)
+4. Is the specification name from PNS? (YES/NO + explanation)
+
+After checking all specs individually, provide:
+- OVERALL_VALID: YES/NO
+- ERROR_SUMMARY: Brief summary of any errors found
+- CORRECTION_NEEDED: What specific changes are needed
+</validation_instructions>
+
+<output_format>
+SPEC_1_VALIDATION:
+- Spec Name: [name from final result]
+- Exists in CSV: YES/NO - [explanation]
+- Exists in PNS: YES/NO - [explanation]  
+- Options are common: YES/NO - [explanation]
+- Uses PNS naming: YES/NO - [explanation]
+
+SPEC_2_VALIDATION:
+[repeat for each spec]
+
+OVERALL_VALIDATION:
+- OVERALL_VALID: YES/NO
+- ERROR_SUMMARY: [brief summary]
+- CORRECTION_NEEDED: [specific corrections needed]
+</output_format>"""
+        
+        return prompt
+    
+    def _parse_csv_to_structured_format(self, csv_result: str) -> List[Dict[str, str]]:
+        """Parse CSV triangulation result into standardized format"""
+        if not csv_result:
+            return []
+        
+        structured_specs = []
+        
+        try:
+            lines = csv_result.strip().split('\n')
+            
+            # Find table data (skip headers and separators)
+            for line in lines:
+                line = line.strip()
+                
+                # Skip empty lines, headers, and separator lines
+                if not line or 'Specification Name' in line or line.startswith('|--') or line.startswith('|-'):
+                    continue
+                
+                # Look for table rows (containing | separator)
+                if '|' in line:
+                    # Clean up the line
+                    cleaned_line = line
+                    if cleaned_line.startswith('|'):
+                        cleaned_line = cleaned_line[1:]
+                    if cleaned_line.endswith('|'):
+                        cleaned_line = cleaned_line[:-1]
+                    
+                    parts = [part.strip() for part in cleaned_line.split('|')]
+                    
+                    # Ensure we have at least spec name and options
+                    if len(parts) >= 2 and parts[0] and parts[1]:
+                        structured_specs.append({
+                            'name': parts[0],
+                            'options': parts[1],
+                            'source': 'CSV'
+                        })
+            
+            logger.debug(f"Parsed {len(structured_specs)} CSV specs into structured format")
+            return structured_specs
+            
+        except Exception as e:
+            logger.warning(f"Error parsing CSV to structured format: {e}")
+            return []
+    
+    def _parse_pns_to_structured_format(self, pns_specs: List[Dict[str, Any]]) -> List[Dict[str, str]]:
+        """Parse PNS specs into standardized format with frequency information"""
+        if not pns_specs:
+            return []
+        
+        structured_specs = []
+        
+        try:
+            for spec in pns_specs:
+                if isinstance(spec, dict):
+                    spec_name = spec.get('spec_name', 'Unknown')
+                    spec_options = spec.get('option', 'Unknown')
+                    spec_frequency = spec.get('frequency', 'N/A')
+                    spec_status = spec.get('spec_status', 'N/A')
+                    spec_priority = spec.get('importance_level', 'N/A')
+                    
+                    # Keep options clean but preserve structure
+                    if spec_options and ' / ' in spec_options:
+                        # Split by / and clean each option while preserving frequency context
+                        options_list = [opt.strip() for opt in spec_options.split(' / ')]
+                        cleaned_options = ', '.join(options_list)
+                    else:
+                        cleaned_options = spec_options
+                    
+                    structured_specs.append({
+                        'name': spec_name,
+                        'options': cleaned_options,
+                        'frequency': spec_frequency,
+                        'status': spec_status,
+                        'priority': spec_priority,
+                        'source': 'PNS'
+                    })
+            
+            logger.debug(f"Parsed {len(structured_specs)} PNS specs into structured format with frequency data")
+            return structured_specs
+            
+        except Exception as e:
+            logger.warning(f"Error parsing PNS to structured format: {e}")
+            return []
+    
+    def _parse_validation_response(self, validation_response: str) -> Dict[str, Any]:
+        """Parse LLM validation response into structured format"""
+        try:
+            # Look for OVERALL_VALID result
+            is_valid = "OVERALL_VALID: YES" in validation_response
+            
+            # Extract error summary
+            error_summary = ""
+            summary_start = validation_response.find("ERROR_SUMMARY:")
+            if summary_start != -1:
+                summary_section = validation_response[summary_start:].split('\n')[0]
+                error_summary = summary_section.replace("ERROR_SUMMARY:", "").strip()
+            
+            # Extract correction needed
+            correction_needed = ""
+            correction_start = validation_response.find("CORRECTION_NEEDED:")
+            if correction_start != -1:
+                correction_section = validation_response[correction_start:].split('\n')[0]
+                correction_needed = correction_section.replace("CORRECTION_NEEDED:", "").strip()
+            
+            # Extract individual validation errors for detailed feedback
+            validation_errors = []
+            lines = validation_response.split('\n')
+            current_spec = ""
+            
+            for line in lines:
+                line = line.strip()
+                if line.startswith("- Spec Name:"):
+                    current_spec = line.replace("- Spec Name:", "").strip()
+                elif ": NO -" in line and current_spec:
+                    validation_errors.append(f"{current_spec}: {line}")
+            
+            return {
+                "is_valid": is_valid,
+                "summary": error_summary if error_summary else "No errors found" if is_valid else "Validation failed",
+                "errors": validation_errors,
+                "correction_needed": correction_needed,
+                "raw_response": validation_response
+            }
+            
+        except Exception as e:
+            logger.error(f"Error parsing validation response: {e}")
+            return {
+                "is_valid": False,
+                "summary": f"Validation parsing error: {str(e)}",
+                "errors": [f"Could not parse validation response: {str(e)}"],
+                "correction_needed": "Manual review needed",
+                "raw_response": validation_response
+            }
+    
+    def _build_retry_prompt(self, product_name: str, csv_result: str, pns_specs: List[Dict[str, Any]], 
+                           first_attempt: str, validation_errors: List[str]) -> str:
+        """Build retry prompt with validation feedback"""
+        
+        # Convert both sources to standardized format for consistent LLM processing
+        csv_structured = self._parse_csv_to_structured_format(csv_result)
+        pns_structured = self._parse_pns_to_structured_format(pns_specs)
+        
+        # Prepare standardized CSV data
+        csv_data = "\n=== CSV TRIANGULATED SPECIFICATIONS ===\n"
+        if csv_structured:
+            for i, spec in enumerate(csv_structured, 1):
+                csv_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Source: CSV\n"
+        else:
+            csv_data += "No CSV specifications available\n"
+        
+        # Prepare standardized PNS data
+        pns_data = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
+        if pns_structured:
+            for i, spec in enumerate(pns_structured, 1):
+                pns_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
+        else:
+            pns_data += "No PNS specifications available\n"
+        
+        # Prepare validation feedback
+        validation_feedback = "\n=== VALIDATION ERRORS FROM FIRST ATTEMPT ===\n"
+        for error in validation_errors:
+            validation_feedback += f"❌ {error}\n"
+        
+        prompt = f"""<role>
+You are a final consensus specialist fixing errors in triangulation. Your previous attempt had validation errors that need to be corrected.
+</role>
+
+<task>
+Create a CORRECTED final consensus specification table showing ONLY specifications that appear in BOTH CSV and PNS data sources with ONLY common options.
+</task>
+
+<critical_corrections_needed>
+Your first attempt had these specific errors:
+{validation_feedback}
+
+You MUST fix these errors in your corrected response.
+</critical_corrections_needed>
+
+<strict_consensus_rules>
+APPLY THESE RULES EXACTLY:
+
+STEP 1 - IDENTIFY SEMANTIC MATCHES ONLY:
+• Find specifications that exist in BOTH CSV and PNS (names can differ but meaning must be similar)
+• Use options overlap to confirm specs are the same (e.g., both have "KVA" values = power specs)
+
+STEP 2 - EXTRACT COMMON OPTIONS ONLY:
+• For each matched specification, find options that exist in BOTH the CSV spec AND the PNS spec
+• EXCLUDE options that exist in only one source
+
+STEP 3 - USE PNS NAMING AND PRIORITIZATION:
+• ALWAYS use the PNS specification name (since PNS is pre-validated)
+• Format options using PNS style when possible
+• Consider PNS frequency and priority data when selecting common options
+
+STEP 4 - STRICT VALIDATION:
+• If a specification doesn't have common options → EXCLUDE IT
+• If a specification exists in only one source → EXCLUDE IT
+• If no consensus specifications exist → State "No consensus specifications found"
+</strict_consensus_rules>
+
+<data_sources>
+{csv_data}
+{pns_data}
+</data_sources>
+
+<first_attempt_with_errors>
+{first_attempt}
+</first_attempt_with_errors>
+
+<output_requirements>
+Create the corrected consensus specification table with EXACTLY this format:
+
+| Specification Name | Top Options | Why it matters in the market | Impacts Pricing? |
+
+CRITICAL REQUIREMENTS:
+• ONLY show specifications that exist semantically in BOTH sources
+• ONLY show options that exist in BOTH the matched CSV and PNS specifications
+• Use PNS specification names for matched specs
+• If no consensus specs exist after strict filtering, state "No consensus specifications identified"
+• Address ALL validation errors from your first attempt
+</output_requirements>
+
+<final_validation_check>
+Before submitting, verify:
+□ Each specification exists semantically in both CSV and PNS data
+□ Each option exists in both the matched CSV spec AND matched PNS spec
+□ Specification names use PNS terminology
+□ No specifications from only one source are included
+□ All validation errors from first attempt are fixed
+</final_validation_check>"""
         
         return prompt
     

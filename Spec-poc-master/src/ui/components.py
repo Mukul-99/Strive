@@ -674,6 +674,20 @@ def render_final_consensus_stage(final_results: Dict[str, Any]):
         # Download button for final results
         if st.button("📥 Download Final Results", key="download_final_stage"):
             download_final_consensus_results(final_result, final_table)
+        
+        # Show validation logs if available in final_results
+        validation_logs = [log for log in final_results.get("logs", []) if "validation" in log.lower() or "retry" in log.lower()]
+        if validation_logs:
+            st.markdown("#### 🔍 Validation Process")
+            for log in validation_logs:
+                if "✅" in log:
+                    st.success(log)
+                elif "⚠️" in log:
+                    st.warning(log)
+                elif "🔄" in log:
+                    st.info(log)
+                else:
+                    st.text(log)
     
     elif final_result:
         st.markdown("#### 🏆 True Consensus Result")
