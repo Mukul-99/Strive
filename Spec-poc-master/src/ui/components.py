@@ -579,7 +579,8 @@ def render_csv_triangulation_stage(final_results: Dict[str, Any]):
                 "Specification": st.column_config.TextColumn("Specification", width="medium"),
                 "Top Options": st.column_config.TextColumn("Top Options", width="large"),
                 "Why it matters": st.column_config.TextColumn("Why it matters", width="large"),
-                "Impacts Pricing?": st.column_config.TextColumn("Impacts Pricing?", width="small")
+                "Impacts Pricing?": st.column_config.TextColumn("Impacts Pricing?", width="small"),
+                "Sources": st.column_config.TextColumn("Sources", width="medium", help="Shows which datasets mentioned this specification")
             }
         )
         
@@ -767,7 +768,19 @@ def render_meta_ensemble_results(final_results: Dict[str, Any]):
                     
                     if triangulated_table:
                         df = pd.DataFrame(triangulated_table)
-                        st.dataframe(df, use_container_width=True, hide_index=True)
+                        st.dataframe(
+                            df, 
+                            use_container_width=True, 
+                            hide_index=True,
+                            column_config={
+                                "Rank": st.column_config.NumberColumn("Rank", width="small"),
+                                "Specification": st.column_config.TextColumn("Specification", width="medium"),
+                                "Top Options": st.column_config.TextColumn("Top Options", width="large"),
+                                "Why it matters": st.column_config.TextColumn("Why it matters", width="large"),
+                                "Impacts Pricing?": st.column_config.TextColumn("Impacts Pricing?", width="small"),
+                                "Sources": st.column_config.TextColumn("Sources", width="medium", help="Shows which datasets mentioned this specification")
+                            }
+                        )
                     else:
                         st.markdown(triangulated_result)
                     
@@ -851,7 +864,7 @@ def render_single_triangulation_results(triangulated_result: str, triangulated_t
     if triangulated_table:
         df = pd.DataFrame(triangulated_table)
         
-        # Custom styling for the table to match competitor format
+        # Custom styling for the table to match updated format with Sources
         st.dataframe(
             df,
             use_container_width=True,
@@ -861,7 +874,8 @@ def render_single_triangulation_results(triangulated_result: str, triangulated_t
                 "Specification": st.column_config.TextColumn("Specification", width="medium"),
                 "Top Options": st.column_config.TextColumn("Top Options", width="large"),
                 "Why it matters": st.column_config.TextColumn("Why it matters", width="large"),
-                "Impacts Pricing?": st.column_config.TextColumn("Impacts Pricing?", width="small")
+                "Impacts Pricing?": st.column_config.TextColumn("Impacts Pricing?", width="small"),
+                "Sources": st.column_config.TextColumn("Sources", width="medium", help="Shows which datasets mentioned this specification")
             }
         )
     else:

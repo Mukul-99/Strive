@@ -157,13 +157,17 @@ class TriangulationAgent:
     def _build_triangulation_prompt(self, product_name: str, datasets: List[Dict], all_dataset_outputs: Dict) -> str:
         """Build triangulation prompt using multi-agent consensus and validation techniques"""
         
+        # Build source information for reference
+        available_sources = [dataset["source"] for dataset in datasets]
+        source_list = ", ".join(available_sources)
+        
         # Research-backed triangulation prompt with enhanced accuracy
         prompt = f"""<role>
 You are a senior data triangulation specialist with expertise in multi-source B2B specification analysis. You excel at identifying patterns across diverse datasets and determining which specifications truly drive purchasing decisions for {product_name}.
 </role>
 
 <task>
-Analyze {len(datasets)} independent extraction results to identify the most critical {product_name} specifications through cross-validation and consensus building.
+Analyze {len(datasets)} independent extraction results to identify the most critical {product_name} specifications through cross-validation and consensus building, while tracking which sources contributed to each specification.
 </task>
 
 <triangulation_methodology>
@@ -173,6 +177,8 @@ the dataset itself in your response.
 Merge Semantically same Specification options and name. Duplicate Specifications name should not be 
 there. At least 2 options should be there to display any specification important and Specification name 
 and Specification options should not be same or contain same words as in {product_name}.
+
+CRITICAL: For each specification, track which sources mentioned it (semantically similar specs count as same source).
 
 </triangulation_methodology>
 
@@ -190,20 +196,38 @@ EXCLUDE specifications that:
 ✗ Are location-specific (unless critical for the product)
 </validation_rules>
 
+<available_sources>
+The following {len(datasets)} sources are available for analysis:
+{source_list}
+</available_sources>
+
 <datasets_to_analyze>
 {json.dumps(all_dataset_outputs, indent=2)}
 </datasets_to_analyze>
 
+<source_tracking_instructions>
+For each specification you include in the final table:
+1. Identify which sources mentioned this specification (semantically similar specs count)
+2. Count total sources that mentioned it
+3. List the specific source names that contributed
+4. Format as: X/{len(datasets)} (source1 / source2 / source3)
+
+Example source tracking:
+- If "Power Rating" appears in search_keywords and "Motor Power" appears in whatsapp_specs, count both as the same spec
+- Format: 2/4 (search_keywords / whatsapp_specs)
+</source_tracking_instructions>
+
 <output_requirements>
 Create a business-focused specification table with EXACTLY this format:
 
-| Specification Name | Top Options (based on data) | Why it matters in the market | Impacts Pricing? |
+| Specification Name | Top Options (based on data) | Why it matters in the market | Impacts Pricing? | Sources |
 
 Requirements for each row:
 1. Specification Name: Clear, professional terminology
 2. Top Options: 3-5 most frequent options from the data (comma-separated)
 3. Why it matters: Concise business justification (buying behavior, compatibility, regulations)
 4. Impacts Pricing: "✅ Yes" or "❌ No" based on market analysis
+5. Sources: Format as X/{len(datasets)} (source1 / source2 / source3) showing which datasets mentioned this spec
 
 CRITICAL INSTRUCTIONS:
 • Limit to 3-5 most impactful specifications
@@ -211,12 +235,13 @@ CRITICAL INSTRUCTIONS:
 • Ensure each specification has multiple real options
 • Focus on specifications that differentiate products
 • Keep explanations concise and business-oriented
+• MUST include accurate source tracking for each specification
 </output_requirements>
 
 <example_output>
-| Material | Aluminium, Steel, Stainless Steel, Cast Iron | Affects durability, weight, and corrosion resistance - key factors in industrial applications | ✅ Yes |
-| Power Rating | 5 KVA, 7.5 KVA, 10 KVA, 15 KVA | Determines suitable applications and load capacity - primary selection criteria | ✅ Yes |
-| Phase Configuration | Single Phase, Three Phase | Must match facility electrical infrastructure - non-negotiable compatibility requirement | ✅ Yes |
+| Material | Aluminium, Steel, Stainless Steel, Cast Iron | Affects durability, weight, and corrosion resistance - key factors in industrial applications | ✅ Yes | 3/4 (whatsapp_specs / rejection_comments / lms_chats) |
+| Power Rating | 5 KVA, 7.5 KVA, 10 KVA, 15 KVA | Determines suitable applications and load capacity - primary selection criteria | ✅ Yes | 4/4 (search_keywords / whatsapp_specs / rejection_comments / lms_chats) |
+| Phase Configuration | Single Phase, Three Phase | Must match facility electrical infrastructure - non-negotiable compatibility requirement | ✅ Yes | 2/4 (search_keywords / whatsapp_specs) |
 </example_output>
 
 <final_validation>
@@ -271,18 +296,31 @@ Before submitting, ensure:
                     # Debug: log the parts
                     logger.info(f"Parsed parts: {parts} (count: {len(parts)})")
                     
-                    # Ensure we have at least 4 parts (spec, options, why, pricing)
-                    if len(parts) >= 4:
-                        # Map to competitor's format
+                    # Ensure we have at least 5 parts (spec, options, why, pricing, sources)
+                    if len(parts) >= 5:
+                        # Map to updated format with Sources column
                         table_data.append({
                             'Rank': rank,
                             'Specification': parts[0],  # Changed from 'Specification Name'
                             'Top Options': parts[1].replace('(based on data)', '').strip(),  # Remove "(based on data)"
                             'Why it matters': parts[2].replace('in the market', '').strip(),  # Remove "in the market"
-                            'Impacts Pricing?': parts[3]  # Changed to include question mark
+                            'Impacts Pricing?': parts[3],  # Changed to include question mark
+                            'Sources': parts[4].strip()  # New Sources column
                         })
                         rank += 1
-                        logger.info(f"Successfully added row {rank-1}: {parts[0]}")
+                        logger.info(f"Successfully added row {rank-1}: {parts[0]} with sources: {parts[4].strip()}")
+                    # Fallback for old 4-column format (backward compatibility)
+                    elif len(parts) >= 4:
+                        table_data.append({
+                            'Rank': rank,
+                            'Specification': parts[0],
+                            'Top Options': parts[1].replace('(based on data)', '').strip(),
+                            'Why it matters': parts[2].replace('in the market', '').strip(),
+                            'Impacts Pricing?': parts[3],
+                            'Sources': 'N/A'  # Default value for backward compatibility
+                        })
+                        rank += 1
+                        logger.info(f"Successfully added row {rank-1} (fallback): {parts[0]}")
             
             # Debug log
             logger.info(f"Successfully parsed {len(table_data)} table rows")
@@ -291,13 +329,14 @@ Before submitting, ensure:
             
         except Exception as e:
             logger.error(f"Error parsing triangulation result: {e}")
-            # Return a fallback structure with competitor's format
+            # Return a fallback structure with updated format including Sources
             return [{
                 'Rank': 1,
                 'Specification': 'Parse Error',
                 'Top Options': 'Could not parse result',
                 'Why it matters': 'Error in parsing',
-                'Impacts Pricing?': 'Unknown'
+                'Impacts Pricing?': 'Unknown',
+                'Sources': 'N/A'
             }]
 
 
