@@ -170,31 +170,98 @@ You are a senior data triangulation specialist with expertise in multi-source B2
 Analyze {len(datasets)} independent extraction results to identify the most critical {product_name} specifications through cross-validation and consensus building, while tracking which sources contributed to each specification.
 </task>
 
-<triangulation_methodology>
+<strict_triangulation_methodology>
+MANDATORY TWO-PHASE ANALYSIS APPROACH - NO EXCEPTIONS:
+
+PHASE 1 - MULTI-DATASET PRIORITY (REQUIRED FIRST):
+1. Cross-reference all {len(datasets)} datasets: {source_list}
+2. Identify specifications with semantic matches across 2+ datasets
+3. For each multi-dataset spec, count exact dataset coverage
+4. Rank by (dataset_count DESC, then frequency DESC)
+5. MUST fill your final table primarily from Phase 1 results
+
+PHASE 2 - EXCEPTIONAL SINGLE-DATASET (FALLBACK ONLY):
+1. Only if Phase 1 yields fewer than 4 high-quality specifications
+2. Require exceptional frequency (top 10% within that dataset)
+3. Must have clear business justification for inclusion
+4. Cannot have semantic equivalent in other datasets
+5. Use only as supplementary material
+
+CRITICAL ANALYSIS WORKFLOW:
+Step 1: Create cross-dataset specification matrix
+Step 2: Group specs by coverage: 4/{len(datasets)}, 3/{len(datasets)}, 2/{len(datasets)}, 1/{len(datasets)}
+Step 3: Within each coverage group, rank by frequency
+Step 4: Select from highest coverage groups first
+Step 5: Only consider single-dataset specs if insufficient multi-dataset specs
+
+SEMANTIC MATCHING RULES:
+• "Power" = "Motor Power" = "Power Rating" = "Power Output"
+• "Size" = "Grinding Size" = "Chamber Size" = "Dimensions"
+• "Capacity" = "Grinding Capacity" = "Output Capacity" = "Production Rate"
+• Use professional judgment for specification equivalence
+
+CRITICAL: For each specification, track which sources mentioned it (semantically similar specs count as same source).
 
 For the triangulation, give me results and top specifications that came from these datasets. Don't give 
 the dataset itself in your response.
 Merge Semantically same Specification options and name. Duplicate Specifications name should not be 
 there. At least 2 options should be there to display any specification important and Specification name 
 and Specification options should not be same or contain same words as in {product_name}.
+</strict_triangulation_methodology>
 
-CRITICAL: For each specification, track which sources mentioned it (semantically similar specs count as same source).
+<strict_validation_rules>
+PHASE 1 REQUIREMENTS (MANDATORY PRIORITY):
+✓ MUST appear in 2+ sources (semantic matching allowed)
+✓ Have at least 2 meaningful options (STRICTLY ENFORCED)
+✓ Directly influence {product_name} selection decisions
+✓ Represent tangible, measurable product attributes
 
-</triangulation_methodology>
+PHASE 2 REQUIREMENTS (EXCEPTIONAL FALLBACK ONLY):
+✓ Appears in only 1 source with exceptional frequency (top 10%)
+✓ Have at least 2 meaningful options (STRICTLY ENFORCED)
+✓ CRITICAL impact on {product_name} purchasing decisions
+✓ Cannot be found semantically in other datasets
+✓ Only if Phase 1 yields insufficient specifications
 
-<validation_rules>
-INCLUDE specifications that:
-✓ Appear in 2+ sources OR have very high frequency in 1 source
-✓ Have at least 2 meaningful options
-✓ Directly influence {product_name} selection
-✓ Represent tangible product attributes
-
-EXCLUDE specifications that:
-✗ Are generic descriptors (e.g., "Good Quality", "Best")
+STRICT EXCLUSION CRITERIA (NO EXCEPTIONS):
+✗ Are generic descriptors (e.g., "Good Quality", "Best", "Premium")
+✗ Have only 1 option available (ABSOLUTELY FORBIDDEN)
 ✗ Duplicate the product name (e.g., "Generator Type" for generators)
 ✗ Represent brands/companies (unless brand is a key differentiator)
 ✗ Are location-specific (unless critical for the product)
-</validation_rules>
+✗ Are subjective opinions without measurable attributes
+</strict_validation_rules>
+
+<strict_prioritization_rules>
+MANDATORY RANKING HIERARCHY - NO EXCEPTIONS:
+
+PRIMARY RANKING CRITERIA: Dataset Coverage Count (ALWAYS FIRST)
+1. 4/{len(datasets)} dataset specs = TIER 1 (Ranks 1, 2, 3...)
+2. 3/{len(datasets)} dataset specs = TIER 2 (next available ranks)
+3. 2/{len(datasets)} dataset specs = TIER 3 (next available ranks)
+4. 1/{len(datasets)} dataset specs = TIER 4 (exceptional cases only)
+
+SECONDARY RANKING CRITERIA: Frequency (WITHIN SAME TIER ONLY)
+• Within each tier, rank by combined frequency across datasets
+• Higher frequency wins only within same dataset count tier
+• NEVER allow frequency to override dataset count priority
+
+STRICT ENFORCEMENT RULES:
+• Any 4/{len(datasets)} spec ALWAYS ranks higher than any 3/{len(datasets)} spec
+• Any 3/{len(datasets)} spec ALWAYS ranks higher than any 2/{len(datasets)} spec  
+• Any 2/{len(datasets)} spec ALWAYS ranks higher than any 1/{len(datasets)} spec
+• Dataset count CANNOT be overridden by frequency considerations
+
+MANDATORY ORDERING EXAMPLE:
+- Power Rating (4/4 datasets, medium frequency) → Rank 1
+- Capacity (4/4 datasets, low frequency) → Rank 2
+- Material (3/4 datasets, very high frequency) → Rank 3
+- Size (3/4 datasets, high frequency) → Rank 4
+- Phase (2/4 datasets, extremely high frequency) → Rank 5
+
+COMPLIANCE VERIFICATION:
+Before submitting, verify that your ranking follows this strict hierarchy.
+</strict_prioritization_rules>
 
 <available_sources>
 The following {len(datasets)} sources are available for analysis:
@@ -230,6 +297,7 @@ Requirements for each row:
 5. Sources: Format as X/{len(datasets)} (source1 / source2 / source3) showing which datasets mentioned this spec
 
 CRITICAL INSTRUCTIONS:
+• ORDER specifications by dataset count (highest first): 4/4 → 3/4 → 2/4 → 1/4
 • Limit to 3-5 most impactful specifications
 • Use exact options from the data (don't invent new ones)
 • Ensure each specification has multiple real options
@@ -325,6 +393,31 @@ Before submitting, ensure:
             # Debug log
             logger.info(f"Successfully parsed {len(table_data)} table rows")
             
+            # NEW: Filter out specs with only 1 option and validate multi-dataset priority
+            if table_data:
+                table_data = self._filter_and_validate_specs(table_data)
+            
+            # ENHANCEMENT: Sort by dataset count for prioritization
+            if table_data:
+                # Extract dataset count from Sources column and sort
+                table_data_with_counts = []
+                for item in table_data:
+                    dataset_count = self._extract_dataset_count(item.get('Sources', 'N/A'))
+                    table_data_with_counts.append((dataset_count, item))
+                
+                # Sort by dataset count (descending) - higher dataset count gets priority
+                table_data_with_counts.sort(key=lambda x: x[0], reverse=True)
+                
+                # Update ranks and extract sorted data
+                sorted_table_data = []
+                for new_rank, (dataset_count, item) in enumerate(table_data_with_counts, 1):
+                    item['Rank'] = new_rank
+                    sorted_table_data.append(item)
+                    logger.info(f"Prioritized: Rank {new_rank} - '{item['Specification']}' (appears in {dataset_count} datasets)")
+                
+                logger.info(f"Dataset count prioritization completed - {len(sorted_table_data)} specs reordered")
+                return sorted_table_data
+            
             return table_data
             
         except Exception as e:
@@ -338,6 +431,86 @@ Before submitting, ensure:
                 'Impacts Pricing?': 'Unknown',
                 'Sources': 'N/A'
             }]
+    
+    def _extract_dataset_count(self, sources_column: str) -> int:
+        """Extract dataset count from Sources column format like '3/4 (source1 / source2 / source3)'"""
+        try:
+            if not sources_column or sources_column == 'N/A':
+                return 0
+            
+            # Extract the number before the "/" (e.g., "3" from "3/4 (sources...)")
+            if '/' in sources_column:
+                count_part = sources_column.split('/')[0].strip()
+                dataset_count = int(count_part)
+                logger.debug(f"Extracted dataset count {dataset_count} from sources: '{sources_column}'")
+                return dataset_count
+            else:
+                # Fallback: if no "/" found, assume 1 dataset
+                logger.debug(f"No '/' found in sources '{sources_column}', assuming 1 dataset")
+                return 1
+                
+        except (ValueError, AttributeError) as e:
+            logger.warning(f"Error extracting dataset count from '{sources_column}': {e}. Defaulting to 0")
+            return 0
+
+    def _filter_and_validate_specs(self, table_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Filter out specs with single options and validate multi-dataset priority"""
+        filtered_specs = []
+        excluded_single_option = []
+        excluded_low_coverage = []
+        
+        for item in table_data:
+            # Filter 1: Exclude specs with only 1 option
+            options = item.get('Top Options', '')
+            option_count = len([opt.strip() for opt in options.split(',') if opt.strip()])
+            
+            if option_count < 2:
+                excluded_single_option.append(item)
+                logger.info(f"Excluded '{item['Specification']}' - only {option_count} option(s): {options}")
+                continue
+            
+            # Filter 2: Validate dataset coverage (warn about single-dataset specs)
+            dataset_count = self._extract_dataset_count(item.get('Sources', 'N/A'))
+            
+            if dataset_count == 1:
+                logger.warning(f"Single-dataset spec detected: '{item['Specification']}' - should be exceptional case only")
+            
+            filtered_specs.append(item)
+            logger.info(f"Included '{item['Specification']}' with {option_count} options from {dataset_count} datasets")
+        
+        # Log filtering results
+        if excluded_single_option:
+            logger.warning(f"Filtered out {len(excluded_single_option)} specs with single options")
+        
+        # Validate multi-dataset priority
+        self._validate_dataset_priority_ordering(filtered_specs)
+        
+        logger.info(f"Validation completed: {len(filtered_specs)} specs passed filtering")
+        return filtered_specs
+    
+    def _validate_dataset_priority_ordering(self, table_data: List[Dict[str, Any]]) -> bool:
+        """Validate that specs are ordered by dataset count (highest first)"""
+        if not table_data or len(table_data) < 2:
+            return True
+        
+        violations = []
+        for i in range(len(table_data) - 1):
+            current_count = self._extract_dataset_count(table_data[i].get('Sources', 'N/A'))
+            next_count = self._extract_dataset_count(table_data[i + 1].get('Sources', 'N/A'))
+            
+            if current_count < next_count:
+                violation = f"Rank {i+1} '{table_data[i]['Specification']}' ({current_count} datasets) ranked higher than Rank {i+2} '{table_data[i+1]['Specification']}' ({next_count} datasets)"
+                violations.append(violation)
+                logger.warning(f"Priority violation detected: {violation}")
+        
+        if violations:
+            logger.error(f"Dataset priority ordering violations detected: {len(violations)} violations")
+            for violation in violations:
+                logger.error(f"Violation: {violation}")
+            return False
+        else:
+            logger.info("Dataset priority ordering validation passed")
+            return True
 
 
 def triangulate_all_results(state: SpecExtractionState) -> SpecExtractionState:
