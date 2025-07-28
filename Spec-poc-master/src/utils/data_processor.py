@@ -24,6 +24,11 @@ class DataProcessor:
             
             logger.info(f"Processing {source_name}: {len(df)} rows loaded")
             
+            # Check minimum row requirement (10 rows minimum for processing)
+            if len(df) < 10:
+                logger.warning(f"Dataset {source_name} excluded: Only {len(df)} rows available, minimum 10 rows required for processing")
+                return []  # Return empty list to skip processing
+            
             # Get column mapping for this source
             column_config = COLUMN_MAPPINGS.get(source_name)
             if not column_config:

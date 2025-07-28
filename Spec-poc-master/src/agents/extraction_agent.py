@@ -29,6 +29,19 @@ class ExtractionAgent:
             # Process the data into chunks
             data_chunks = DataProcessor.process_csv_data(file_content, source_name)
             
+            # Check if dataset was excluded due to insufficient rows
+            if not data_chunks:  # Empty list means dataset was excluded
+                logger.info(f"Dataset {source_name} was excluded due to insufficient rows (<10), skipping processing")
+                return {
+                    "source_type": DATASET_TYPE_MAPPING.get(source_name, "occurrences"),
+                    "raw_data_count": 0,
+                    "extracted_specs": "",
+                    "processing_time": round(time.time() - start_time, 2),
+                    "status": "excluded",
+                    "exclusion_reason": "Insufficient rows: Dataset contains less than 10 rows required for processing",
+                    "chunks_processed": 0
+                }
+            
             # Get dataset type for this source
             dataset_type = DATASET_TYPE_MAPPING.get(source_name, "occurrences")
             
@@ -246,6 +259,20 @@ Before finalizing, verify:
         return prompt
 
 
+# Helper function for status messages
+def _get_status_message(result: Dict[str, Any]) -> str:
+    """Get appropriate status message based on result status"""
+    status = result.get("status", "unknown")
+    if status == "completed":
+        return "Completed successfully"
+    elif status == "excluded":
+        exclusion_reason = result.get("exclusion_reason", "Unknown reason")
+        return f"Excluded - {exclusion_reason}"
+    elif status == "failed":
+        return "Failed"
+    else:
+        return f"Unknown status: {status}"
+
 # Node functions for LangGraph
 def process_search_keywords(state: SpecExtractionState) -> SpecExtractionState:
     """Process search keywords source"""
@@ -264,7 +291,7 @@ def process_search_keywords(state: SpecExtractionState) -> SpecExtractionState:
         "search_keywords_status": result["status"],
         "search_keywords_result": result,
         "search_keywords_error": result.get("error", ""),
-        "logs": [f"Agent search_keywords: {'Completed successfully' if result['status'] == 'completed' else 'Failed'} in {result['processing_time']:.2f}s"]
+        "logs": [f"Agent search_keywords: {_get_status_message(result)} in {result['processing_time']:.2f}s"]
     }
 
 def process_whatsapp_specs(state: SpecExtractionState) -> SpecExtractionState:
@@ -284,7 +311,7 @@ def process_whatsapp_specs(state: SpecExtractionState) -> SpecExtractionState:
         "whatsapp_specs_status": result["status"],
         "whatsapp_specs_result": result,
         "whatsapp_specs_error": result.get("error", ""),
-        "logs": [f"Agent whatsapp_specs: {'Completed successfully' if result['status'] == 'completed' else 'Failed'} in {result['processing_time']:.2f}s"]
+        "logs": [f"Agent whatsapp_specs: {_get_status_message(result)} in {result['processing_time']:.2f}s"]
     }
 
 # COMMENTED OUT - PNS now handled as JSON processing
@@ -325,7 +352,7 @@ def process_rejection_comments(state: SpecExtractionState) -> SpecExtractionStat
         "rejection_comments_status": result["status"],
         "rejection_comments_result": result,
         "rejection_comments_error": result.get("error", ""),
-        "logs": [f"Agent rejection_comments: {'Completed successfully' if result['status'] == 'completed' else 'Failed'} in {result['processing_time']:.2f}s"]
+        "logs": [f"Agent rejection_comments: {_get_status_message(result)} in {result['processing_time']:.2f}s"]
     }
 
 def process_lms_chats(state: SpecExtractionState) -> SpecExtractionState:
@@ -345,5 +372,5 @@ def process_lms_chats(state: SpecExtractionState) -> SpecExtractionState:
         "lms_chats_status": result["status"],
         "lms_chats_result": result,
         "lms_chats_error": result.get("error", ""),
-        "logs": [f"Agent lms_chats: {'Completed successfully' if result['status'] == 'completed' else 'Failed'} in {result['processing_time']:.2f}s"]
+        "logs": [f"Agent lms_chats: {_get_status_message(result)} in {result['processing_time']:.2f}s"]
     } 

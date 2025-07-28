@@ -168,27 +168,37 @@ class SpecExtractionWorkflow:
         uploaded_sources = list(state["uploaded_files"].keys())
         agents_status = get_agents_status(state)
         
-        # Count completed and failed agents
+        # Count completed, failed, and excluded agents
         completed_count = sum(1 for source in uploaded_sources 
                             if agents_status.get(source) == "completed")
         failed_count = sum(1 for source in uploaded_sources 
                          if agents_status.get(source) == "failed")
+        excluded_count = sum(1 for source in uploaded_sources 
+                           if agents_status.get(source) == "excluded")
         total_count = len(uploaded_sources)
+        processed_count = completed_count + failed_count + excluded_count
         
         # Update progress
-        progress = int((completed_count + failed_count) / total_count * 90)  # 90% for extraction, 10% for triangulation
+        progress = int(processed_count / total_count * 90)  # 90% for extraction, 10% for triangulation
         
         # Update current step
-        if completed_count + failed_count == total_count:
+        if processed_count == total_count:
             if completed_count > 0:
                 current_step = "ready_for_triangulation"
-                logs = [f"All agents completed: {completed_count} successful, {failed_count} failed"]
+                status_parts = []
+                if completed_count > 0:
+                    status_parts.append(f"{completed_count} successful")
+                if failed_count > 0:
+                    status_parts.append(f"{failed_count} failed")
+                if excluded_count > 0:
+                    status_parts.append(f"{excluded_count} excluded")
+                logs = [f"All agents completed: {', '.join(status_parts)}"]
             else:
                 current_step = "all_agents_failed"
-                logs = ["All agents failed - no results to triangulate"]
+                logs = ["All agents failed or were excluded - no results to triangulate"]
         else:
-            current_step = f"processing ({completed_count + failed_count}/{total_count} completed)"
-            logs = [f"Progress: {completed_count + failed_count}/{total_count} agents completed"]
+            current_step = f"processing ({processed_count}/{total_count} completed)"
+            logs = [f"Progress: {processed_count}/{total_count} agents completed"]
         
         return {
             "progress_percentage": progress,

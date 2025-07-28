@@ -456,37 +456,54 @@ def render_individual_results(agent_results: Dict[str, Dict[str, Any]]):
     st.markdown("## 📊 Individual Dataset Analysis")
     
     for source_key, result in agent_results.items():
-        if result.get("status") != "completed":
+        status = result.get("status", "unknown")
+        if status not in ["completed", "excluded"]:
             continue
             
         source_name = SOURCE_NAMES.get(source_key, source_key)
         
-        # Expandable card for each dataset
-        with st.expander(f"📋 {source_name} Analysis", expanded=False):
+        # Expandable card for each dataset with status indicator
+        status_icon = "📋" if status == "completed" else "⚠️"
+        expanded_by_default = status == "excluded"  # Show excluded datasets expanded so users notice them
+        
+        with st.expander(f"{status_icon} {source_name} Analysis", expanded=expanded_by_default):
             
-            # Summary stats
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric("📄 Total Rows", result.get("raw_data_count", 0))
-            with col2:
-                # Count ISQs from result
-                specs = result.get("extracted_specs", "")
-                isq_count = len([line for line in specs.split('\n') if line.strip() and '|' in line]) - 1
-                st.metric("🎯 Top ISQs", max(0, isq_count))
-            with col3:
-                st.metric("⏱️ Processing Time", f"{result.get('processing_time', 0)}s")
-            
-            # Excel download button
-            col1, col2 = st.columns([3, 1])
-            with col2:
-                if st.button(f"📥 Excel", key=f"download_{source_key}"):
-                    download_individual_result(source_key, result)
-            
-            # Display results table
-            specs_text = result.get("extracted_specs", "")
-            if specs_text:
-                display_specs_table(specs_text)
+            if status == "excluded":
+                # Show exclusion information
+                st.warning("🚫 Dataset Excluded from Processing")
+                exclusion_reason = result.get("exclusion_reason", "Unknown reason")
+                st.info(f"**Reason:** {exclusion_reason}")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric("📄 Total Rows", result.get("raw_data_count", 0))
+                with col2:
+                    st.metric("⏱️ Processing Time", f"{result.get('processing_time', 0)}s")
+            else:
+                # Show normal processing results for completed datasets
+                # Summary stats
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric("📄 Total Rows", result.get("raw_data_count", 0))
+                with col2:
+                    # Count ISQs from result
+                    specs = result.get("extracted_specs", "")
+                    isq_count = len([line for line in specs.split('\n') if line.strip() and '|' in line]) - 1
+                    st.metric("🎯 Top ISQs", max(0, isq_count))
+                with col3:
+                    st.metric("⏱️ Processing Time", f"{result.get('processing_time', 0)}s")
+                
+                # Excel download button
+                col1, col2 = st.columns([3, 1])
+                with col2:
+                    if st.button(f"📥 Excel", key=f"download_{source_key}"):
+                        download_individual_result(source_key, result)
+                
+                # Display results table
+                specs_text = result.get("extracted_specs", "")
+                if specs_text:
+                    display_specs_table(specs_text)
 
 def render_final_results(triangulated_result: str, triangulated_table: List[Dict[str, Any]]):
     """Render 3-stage results: CSV triangulated, PNS specs, and final triangulation"""

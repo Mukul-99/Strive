@@ -977,12 +977,16 @@ def check_all_agents_completed(state: SpecExtractionState) -> str:
         source for source, status in agents_status.items()
         if status == "failed"
     }
+    excluded_sources = {
+        source for source, status in agents_status.items()
+        if status == "excluded"
+    }
     
-    # If all uploaded sources are either completed or failed, we can proceed
-    if uploaded_sources <= (completed_sources | failed_sources):
+    # If all uploaded sources are either completed, failed, or excluded, we can proceed
+    if uploaded_sources <= (completed_sources | failed_sources | excluded_sources):
         if completed_sources:  # At least one completed successfully
             return "triangulate"
-        else:  # All failed
+        else:  # All failed or excluded
             return "all_failed"
     else:
         return "wait"  # Still processing 
