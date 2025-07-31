@@ -155,7 +155,7 @@ class TriangulationAgent:
             }
     
     def _build_triangulation_prompt(self, product_name: str, datasets: List[Dict], all_dataset_outputs: Dict) -> str:
-        """Build triangulation prompt using multi-agent consensus and validation techniques"""
+        """Build triangulation prompt using multi-agent consensus and validation techniques with PNS priority"""
         
         # Build source information for reference
         available_sources = [dataset["source"] for dataset in datasets]
@@ -167,38 +167,46 @@ You are a senior data triangulation specialist with expertise in multi-source B2
 </role>
 
 <task>
-Analyze {len(datasets)} independent extraction results to identify the most critical {product_name} specifications through cross-validation and consensus building, while tracking which sources contributed to each specification.
+Analyze {len(datasets)} independent extraction results to identify the most critical {product_name} specifications through cross-validation and consensus building, with special priority given to PNS data as the most refined and authoritative source.
 </task>
 
 <strict_triangulation_methodology>
-MANDATORY TWO-PHASE ANALYSIS APPROACH - NO EXCEPTIONS:
+MANDATORY PNS-PRIORITY ANALYSIS APPROACH - NO EXCEPTIONS:
 
-PHASE 1 - MULTI-DATASET PRIORITY (REQUIRED FIRST):
+PHASE 1 - PNS PRIORITY ANALYSIS (HIGHEST PRIORITY):
+1. If PNS data is available, treat it as the authoritative source with 3x weight
+2. Use PNS specification names as canonical names when semantic matches are found
+3. PNS specs appear FIRST in the final ranking regardless of frequency
+4. For PNS specs, use (PNS_frequency × 3) + (other_sources_frequency × 1) for ranking
+
+PHASE 2 - MULTI-DATASET PRIORITY (SECOND PRIORITY):
 1. Cross-reference all {len(datasets)} datasets: {source_list}
 2. Identify specifications with semantic matches across 2+ datasets
 3. For each multi-dataset spec, count exact dataset coverage
-4. Rank by (dataset_count DESC, then frequency DESC)
-5. MUST fill your final table primarily from Phase 1 results
+4. Rank by (dataset_count DESC, then weighted frequency DESC)
+5. Use PNS spec names when semantic matches are found
 
-PHASE 2 - EXCEPTIONAL SINGLE-DATASET (FALLBACK ONLY):
-1. Only if Phase 1 yields fewer than 4 high-quality specifications
+PHASE 3 - EXCEPTIONAL SINGLE-DATASET (FALLBACK ONLY):
+1. Only if Phase 1 and 2 yield fewer than 4 high-quality specifications
 2. Require exceptional frequency (top 10% within that dataset)
 3. Must have clear business justification for inclusion
 4. Cannot have semantic equivalent in other datasets
 5. Use only as supplementary material
 
 CRITICAL ANALYSIS WORKFLOW:
-Step 1: Create cross-dataset specification matrix
-Step 2: Group specs by coverage: 4/{len(datasets)}, 3/{len(datasets)}, 2/{len(datasets)}, 1/{len(datasets)}
-Step 3: Within each coverage group, rank by frequency
-Step 4: Select from highest coverage groups first
-Step 5: Only consider single-dataset specs if insufficient multi-dataset specs
+Step 1: Identify PNS specifications and their frequencies (3x weight)
+Step 2: Create cross-dataset specification matrix for non-PNS sources
+Step 3: Group specs by coverage: 4/{len(datasets)}, 3/{len(datasets)}, 2/{len(datasets)}, 1/{len(datasets)}
+Step 4: Within each coverage group, rank by weighted frequency
+Step 5: Select from PNS first, then highest coverage groups
+Step 6: Only consider single-dataset specs if insufficient multi-dataset specs
 
 SEMANTIC MATCHING RULES:
 • "Power" = "Motor Power" = "Power Rating" = "Power Output"
 • "Size" = "Grinding Size" = "Chamber Size" = "Dimensions"
 • "Capacity" = "Grinding Capacity" = "Output Capacity" = "Production Rate"
 • Use professional judgment for specification equivalence
+• When PNS has a spec name, use it as the canonical name for all sources
 
 CRITICAL: For each specification, track which sources mentioned it (semantically similar specs count as same source).
 
@@ -227,40 +235,45 @@ STRICT EXCLUSION CRITERIA (NO EXCEPTIONS):
 ✗ Are generic descriptors (e.g., "Good Quality", "Best", "Premium")
 ✗ Have only 1 option available (ABSOLUTELY FORBIDDEN)
 ✗ Duplicate the product name (e.g., "Generator Type" for generators)
-✗ Represent brands/companies (unless brand is a key differentiator)
 ✗ Are location-specific (unless critical for the product)
 ✗ Are subjective opinions without measurable attributes
 </strict_validation_rules>
 
 <strict_prioritization_rules>
-MANDATORY RANKING HIERARCHY - NO EXCEPTIONS:
+MANDATORY PNS-PRIORITY RANKING HIERARCHY - NO EXCEPTIONS:
 
-PRIMARY RANKING CRITERIA: Dataset Coverage Count (ALWAYS FIRST)
-1. 4/{len(datasets)} dataset specs = TIER 1 (Ranks 1, 2, 3...)
-2. 3/{len(datasets)} dataset specs = TIER 2 (next available ranks)
-3. 2/{len(datasets)} dataset specs = TIER 3 (next available ranks)
-4. 1/{len(datasets)} dataset specs = TIER 4 (exceptional cases only)
+PRIMARY RANKING CRITERIA: PNS Priority (ALWAYS FIRST)
+1. PNS specifications = TIER 0 (Ranks 1, 2, 3... regardless of frequency)
+2. Multi-dataset specs (non-PNS) = TIER 1 (next available ranks)
+3. Single-dataset specs (non-PNS) = TIER 2 (exceptional cases only)
 
-SECONDARY RANKING CRITERIA: Frequency (WITHIN SAME TIER ONLY)
-• Within each tier, rank by combined frequency across datasets
-• Higher frequency wins only within same dataset count tier
-• NEVER allow frequency to override dataset count priority
+SECONDARY RANKING CRITERIA: Weighted Frequency (WITHIN SAME TIER ONLY)
+• PNS specs: (PNS_frequency × 3) + (other_sources_frequency × 1)
+• Non-PNS specs: (total_frequency × 1)
+• Higher weighted frequency wins only within same tier
+• NEVER allow frequency to override tier priority
 
 STRICT ENFORCEMENT RULES:
-• Any 4/{len(datasets)} spec ALWAYS ranks higher than any 3/{len(datasets)} spec
-• Any 3/{len(datasets)} spec ALWAYS ranks higher than any 2/{len(datasets)} spec  
-• Any 2/{len(datasets)} spec ALWAYS ranks higher than any 1/{len(datasets)} spec
-• Dataset count CANNOT be overridden by frequency considerations
+• Any PNS spec ALWAYS ranks higher than any non-PNS spec
+• Any multi-dataset spec ALWAYS ranks higher than any single-dataset spec
+• PNS priority CANNOT be overridden by frequency considerations
+• Use PNS spec names as canonical names when semantic matches found
 
 MANDATORY ORDERING EXAMPLE:
-- Power Rating (4/4 datasets, medium frequency) → Rank 1
-- Capacity (4/4 datasets, low frequency) → Rank 2
+- Motor Power (PNS spec, frequency 50) → Rank 1
+- Size (PNS spec, frequency 30) → Rank 2
 - Material (3/4 datasets, very high frequency) → Rank 3
-- Size (3/4 datasets, high frequency) → Rank 4
+- Capacity (3/4 datasets, high frequency) → Rank 4
 - Phase (2/4 datasets, extremely high frequency) → Rank 5
 
+PNS PRIORITY RULES:
+• PNS specs appear FIRST in the final table
+• Use PNS specification names when semantic matches found
+• Combine all unique options from all sources for each spec
+• No restraints on number of options - include all unique options
+
 COMPLIANCE VERIFICATION:
-Before submitting, verify that your ranking follows this strict hierarchy.
+Before submitting, verify that your ranking follows this PNS-priority hierarchy.
 </strict_prioritization_rules>
 
 <available_sources>
@@ -290,26 +303,27 @@ Create a business-focused specification table with EXACTLY this format:
 | Specification Name | Top Options (based on data) | Why it matters in the market | Impacts Pricing? | Sources |
 
 Requirements for each row:
-1. Specification Name: Clear, professional terminology
-2. Top Options: 3-5 most frequent options from the data (comma-separated)
+1. Specification Name: Clear, professional terminology (use PNS names when available)
+2. Top Options: Combine all unique options from all sources (comma-separated)
 3. Why it matters: Concise business justification (buying behavior, compatibility, regulations)
 4. Impacts Pricing: "✅ Yes" or "❌ No" based on market analysis
 5. Sources: Format as X/{len(datasets)} (source1 / source2 / source3) showing which datasets mentioned this spec
 
 CRITICAL INSTRUCTIONS:
-• ORDER specifications by dataset count (highest first): 4/4 → 3/4 → 2/4 → 1/4
+• ORDER specifications by PNS priority (PNS specs first), then dataset count: PNS → 4/4 → 3/4 → 2/4 → 1/4
 • Limit to 3-5 most impactful specifications
 • Use exact options from the data (don't invent new ones)
-• Ensure each specification has multiple real options
+• Combine all unique options from all sources for each spec
 • Focus on specifications that differentiate products
 • Keep explanations concise and business-oriented
 • MUST include accurate source tracking for each specification
+• NO RESTRAINTS on number of options - include all unique options
 </output_requirements>
 
 <example_output>
+| Motor Power | 3 HP, 5 HP, 10 HP, 2 HP, 7.5 HP, 22 HP | Determines grinding capability and model tier - primary selection criteria | ✅ Yes | PNS + 2/4 (search_keywords / whatsapp_specs) |
+| Size | 14 inch, 16 inch, 18 inch, 20 inch, 24 inch, 12 inch, 10 inch, 36 inch, 22 inch, 18x4.5 inch, 30 inch | Directly indicates grinding stone diameter - fundamental classifier for models | ✅ Yes | PNS + 3/4 (search_keywords / whatsapp_specs / rejection_comments) |
 | Material | Aluminium, Steel, Stainless Steel, Cast Iron | Affects durability, weight, and corrosion resistance - key factors in industrial applications | ✅ Yes | 3/4 (whatsapp_specs / rejection_comments / lms_chats) |
-| Power Rating | 5 KVA, 7.5 KVA, 10 KVA, 15 KVA | Determines suitable applications and load capacity - primary selection criteria | ✅ Yes | 4/4 (search_keywords / whatsapp_specs / rejection_comments / lms_chats) |
-| Phase Configuration | Single Phase, Three Phase | Must match facility electrical infrastructure - non-negotiable compatibility requirement | ✅ Yes | 2/4 (search_keywords / whatsapp_specs) |
 </example_output>
 
 <final_validation>
