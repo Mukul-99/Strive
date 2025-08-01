@@ -186,16 +186,17 @@ class TriangulationAgent:
         for source, data in csv_sources.items():
             csv_data_section += f"\n--- {source.upper()} ---\n{data}\n"
         
-        # PNS-centric validation prompt
+        # PNS-centric validation prompt with options aggregation
         prompt = f"""<role>
-You are a PNS validation specialist. Your task is to take PNS specifications as the base and validate them against CSV data sources for {product_name}.
+You are a PNS validation specialist. Your task is to take PNS specifications as the base and validate them against CSV data sources for {product_name}, while aggregating all unique options from all sources.
 </role>
 
 <task>
 1. Extract the TOP 5 PNS specifications by frequency from the PNS data
 2. For each PNS spec, check if it appears in each of the 4 CSV sources using semantic matching
-3. Create a validation table showing presence/absence in each CSV source
-4. Score each PNS spec based on how many CSV sources contain it (0-4)
+3. Aggregate ALL unique options from PNS and matching CSV sources for each spec
+4. Create a validation table showing presence/absence in each CSV source with aggregated options
+5. Score each PNS spec based on how many CSV sources contain it (0-4)
 </task>
 
 <pns_base_data>
@@ -216,12 +217,21 @@ You are a PNS validation specialist. Your task is to take PNS specifications as 
    • "Capacity" = "Grinding Capacity" = "Output Capacity"
    • "Phase" = "Phase Configuration" = "Electrical Phase"
 
-3. SCORING SYSTEM:
+3. OPTIONS AGGREGATION RULES:
+   • For each PNS spec, find ALL matching CSV specs using semantic matching
+   • Collect ALL options from PNS spec AND all matching CSV specs
+   • Use AI intelligence to identify and merge similar options (e.g., "5KVA" = "5 KVA" = "5.0KVA")
+   • Prioritize PNS options first, then add unique CSV options
+   • Create comma-separated list of all unique options
+   • If PNS spec has no matching CSV specs, still show PNS options
+   • If PNS spec has matching CSV specs but no common options, show all options from both sources
+
+4. SCORING SYSTEM:
    • Score = Number of CSV sources where spec appears (0-4)
    • Search each CSV source for semantic matches
    • Any frequency/mention counts as presence
 
-4. RANKING:
+5. RANKING:
    • Primary: Score (descending) - higher score = higher rank
    • Secondary: PNS frequency (descending)
 </validation_rules>
@@ -237,29 +247,39 @@ The 4 CSV sources to validate against:
 <output_requirements>
 Create a PNS validation table with EXACTLY this format:
 
-| Score | PNS | search_keywords | whatsapp_specs | rejection_comments | lms_chats |
+| Score | PNS | Options | search_keywords | whatsapp_specs | rejection_comments | lms_chats |
 
 Requirements:
 1. Score: Number (0-4) indicating how many CSV sources contain this PNS spec
 2. PNS: PNS specification name only (no options or frequency data)
-3. CSV Columns: "Yes" if spec appears in that source, "No" if not
-4. Order by Score (descending), then by PNS frequency (descending)
-5. Show exactly 5 rows (top 5 PNS specs)
+3. Options: Comma-separated list of ALL unique options from PNS and matching CSV sources
+4. CSV Columns: "Yes" if spec appears in that source, "No" if not
+5. Order by Score (descending), then by PNS frequency (descending)
+6. Show exactly 5 rows (top 5 PNS specs)
+
+OPTIONS AGGREGATION INSTRUCTIONS:
+• For each PNS spec, identify all semantically matching CSV specs
+• Collect ALL options from PNS spec AND all matching CSV specs
+• Use AI to identify and merge similar options (e.g., "5KVA" = "5 KVA")
+• Prioritize PNS options first, then add unique CSV options
+• Create comma-separated list without duplicates
+• Handle edge cases: no matching CSV specs (show PNS only), no common options (show all)
 
 CRITICAL INSTRUCTIONS:
 • If PNS has no specifications, respond with "PNS has no specifications"
 • Always show exactly 5 PNS specs (even if some have score 0)
 • Use semantic matching to determine Yes/No for each CSV source
 • Score must equal the number of "Yes" entries in that row
+• Options column must contain ALL unique options from all sources
 </output_requirements>
 
 <example_output>
-| Score | PNS | search_keywords | whatsapp_specs | rejection_comments | lms_chats |
-| 4 | Power Rating | Yes | Yes | Yes | Yes |
-| 3 | Material | Yes | Yes | No | Yes |
-| 2 | Size | No | Yes | Yes | No |
-| 1 | Phase | Yes | No | No | No |
-| 0 | Capacity | No | No | No | No |
+| Score | PNS | Options | search_keywords | whatsapp_specs | rejection_comments | lms_chats |
+| 4 | Power Rating | 5KVA, 10KVA, 15KVA, 20KVA | Yes | Yes | Yes | Yes |
+| 3 | Material | Steel, Aluminum, Cast Iron, Carbon Steel | Yes | Yes | No | Yes |
+| 2 | Size | 10mm, 15mm, 20mm, 25mm | No | Yes | Yes | No |
+| 1 | Phase | Single Phase, Three Phase | Yes | No | No | No |
+| 0 | Capacity | 100kg/hr, 200kg/hr, 300kg/hr | No | No | No | No |
 </example_output>
 """
         
@@ -282,6 +302,7 @@ CRITICAL INSTRUCTIONS:
                     'Rank': 1,
                     'Score': 'N/A',
                     'PNS': 'No PNS Specifications',
+                    'Options': 'N/A',
                     'search_keywords': 'N/A',
                     'whatsapp_specs': 'N/A',
                     'rejection_comments': 'N/A',
@@ -302,7 +323,7 @@ CRITICAL INSTRUCTIONS:
                     continue
                 if line.startswith('|--') or line.startswith('|-'):
                     continue
-                if line.count('|') < 5:  # Need at least 6 columns
+                if line.count('|') < 6:  # Need at least 7 columns (score, pns, options, search_keywords, whatsapp_specs, rejection_comments, lms_chats)
                     continue
                 
                 # Look for table rows (containing | separator)
@@ -319,8 +340,8 @@ CRITICAL INSTRUCTIONS:
                     # Debug: log the parts
                     logger.info(f"Parsed parts: {parts} (count: {len(parts)})")
                     
-                    # Ensure we have exactly 6 parts (score, pns, search_keywords, whatsapp_specs, rejection_comments, lms_chats)
-                    if len(parts) >= 6:
+                    # Ensure we have exactly 7 parts (score, pns, options, search_keywords, whatsapp_specs, rejection_comments, lms_chats)
+                    if len(parts) >= 7:
                         # Convert score to integer for sorting, handle non-numeric scores
                         try:
                             score_value = int(parts[0])
@@ -331,14 +352,15 @@ CRITICAL INSTRUCTIONS:
                             'Rank': rank,
                             'Score': parts[0],
                             'PNS': parts[1],
-                            'search_keywords': parts[2],
-                            'whatsapp_specs': parts[3],
-                            'rejection_comments': parts[4],
-                            'lms_chats': parts[5],
+                            'Options': parts[2],
+                            'search_keywords': parts[3],
+                            'whatsapp_specs': parts[4],
+                            'rejection_comments': parts[5],
+                            'lms_chats': parts[6],
                             '_score_value': score_value  # For sorting
                         })
                         rank += 1
-                        logger.info(f"Successfully added PNS validation row {rank-1}: {parts[1]} with score: {parts[0]}")
+                        logger.info(f"Successfully added PNS validation row {rank-1}: {parts[1]} with score: {parts[0]} and options: {parts[2]}")
             
             # Debug log
             logger.info(f"Successfully parsed {len(table_data)} PNS validation table rows")

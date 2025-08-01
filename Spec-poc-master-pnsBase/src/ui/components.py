@@ -576,6 +576,7 @@ def render_single_stage_results(final_results: Dict[str, Any]):
                     "Rank": st.column_config.NumberColumn("Rank", width="small"),
                     "Score": st.column_config.NumberColumn("Score", width="small", help="Number of CSV sources containing this PNS spec (0-4)"),
                     "PNS": st.column_config.TextColumn("PNS", width="medium", help="PNS specification name"),
+                    "Options": st.column_config.TextColumn("Options", width="large", help="All unique options from PNS and CSV sources"),
                     "search_keywords": st.column_config.TextColumn("Search Keywords", width="small", help="Present in search keywords?"),
                     "whatsapp_specs": st.column_config.TextColumn("WhatsApp", width="small", help="Present in WhatsApp data?"),
                     "rejection_comments": st.column_config.TextColumn("BLNI", width="small", help="Present in rejection comments?"),
