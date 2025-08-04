@@ -172,18 +172,46 @@ class TriangulationAgent:
         for source, data in csv_sources.items():
             csv_data_section += f"\n--- {source.upper()} ---\n{data}\n"
         
-        # Enhanced PNS-centric validation prompt with strict 10-option limit
+        # Enhanced PNS-centric validation prompt with strict controls
         prompt = f"""<role>
 You are a PNS validation specialist. Your task is to take PNS specifications as the base and validate them against CSV data sources for {product_name}, while aggregating exactly 10 options per specification using a strict prioritization system.
 </role>
 
 <task>
-1. Extract the TOP 5 PNS specifications by frequency from the PNS data
-2. For each PNS spec, check if it appears in each of the 4 CSV sources using semantic matching
-3. For each spec, aggregate EXACTLY 10 options using the strict option prioritization rules
-4. Create a validation table showing presence/absence in each CSV source with exactly 10 options per spec
-5. Score each PNS spec based on how many CSV sources contain it (0-4)
+PRIMARY RESPONSIBILITY: Use your AI intelligence to analyze the full PNS context and deliver exactly 5 unique, high-quality specifications.
+
+1. INTELLIGENT SPECIFICATION SELECTION: Extract EXACTLY 5 UNIQUE PNS specifications by frequency 
+   • Use full context to make smart decisions about duplicates and priorities
+   • Handle semantic deduplication intelligently ("Power" vs "Power Rating" vs "Motor Power")
+   • Choose the most business-relevant specifications
+
+2. CONSERVATIVE SEMANTIC MATCHING: Check if each spec appears in CSV sources
+   • When uncertain about presence, mark as "No" (avoid false positives)
+   • Use business context to make matching decisions
+
+3. PRECISE OPTION AGGREGATION: Exactly 10 options per specification
+   • Prioritize common options first, then PNS-only options
+   • Use semantic intelligence to identify truly common options
+
+4. ACCURATE SCORING: Score based on actual CSV source presence (0-4)
+   • Score must exactly equal count of "Yes" entries in each row
+   • Be conservative - when in doubt about presence, mark "No"
+
+5. QUALITY ASSURANCE: Final verification before output
+   • Ensure all 5 specifications have different names
+   • Verify option counts and score accuracy
 </task>
+
+<intelligent_deduplication_approach>
+TRUST YOUR AI CAPABILITIES - You have the full context to make smart decisions:
+• Analyze complete PNS data to understand specification relationships
+• Identify semantic duplicates that simple text matching would miss
+• Prioritize specifications based on business importance and frequency
+• Make nuanced decisions about what constitutes a "duplicate"
+• Use context to choose the best representation when duplicates exist
+
+NOTE: A manual safety net will catch any exact duplicates you miss, so focus on intelligent semantic analysis.
+</intelligent_deduplication_approach>
 
 <pns_base_data>
 {pns_data}
@@ -213,22 +241,25 @@ STEP 4 - ENFORCE 10-OPTION LIMIT:
 </strict_option_prioritization>
 
 <validation_rules>
-1. SELECT TOP 5 PNS SPECIFICATIONS:
+1. SELECT TOP 5 UNIQUE PNS SPECIFICATIONS:
    • Choose the 5 most frequent PNS specifications
-   • Use their exact names from PNS data
+   • ABSOLUTELY NO DUPLICATES - check each spec name before adding
+   • Use their exact names from PNS data (first occurrence only for duplicates)
 
-2. SEMANTIC MATCHING WITH CSV SOURCES:
+2. CONSERVATIVE SEMANTIC MATCHING WITH CSV SOURCES:
    • "Power" = "Motor Power" = "Power Rating" = "Power Output" = "KVA"
    • "Size" = "Grinding Size" = "Chamber Size" = "Dimensions"
    • "Material" = "Body Material" = "Construction Material"
    • "Capacity" = "Grinding Capacity" = "Output Capacity"
    • "Phase" = "Phase Configuration" = "Electrical Phase"
+   • CONSERVATIVE RULE: When in doubt, mark as "No" to avoid false positives
 
-3. SCORING SYSTEM - CRITICAL VALIDATION:
+3. ULTRA-STRICT SCORING SYSTEM:
    • Score = EXACT number of CSV sources where spec appears (0-4)
-   • For each CSV source, the spec must be semantically present to count as "Yes"
-   • Verify: Score must exactly equal count of "Yes" entries in that row
-   • Double-check semantic matching before marking "Yes"
+   • ONLY mark "Yes" if you can clearly find the specification in that CSV source
+   • CONSERVATIVE APPROACH: If uncertain, mark as "No" 
+   • Score must EXACTLY equal count of "Yes" entries in that row
+   • Triple-check each source before marking "Yes"
 
 4. RANKING:
    • Primary: Score (descending) - higher score = higher rank
@@ -254,7 +285,13 @@ CRITICAL REQUIREMENTS:
 3. Options: EXACTLY 10 comma-separated options following strict prioritization (common first, then PNS-only)
 4. CSV Columns: "Yes" if spec appears in that source, "No" if not
 5. Order by Score (descending), then by PNS frequency (descending)
-6. Show exactly 5 rows (top 5 PNS specs)
+6. Show EXACTLY 5 rows (top 5 UNIQUE PNS specs) - NO MORE, NO LESS
+
+DEDUPLICATION VALIDATION:
+• ZERO TOLERANCE for duplicate specifications in final output
+• Each of the 5 PNS specifications must have a DIFFERENT name
+• Check: Brand ≠ Brand, Color ≠ Color, Weight ≠ Weight, etc.
+• If you find duplicates, select only the first occurrence and find another unique spec
 
 OPTION SELECTION VALIDATION:
 • Count must be exactly 10 options per specification
@@ -263,16 +300,26 @@ OPTION SELECTION VALIDATION:
 • Use semantic matching to identify common options
 • No duplicates in final option list
 
-SCORING VALIDATION CHECKPOINT:
-• Before marking "Yes" for any CSV source, verify the PNS spec semantically matches content in that source
-• Score must equal the exact count of "Yes" entries in that row
-• If unsure about semantic match, mark as "No" to avoid false positives
+ULTRA-CONSERVATIVE SCORING:
+• ONLY mark "Yes" if you can clearly identify the PNS spec in that CSV source
+• When uncertain, ALWAYS mark as "No" (better false negative than false positive)
+• Score must EXACTLY equal the count of "Yes" entries in that row
+• If BLNI/rejection_comments data is not provided, mark as "No"
 
-CRITICAL INSTRUCTIONS:
-• If PNS has no specifications, respond with "PNS has no specifications"
-• Always show exactly 5 PNS specs (even if some have score 0)
+FINAL VALIDATION CHECKLIST:
+□ Exactly 5 rows in output table
+□ All 5 PNS specification names are different (no duplicates)
+□ Each row has exactly 10 options
+□ Score equals count of "Yes" entries for each row
+□ Conservative "Yes/No" decisions (when in doubt, choose "No")
+
+CRITICAL INSTRUCTIONS - HYBRID APPROACH:
+• Use your AI intelligence for semantic analysis and smart decisions
+• EXACTLY 5 unique PNS specs - leverage your contextual understanding
 • EXACTLY 10 options per specification - no more, no less
-• Score accuracy is critical - avoid false positives
+• Conservative scoring prevents false positives (better to mark "No" when uncertain)
+• Focus on quality over perfection - manual safety net will catch exact duplicates if needed
+• If PNS has no specifications, respond with "PNS has no specifications"
 </output_requirements>
 
 <example_output>
@@ -287,13 +334,15 @@ CRITICAL INSTRUCTIONS:
         
         return prompt
     
+
+    
     def _triangulate_with_validation(self, product_name: str, datasets: List[Dict], all_dataset_outputs: Dict) -> tuple:
         """Perform triangulation with 2-layer validation system"""
         processing_logs = []
         
-        # First attempt - main triangulation
-        logger.info("Layer 0: Starting main triangulation")
-        processing_logs.append("🔄 Starting main PNS triangulation")
+        # First attempt - main triangulation (LLM handles deduplication intelligently)
+        logger.info("Layer 0: Starting main triangulation with full context")
+        processing_logs.append("🔄 Starting main PNS triangulation (LLM intelligence first)")
         
         prompt = self._build_triangulation_prompt(product_name, datasets, all_dataset_outputs)
         response = self.llm.invoke([HumanMessage(content=prompt)])
@@ -397,31 +446,41 @@ You are a triangulation validation expert. Your job is to identify gaps and issu
 Validate this triangulation result for {product_name} and identify ALL issues that need correction.
 </task>
 
-<validation_checklist>
-Check for these specific issues:
+        <validation_checklist>
+Check for these CRITICAL issues:
 
-1. OPTIONS COUNT VALIDATION:
+1. SPECIFICATION COUNT VALIDATION:
+   • EXACTLY 5 specifications must be present - no more, no less
+   • Flag if count ≠ 5 specifications
+
+2. DUPLICATE SPECIFICATIONS VALIDATION:
+   • ZERO TOLERANCE for duplicate specification names
+   • Check for exact duplicates: "Brand" & "Brand", "Color" & "Color"
+   • Check for case variations: "brand" & "Brand" 
+   • Flag ANY duplicate specification names found
+
+3. OPTIONS COUNT VALIDATION:
    • Each specification must have EXACTLY 10 options
    • Count the comma-separated options in each row
    • Flag any row with ≠ 10 options
 
-2. OPTIONS PRIORITIZATION VALIDATION:
+4. ULTRA-STRICT SCORING ACCURACY VALIDATION:
+   • Score must EXACTLY equal the count of "Yes" entries in that row
+   • Check each CSV source column against actual source data
+   • Flag false positives: "Yes" marked but spec not found in source
+   • Flag score mismatches: Score=2 but shows 3 "Yes" entries
+
+5. CONSERVATIVE SEMANTIC MATCHING VALIDATION:
+   • Only "Yes" if specification clearly appears in that CSV source
+   • Flag suspicious "Yes" decisions where spec presence is unclear
+   • Check for false positives in sources that weren't provided (e.g., BLNI data)
+
+6. OPTIONS PRIORITIZATION VALIDATION:
    • Common options (appearing in both PNS and CSV) should be listed first
    • PNS-only options should fill remaining slots
    • Verify semantic matching was used correctly
 
-3. SCORING ACCURACY VALIDATION:
-   • Score must equal the exact count of "Yes" entries in that row
-   • Check each CSV source column against source data
-   • Verify semantic matching decisions for each "Yes/No"
-
-4. SEMANTIC MATCHING VALIDATION:
-   • Verify "Yes" decisions are justified by actual presence in CSV sources
-   • Check for false positives (marking "Yes" when spec not actually present)
-   • Ensure similar specs are properly matched (e.g., "Power" = "KVA" = "Power Rating")
-
-5. DATA CONSISTENCY VALIDATION:
-   • All 5 PNS specs should be represented
+7. DATA CONSISTENCY VALIDATION:
    • Proper ranking by score (descending) then frequency
    • No missing or corrupted data fields
 </validation_checklist>
@@ -432,15 +491,33 @@ Check for these specific issues:
 
 {table_summary}
 
-<validation_instructions>
-For each specification in the result, check:
+        <validation_instructions>
+Perform these MANDATORY checks in order:
 
-1. Count options in the Options column (must be exactly 10)
-2. Verify score matches the count of "Yes" entries
-3. For each "Yes" entry, confirm the PNS spec actually appears in that CSV source using semantic matching
-4. Check if options are properly prioritized (common first, then PNS-only)
+STEP 1 - COUNT VALIDATION:
+• Count total specifications (must be exactly 5)
+• Count options in each row (must be exactly 10 per spec)
 
-Provide specific feedback for each issue found.
+STEP 2 - DUPLICATE DETECTION:
+• List all PNS specification names
+• Check for exact matches and case variations
+• Flag any duplicates found
+
+STEP 3 - SCORING ACCURACY CHECK:
+• For each row, count "Yes" entries across all CSV columns
+• Verify count matches the Score value exactly
+• Flag any mismatches
+
+STEP 4 - FALSE POSITIVE DETECTION:
+• For each "Yes" entry, verify the PNS spec actually appears in that specific CSV source
+• Be extra careful with sources that may not have been provided
+• Flag suspicious "Yes" decisions
+
+STEP 5 - OPTIONS PRIORITIZATION:
+• Check if common options appear first, then PNS-only options
+• Verify semantic matching was used correctly
+
+Provide specific, actionable feedback for each issue found.
 </validation_instructions>
 
 <output_format>
@@ -453,8 +530,11 @@ If no issues: "No issues found - validation passed"
 If issues found: List each issue with specific details
 
 Example issues:
-- "Power Rating: Only 8 options provided, need exactly 10"
-- "Material: Score is 3 but shows Yes/Yes/Yes/Yes (4 sources) - score mismatch"
+- "CRITICAL: Found 7 specifications instead of exactly 5"
+- "CRITICAL: Duplicate specifications found - 'Brand' appears in rows 1 and 2"
+- "Color: Only 8 options provided, need exactly 10"
+- "Brand: Score is 0 but shows Yes/Yes/Yes (3 sources) - major score mismatch"
+- "Weight: Marked Yes for rejection_comments but no BLNI data was provided"
 - "Size: Marked Yes for lms_chats but 'Size' not found in lms_chats data"
 - "Phase: Options not prioritized correctly - PNS-only options appear before common options"
 </output_format>
@@ -558,30 +638,41 @@ You MUST address each issue above in your corrected response.
 </first_attempt_with_issues>
 
 <correction_guidelines>
-Based on the validation feedback, apply these corrections:
+Based on the validation feedback, apply these CRITICAL corrections:
 
-1. OPTIONS COUNT CORRECTION:
+1. SPECIFICATION COUNT CORRECTION:
+   • Show EXACTLY 5 specifications - no more, no less
+   • If you have more than 5, select top 5 by frequency
+   • If you have fewer than 5, add more from PNS data
+
+2. DUPLICATE ELIMINATION CORRECTION:
+   • ABSOLUTELY NO duplicate specification names
+   • Check for: "Brand" & "Brand", "Color" & "Color", etc.
+   • If duplicates found, keep only the first occurrence and replace with different spec
+   • Ensure all 5 specs have DIFFERENT names
+
+3. OPTIONS COUNT CORRECTION:
    • Ensure EXACTLY 10 options per specification
    • Count carefully and adjust as needed
 
-2. OPTIONS PRIORITIZATION CORRECTION:
+4. ULTRA-CONSERVATIVE SCORING CORRECTION:
+   • Score MUST equal exact count of "Yes" entries in that row
+   • ONLY mark "Yes" if you can clearly find the spec in that CSV source
+   • When uncertain, ALWAYS mark "No" (avoid false positives)
+   • If BLNI/rejection_comments data wasn't provided, mark as "No"
+
+5. OPTIONS PRIORITIZATION CORRECTION:
    • First: Options that appear in BOTH PNS and at least one CSV source (common options)
    • Then: PNS-only options to fill remaining slots
    • Use semantic matching: "5KVA" = "5 KVA", "Steel" = "steel"
 
-3. SCORING ACCURACY CORRECTION:
-   • Score MUST equal exact count of "Yes" entries in that row
-   • Double-check each CSV source for semantic presence
-   • Be conservative - mark "No" if uncertain
-
-4. SEMANTIC MATCHING CORRECTION:
+6. SEMANTIC MATCHING CORRECTION:
    • Only mark "Yes" if the PNS spec semantically appears in the CSV source
    • Examples: "Power" matches "KVA", "Motor Power", "Power Rating"
-   • Avoid false positives - verify actual presence
+   • Be extra conservative - verify actual presence
 
-5. DATA CONSISTENCY CORRECTION:
+7. DATA CONSISTENCY CORRECTION:
    • Maintain proper ranking by score (descending)
-   • Include exactly 5 PNS specifications
    • Ensure all data fields are complete
 </correction_guidelines>
 
@@ -592,16 +683,20 @@ Create the CORRECTED PNS validation table with EXACTLY this format:
 
 CORRECTION REQUIREMENTS:
 • Address ALL validation issues from Layer 1
+• EXACTLY 5 unique specifications (no more, no less)
+• ZERO duplicate specification names
 • EXACTLY 10 options per specification (count carefully)
 • Score = exact count of "Yes" entries in that row
-• Use semantic matching but avoid false positives
+• Ultra-conservative "Yes/No" decisions (when unsure, choose "No")
 • Prioritize common options first, then PNS-only options
-• Show exactly 5 rows (top 5 PNS specs)
 
-VERIFICATION CHECKLIST:
+MANDATORY VERIFICATION CHECKLIST:
+□ Exactly 5 rows in the table
+□ All 5 PNS specification names are DIFFERENT (no duplicates)
 □ Each spec has exactly 10 comma-separated options
 □ Score equals count of "Yes" entries in same row
-□ Each "Yes" is justified by semantic presence in CSV source
+□ Each "Yes" is justified by clear presence in CSV source
+□ Conservative approach used (false negatives better than false positives)
 □ Options are prioritized correctly (common first, then PNS-only)
 □ All validation issues from Layer 1 are addressed
 </output_requirements>
@@ -688,12 +783,44 @@ CRITICAL: This is your corrected attempt. Address every validation issue identif
                         logger.info(f"Successfully added PNS validation row {rank-1}: {parts[1]} with score: {parts[0]} and options: {parts[2]}")
             
             # Debug log
-            logger.info(f"Successfully parsed {len(table_data)} PNS validation table rows")
+            logger.info(f"Successfully parsed {len(table_data)} PNS validation table rows from LLM")
             
-            # Sort by score (descending) - higher score gets priority, already done by LLM but ensure it
+            # SAFETY NET: Manual post-processing validation (hybrid approach)
             if table_data:
+                logger.info("🛡️  SAFETY NET: Applying manual post-processing validation")
+                
+                # Safety Net 1: Remove duplicates based on PNS specification name (case-insensitive)
+                original_count = len(table_data)
+                seen_specs = set()
+                deduplicated_data = []
+                
+                for item in table_data:
+                    spec_name = item['PNS'].strip().lower()
+                    if spec_name not in seen_specs:
+                        seen_specs.add(spec_name)
+                        deduplicated_data.append(item)
+                        logger.info(f"✅ Safety net: Keeping unique spec '{item['PNS']}'")
+                    else:
+                        logger.warning(f"🚨 Safety net: LLM failed - removing duplicate spec '{item['PNS']}'")
+                
+                table_data = deduplicated_data
+                
+                if len(table_data) < original_count:
+                    logger.warning(f"🚨 Safety net activated: Removed {original_count - len(table_data)} duplicate specs that LLM missed")
+                else:
+                    logger.info("✅ Safety net: No duplicates detected - LLM handled deduplication correctly")
+                
                 # Sort by score value (descending)
                 table_data.sort(key=lambda x: x.get('_score_value', 0), reverse=True)
+                
+                # Safety Net 2: Enforce exactly 5 specifications limit
+                if len(table_data) > 5:
+                    logger.warning(f"🚨 Safety net activated: LLM returned {len(table_data)} specs, truncating to 5")
+                    table_data = table_data[:5]
+                elif len(table_data) < 5:
+                    logger.warning(f"⚠️  Safety net: Only {len(table_data)} unique specs available (less than target of 5)")
+                else:
+                    logger.info("✅ Safety net: Exactly 5 specifications - LLM followed instructions correctly")
                 
                 # Update ranks and remove the temporary sorting field
                 for new_rank, item in enumerate(table_data, 1):
@@ -702,7 +829,7 @@ CRITICAL: This is your corrected attempt. Address every validation issue identif
                         del item['_score_value']
                     logger.info(f"PNS Rank {new_rank}: '{item['PNS']}' (Score: {item['Score']})")
                 
-                logger.info(f"PNS validation prioritization completed - {len(table_data)} specs ordered by score")
+                logger.info(f"🎯 Hybrid approach completed: {len(table_data)} unique specs (LLM intelligence + manual safety net)")
             
             return table_data
             
