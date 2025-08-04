@@ -193,9 +193,11 @@ PRIMARY RESPONSIBILITY: Use your AI intelligence to analyze the full PNS context
    • Prioritize common options first, then PNS-only options
    • Use semantic intelligence to identify truly common options
 
-4. ACCURATE SCORING: Score based on actual CSV source presence (0-4)
-   • Score must exactly equal count of "Yes" entries in each row
-   • Be conservative - when in doubt about presence, mark "No"
+4. ULTRA-PRECISE SCORING: Score MUST equal exact count of "Yes" entries
+   • CRITICAL: Score = Count of "Yes" in (search_keywords + whatsapp_specs + rejection_comments + lms_chats)
+   • Examples: 2 "Yes" = Score 2, 1 "Yes" = Score 1, 0 "Yes" = Score 0
+   • NO EXCEPTIONS: Score must match "Yes" count exactly
+   • When uncertain about presence, ALWAYS mark "No" (conservative approach)
 
 5. QUALITY ASSURANCE: Final verification before output
    • Ensure all 5 specifications have different names
@@ -310,14 +312,17 @@ FINAL VALIDATION CHECKLIST:
 □ Exactly 5 rows in output table
 □ All 5 PNS specification names are different (no duplicates)
 □ Each row has exactly 10 options
-□ Score equals count of "Yes" entries for each row
+□ ULTRA-STRICT SCORING: Score MUST equal exact count of "Yes" entries in that row
+□ Examples: 2 "Yes" = Score 2, 1 "Yes" = Score 1, 0 "Yes" = Score 0
 □ Conservative "Yes/No" decisions (when in doubt, choose "No")
 
 CRITICAL INSTRUCTIONS - HYBRID APPROACH:
 • Use your AI intelligence for semantic analysis and smart decisions
 • EXACTLY 5 unique PNS specs - leverage your contextual understanding
 • EXACTLY 10 options per specification - no more, no less
-• Conservative scoring prevents false positives (better to mark "No" when uncertain)
+• ULTRA-STRICT SCORING: Score MUST equal exact count of "Yes" entries in that row
+• Examples: 2 "Yes" entries = Score 2, 1 "Yes" entry = Score 1, 0 "Yes" entries = Score 0
+• Conservative approach: When uncertain about presence, ALWAYS mark "No"
 • Focus on quality over perfection - manual safety net will catch exact duplicates if needed
 • If PNS has no specifications, respond with "PNS has no specifications"
 </output_requirements>
@@ -325,6 +330,9 @@ CRITICAL INSTRUCTIONS - HYBRID APPROACH:
 <example_output>
 | Score | PNS | Options | search_keywords | whatsapp_specs | rejection_comments | lms_chats |
 | 4 | Power Rating | 5KVA, 10KVA, 15KVA, 20KVA, 25KVA, 30KVA, 7.5KVA, 12.5KVA, 1KVA, 2KVA | Yes | Yes | Yes | Yes |
+| 2 | Brand | Chand Tara, Meenakshi, Cat, Shivani, Tiger, Jeevan, Cycle, Kangaroo, Chandni, Eagle | Yes | No | No | Yes |
+| 1 | Weight | 2kg, 3kg, 5kg, 10kg, 15kg, 20kg, 25kg, 30kg, 35kg, 40kg | No | Yes | No | No |
+| 0 | Color | White, Red, Black, Golden, Green, Brown, Yellow, Blue, Pink, Orange | No | No | No | No |
 | 3 | Material | Steel, Aluminum, Cast Iron, Carbon Steel, Stainless Steel, Mild Steel, Iron, Copper, Brass, Bronze | Yes | Yes | No | Yes |
 | 2 | Size | 10mm, 15mm, 20mm, 25mm, 30mm, 12mm, 18mm, 22mm, 8mm, 35mm | No | Yes | Yes | No |
 | 1 | Phase | Single Phase, Three Phase, DC, AC, 1-Phase, 3-Phase, Mono Phase, Poly Phase, Two Phase, Multi Phase | Yes | No | No | No |
@@ -465,10 +473,12 @@ Check for these CRITICAL issues:
    • Flag any row with ≠ 10 options
 
 4. ULTRA-STRICT SCORING ACCURACY VALIDATION:
-   • Score must EXACTLY equal the count of "Yes" entries in that row
+   • CRITICAL: Score MUST equal exact count of "Yes" entries in that row
+   • Count "Yes" in: search_keywords + whatsapp_specs + rejection_comments + lms_chats
+   • Examples: 2 "Yes" entries = Score 2, 1 "Yes" entry = Score 1, 0 "Yes" entries = Score 0
+   • Flag ANY score mismatch: Score=3 but only 2 "Yes" entries = ERROR
    • Check each CSV source column against actual source data
    • Flag false positives: "Yes" marked but spec not found in source
-   • Flag score mismatches: Score=2 but shows 3 "Yes" entries
 
 5. CONSERVATIVE SEMANTIC MATCHING VALIDATION:
    • Only "Yes" if specification clearly appears in that CSV source
@@ -656,7 +666,9 @@ Based on the validation feedback, apply these CRITICAL corrections:
    • Count carefully and adjust as needed
 
 4. ULTRA-CONSERVATIVE SCORING CORRECTION:
-   • Score MUST equal exact count of "Yes" entries in that row
+   • CRITICAL: Score MUST equal exact count of "Yes" entries in that row
+   • Count "Yes" in: search_keywords + whatsapp_specs + rejection_comments + lms_chats
+   • Examples: 2 "Yes" entries = Score 2, 1 "Yes" entry = Score 1, 0 "Yes" entries = Score 0
    • ONLY mark "Yes" if you can clearly find the spec in that CSV source
    • When uncertain, ALWAYS mark "No" (avoid false positives)
    • If BLNI/rejection_comments data wasn't provided, mark as "No"
@@ -821,6 +833,39 @@ CRITICAL: This is your corrected attempt. Address every validation issue identif
                     logger.warning(f"⚠️  Safety net: Only {len(table_data)} unique specs available (less than target of 5)")
                 else:
                     logger.info("✅ Safety net: Exactly 5 specifications - LLM followed instructions correctly")
+                
+                # Safety Net 3: Validate scoring accuracy
+                logger.info("🛡️  SAFETY NET: Validating scoring accuracy")
+                scoring_errors = []
+                
+                for item in table_data:
+                    # Count actual "Yes" entries
+                    yes_count = sum([
+                        1 if item.get('search_keywords', '').strip().lower() == 'yes' else 0,
+                        1 if item.get('whatsapp_specs', '').strip().lower() == 'yes' else 0,
+                        1 if item.get('rejection_comments', '').strip().lower() == 'yes' else 0,
+                        1 if item.get('lms_chats', '').strip().lower() == 'yes' else 0
+                    ])
+                    
+                    # Parse expected score
+                    try:
+                        expected_score = int(item.get('Score', '0'))
+                    except (ValueError, TypeError):
+                        expected_score = 0
+                    
+                    # Check for mismatch
+                    if expected_score != yes_count:
+                        scoring_errors.append(f"'{item['PNS']}': Score={expected_score} but {yes_count} 'Yes' entries")
+                        logger.warning(f"🚨 Safety net: Scoring error for '{item['PNS']}' - Score={expected_score}, Yes count={yes_count}")
+                    else:
+                        logger.info(f"✅ Safety net: Correct scoring for '{item['PNS']}' - Score={expected_score}, Yes count={yes_count}")
+                
+                if scoring_errors:
+                    logger.warning(f"🚨 Safety net activated: Found {len(scoring_errors)} scoring errors")
+                    for error in scoring_errors:
+                        logger.warning(f"   - {error}")
+                else:
+                    logger.info("✅ Safety net: All scoring is accurate - LLM handled scoring correctly")
                 
                 # Update ranks and remove the temporary sorting field
                 for new_rank, item in enumerate(table_data, 1):
