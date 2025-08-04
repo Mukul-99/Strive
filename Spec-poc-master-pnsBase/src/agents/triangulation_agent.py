@@ -78,7 +78,7 @@ class TriangulationAgent:
         )
     
     def triangulate_results(self, state: SpecExtractionState) -> SpecExtractionState:
-        """Run PNS-centric validation against CSV sources"""
+        """Run PNS-centric validation against CSV sources with validation layer"""
         start_time = time.time()
         
         try:
@@ -103,6 +103,7 @@ class TriangulationAgent:
                         'Rank': 1,
                         'Score': 'N/A',
                         'PNS': 'No PNS Specifications',
+                        'Options': 'N/A',
                         'search_keywords': 'N/A',
                         'whatsapp_specs': 'N/A',
                         'rejection_comments': 'N/A',
@@ -127,32 +128,17 @@ class TriangulationAgent:
                 datasets.append(dataset_info)
                 all_dataset_outputs[source] = result["extracted_specs"]
             
-            # Build PNS validation prompt
-            prompt = self._build_triangulation_prompt(
+            # Execute triangulation with validation layer
+            triangulated_result, triangulated_table, processing_logs = self._triangulate_with_validation(
                 product_name=state["product_name"],
                 datasets=datasets,
                 all_dataset_outputs=all_dataset_outputs
             )
             
-            logger.info(f"Sending PNS validation request for {len(datasets)} datasets")
-            
-            # Call LLM for PNS validation
-            response = self.llm.invoke([HumanMessage(content=prompt)])
-            triangulated_result = response.content
-            
-            # Debug: Log the raw LLM output
-            logger.info(f"Raw LLM PNS validation output: {triangulated_result}")
-            
-            # Parse the PNS validation result into table format for export
-            triangulated_table = self._parse_triangulation_result(triangulated_result)
-            
-            # Debug: Log the parsed table
-            logger.info(f"Parsed PNS validation table: {triangulated_table}")
-            
             # Calculate processing time
             processing_time = time.time() - start_time
             
-            logger.info(f"PNS validation completed in {processing_time:.2f}s")
+            logger.info(f"PNS validation with validation layer completed in {processing_time:.2f}s")
             
             # Return only the keys this function should update
             return {
@@ -160,7 +146,7 @@ class TriangulationAgent:
                 "triangulated_table": triangulated_table,
                 "current_step": "completed",
                 "progress_percentage": 100,
-                "logs": [f"PNS validation completed successfully in {processing_time:.2f}s"]
+                "logs": processing_logs + [f"PNS validation completed successfully in {processing_time:.2f}s"]
             }
             
         except Exception as e:
@@ -174,7 +160,7 @@ class TriangulationAgent:
             }
     
     def _build_triangulation_prompt(self, product_name: str, datasets: List[Dict], all_dataset_outputs: Dict) -> str:
-        """Build PNS-centric validation prompt"""
+        """Build PNS-centric validation prompt with strict 10-option limit"""
         
         # Extract PNS data and CSV sources
         pns_data = all_dataset_outputs.get("pns_data", "")
@@ -186,16 +172,16 @@ class TriangulationAgent:
         for source, data in csv_sources.items():
             csv_data_section += f"\n--- {source.upper()} ---\n{data}\n"
         
-        # PNS-centric validation prompt with options aggregation
+        # Enhanced PNS-centric validation prompt with strict 10-option limit
         prompt = f"""<role>
-You are a PNS validation specialist. Your task is to take PNS specifications as the base and validate them against CSV data sources for {product_name}, while aggregating all unique options from all sources.
+You are a PNS validation specialist. Your task is to take PNS specifications as the base and validate them against CSV data sources for {product_name}, while aggregating exactly 10 options per specification using a strict prioritization system.
 </role>
 
 <task>
 1. Extract the TOP 5 PNS specifications by frequency from the PNS data
 2. For each PNS spec, check if it appears in each of the 4 CSV sources using semantic matching
-3. Aggregate ALL unique options from PNS and matching CSV sources for each spec
-4. Create a validation table showing presence/absence in each CSV source with aggregated options
+3. For each spec, aggregate EXACTLY 10 options using the strict option prioritization rules
+4. Create a validation table showing presence/absence in each CSV source with exactly 10 options per spec
 5. Score each PNS spec based on how many CSV sources contain it (0-4)
 </task>
 
@@ -204,6 +190,27 @@ You are a PNS validation specialist. Your task is to take PNS specifications as 
 </pns_base_data>
 
 {csv_data_section}
+
+<strict_option_prioritization>
+For each PNS specification, follow this EXACT prioritization process:
+
+STEP 1 - IDENTIFY COMMON OPTIONS:
+• Find options that appear in BOTH PNS data AND at least one CSV source (use semantic matching)
+• Examples of semantic matching: "5KVA" = "5 KVA" = "5.0KVA", "Steel" = "steel", "Single Phase" = "1-phase"
+
+STEP 2 - PRIORITIZE COMMON OPTIONS FIRST:
+• If 10 or more common options exist → Take first 10 common options ONLY
+• If fewer than 10 common options → Take ALL common options, then fill remaining slots with PNS-only options
+
+STEP 3 - FILL WITH PNS-ONLY OPTIONS:
+• Add PNS-only options (those that don't appear in any CSV source) to reach exactly 10 total options
+• Select PNS-only options by frequency order (highest frequency first)
+
+STEP 4 - ENFORCE 10-OPTION LIMIT:
+• ALWAYS show exactly 10 options per specification
+• If combined common + PNS-only options exceed 10 → Truncate to exactly 10
+• If total available options < 10 → Show all available options, but note this should be rare
+</strict_option_prioritization>
 
 <validation_rules>
 1. SELECT TOP 5 PNS SPECIFICATIONS:
@@ -217,21 +224,13 @@ You are a PNS validation specialist. Your task is to take PNS specifications as 
    • "Capacity" = "Grinding Capacity" = "Output Capacity"
    • "Phase" = "Phase Configuration" = "Electrical Phase"
 
-3. OPTIONS AGGREGATION RULES:
-   • For each PNS spec, find ALL matching CSV specs using semantic matching
-   • Collect ALL options from PNS spec AND all matching CSV specs
-   • Use AI intelligence to identify and merge similar options (e.g., "5KVA" = "5 KVA" = "5.0KVA")
-   • Prioritize PNS options first, then add unique CSV options
-   • Create comma-separated list of all unique options
-   • If PNS spec has no matching CSV specs, still show PNS options
-   • If PNS spec has matching CSV specs but no common options, show all options from both sources
+3. SCORING SYSTEM - CRITICAL VALIDATION:
+   • Score = EXACT number of CSV sources where spec appears (0-4)
+   • For each CSV source, the spec must be semantically present to count as "Yes"
+   • Verify: Score must exactly equal count of "Yes" entries in that row
+   • Double-check semantic matching before marking "Yes"
 
-4. SCORING SYSTEM:
-   • Score = Number of CSV sources where spec appears (0-4)
-   • Search each CSV source for semantic matches
-   • Any frequency/mention counts as presence
-
-5. RANKING:
+4. RANKING:
    • Primary: Score (descending) - higher score = higher rank
    • Secondary: PNS frequency (descending)
 </validation_rules>
@@ -249,39 +248,365 @@ Create a PNS validation table with EXACTLY this format:
 
 | Score | PNS | Options | search_keywords | whatsapp_specs | rejection_comments | lms_chats |
 
-Requirements:
+CRITICAL REQUIREMENTS:
 1. Score: Number (0-4) indicating how many CSV sources contain this PNS spec
 2. PNS: PNS specification name only (no options or frequency data)
-3. Options: Comma-separated list of ALL unique options from PNS and matching CSV sources
+3. Options: EXACTLY 10 comma-separated options following strict prioritization (common first, then PNS-only)
 4. CSV Columns: "Yes" if spec appears in that source, "No" if not
 5. Order by Score (descending), then by PNS frequency (descending)
 6. Show exactly 5 rows (top 5 PNS specs)
 
-OPTIONS AGGREGATION INSTRUCTIONS:
-• For each PNS spec, identify all semantically matching CSV specs
-• Collect ALL options from PNS spec AND all matching CSV specs
-• Use AI to identify and merge similar options (e.g., "5KVA" = "5 KVA")
-• Prioritize PNS options first, then add unique CSV options
-• Create comma-separated list without duplicates
-• Handle edge cases: no matching CSV specs (show PNS only), no common options (show all)
+OPTION SELECTION VALIDATION:
+• Count must be exactly 10 options per specification
+• Common options (PNS + CSV) must appear first
+• PNS-only options fill remaining slots
+• Use semantic matching to identify common options
+• No duplicates in final option list
+
+SCORING VALIDATION CHECKPOINT:
+• Before marking "Yes" for any CSV source, verify the PNS spec semantically matches content in that source
+• Score must equal the exact count of "Yes" entries in that row
+• If unsure about semantic match, mark as "No" to avoid false positives
 
 CRITICAL INSTRUCTIONS:
 • If PNS has no specifications, respond with "PNS has no specifications"
 • Always show exactly 5 PNS specs (even if some have score 0)
-• Use semantic matching to determine Yes/No for each CSV source
-• Score must equal the number of "Yes" entries in that row
-• Options column must contain ALL unique options from all sources
+• EXACTLY 10 options per specification - no more, no less
+• Score accuracy is critical - avoid false positives
 </output_requirements>
 
 <example_output>
 | Score | PNS | Options | search_keywords | whatsapp_specs | rejection_comments | lms_chats |
-| 4 | Power Rating | 5KVA, 10KVA, 15KVA, 20KVA | Yes | Yes | Yes | Yes |
-| 3 | Material | Steel, Aluminum, Cast Iron, Carbon Steel | Yes | Yes | No | Yes |
-| 2 | Size | 10mm, 15mm, 20mm, 25mm | No | Yes | Yes | No |
-| 1 | Phase | Single Phase, Three Phase | Yes | No | No | No |
-| 0 | Capacity | 100kg/hr, 200kg/hr, 300kg/hr | No | No | No | No |
+| 4 | Power Rating | 5KVA, 10KVA, 15KVA, 20KVA, 25KVA, 30KVA, 7.5KVA, 12.5KVA, 1KVA, 2KVA | Yes | Yes | Yes | Yes |
+| 3 | Material | Steel, Aluminum, Cast Iron, Carbon Steel, Stainless Steel, Mild Steel, Iron, Copper, Brass, Bronze | Yes | Yes | No | Yes |
+| 2 | Size | 10mm, 15mm, 20mm, 25mm, 30mm, 12mm, 18mm, 22mm, 8mm, 35mm | No | Yes | Yes | No |
+| 1 | Phase | Single Phase, Three Phase, DC, AC, 1-Phase, 3-Phase, Mono Phase, Poly Phase, Two Phase, Multi Phase | Yes | No | No | No |
+| 0 | Capacity | 100kg/hr, 200kg/hr, 300kg/hr, 150kg/hr, 250kg/hr, 50kg/hr, 400kg/hr, 500kg/hr, 75kg/hr, 125kg/hr | No | No | No | No |
 </example_output>
 """
+        
+        return prompt
+    
+    def _triangulate_with_validation(self, product_name: str, datasets: List[Dict], all_dataset_outputs: Dict) -> tuple:
+        """Perform triangulation with 2-layer validation system"""
+        processing_logs = []
+        
+        # First attempt - main triangulation
+        logger.info("Layer 0: Starting main triangulation")
+        processing_logs.append("🔄 Starting main PNS triangulation")
+        
+        prompt = self._build_triangulation_prompt(product_name, datasets, all_dataset_outputs)
+        response = self.llm.invoke([HumanMessage(content=prompt)])
+        triangulated_result = response.content
+        triangulated_table = self._parse_triangulation_result(triangulated_result)
+        
+        logger.info(f"Main triangulation completed. Parsed {len(triangulated_table)} specs")
+        
+        # Layer 1: Gap identification (always runs)
+        logger.info("Layer 1: Starting gap identification validation")
+        processing_logs.append("🔍 Layer 1: Validating triangulation results")
+        
+        validation_result = self._validate_triangulation_result(
+            triangulated_result, triangulated_table, product_name, all_dataset_outputs
+        )
+        
+        logger.info(f"Validation result: Valid={validation_result['is_valid']}, Issues={len(validation_result['issues'])}")
+        
+        if validation_result["is_valid"]:
+            logger.info("Validation passed - using main triangulation result")
+            processing_logs.append("✅ Layer 1: Validation passed - no issues found")
+            return triangulated_result, triangulated_table, processing_logs
+        
+        # Layer 2: Correction with feedback (runs only if issues found)
+        logger.info(f"Validation failed with {len(validation_result['issues'])} issues. Starting Layer 2 correction")
+        processing_logs.append(f"⚠️  Layer 1: Found {len(validation_result['issues'])} issues. Starting Layer 2 correction")
+        
+        for issue in validation_result['issues']:
+            logger.info(f"Validation issue: {issue}")
+        
+        retry_prompt = self._build_retry_prompt(
+            product_name, datasets, all_dataset_outputs, 
+            first_attempt=triangulated_result,
+            validation_issues=validation_result['issues']
+        )
+        
+        try:
+            logger.info("Layer 2: Sending correction request to LLM")
+            retry_response = self.llm.invoke([HumanMessage(content=retry_prompt)])
+            retry_result = retry_response.content
+            retry_table = self._parse_triangulation_result(retry_result)
+            
+            logger.info(f"Layer 2: Correction completed with {len(retry_table)} specs")
+            processing_logs.append("🔧 Layer 2: Correction completed - using improved result")
+            
+            return retry_result, retry_table, processing_logs
+            
+        except Exception as e:
+            logger.error(f"Layer 2 correction failed: {str(e)}")
+            processing_logs.append(f"❌ Layer 2: Correction failed ({str(e)}) - using original result")
+            
+            # Fallback to original result
+            return triangulated_result, triangulated_table, processing_logs
+    
+    def _validate_triangulation_result(self, result: str, table: List[Dict], product_name: str, all_dataset_outputs: Dict) -> Dict[str, Any]:
+        """Layer 1: Gap identification - validate triangulation result for issues"""
+        
+        try:
+            logger.info("Building validation prompt for gap identification")
+            validation_prompt = self._build_validation_prompt(result, table, product_name, all_dataset_outputs)
+            
+            logger.info("Sending validation request to LLM")
+            response = self.llm.invoke([HumanMessage(content=validation_prompt)])
+            validation_response = response.content
+            
+            logger.info("Parsing validation response")
+            return self._parse_validation_response(validation_response)
+            
+        except Exception as e:
+            logger.error(f"Validation layer failed: {str(e)}")
+            return {
+                "is_valid": False,
+                "issues": [f"Validation system error: {str(e)}"],
+                "summary": f"Validation failed due to error: {str(e)}"
+            }
+    
+    def _build_validation_prompt(self, result: str, table: List[Dict], product_name: str, all_dataset_outputs: Dict) -> str:
+        """Build validation prompt for gap identification"""
+        
+        # Extract CSV sources data for validation reference
+        csv_sources = {k: v for k, v in all_dataset_outputs.items() if k != "pns_data"}
+        pns_data = all_dataset_outputs.get("pns_data", "")
+        
+        # Build source data section for reference
+        source_data_section = f"\n=== PNS DATA ===\n{pns_data}\n"
+        for source, data in csv_sources.items():
+            source_data_section += f"\n=== {source.upper()} DATA ===\n{data}\n"
+        
+        # Build table summary for validation
+        table_summary = "\n=== TRIANGULATION RESULT TO VALIDATE ===\n"
+        table_summary += "Current table:\n"
+        for row in table:
+            options_count = len(row.get('Options', '').split(',')) if row.get('Options', '') else 0
+            table_summary += f"Spec: {row.get('PNS', 'N/A')}, Score: {row.get('Score', 'N/A')}, Options: {options_count}, CSV Sources: {row.get('search_keywords', 'N/A')}/{row.get('whatsapp_specs', 'N/A')}/{row.get('rejection_comments', 'N/A')}/{row.get('lms_chats', 'N/A')}\n"
+        
+        prompt = f"""<role>
+You are a triangulation validation expert. Your job is to identify gaps and issues in PNS triangulation results to ensure accuracy and compliance with requirements.
+</role>
+
+<task>
+Validate this triangulation result for {product_name} and identify ALL issues that need correction.
+</task>
+
+<validation_checklist>
+Check for these specific issues:
+
+1. OPTIONS COUNT VALIDATION:
+   • Each specification must have EXACTLY 10 options
+   • Count the comma-separated options in each row
+   • Flag any row with ≠ 10 options
+
+2. OPTIONS PRIORITIZATION VALIDATION:
+   • Common options (appearing in both PNS and CSV) should be listed first
+   • PNS-only options should fill remaining slots
+   • Verify semantic matching was used correctly
+
+3. SCORING ACCURACY VALIDATION:
+   • Score must equal the exact count of "Yes" entries in that row
+   • Check each CSV source column against source data
+   • Verify semantic matching decisions for each "Yes/No"
+
+4. SEMANTIC MATCHING VALIDATION:
+   • Verify "Yes" decisions are justified by actual presence in CSV sources
+   • Check for false positives (marking "Yes" when spec not actually present)
+   • Ensure similar specs are properly matched (e.g., "Power" = "KVA" = "Power Rating")
+
+5. DATA CONSISTENCY VALIDATION:
+   • All 5 PNS specs should be represented
+   • Proper ranking by score (descending) then frequency
+   • No missing or corrupted data fields
+</validation_checklist>
+
+<source_data_for_reference>
+{source_data_section}
+</source_data_for_reference>
+
+{table_summary}
+
+<validation_instructions>
+For each specification in the result, check:
+
+1. Count options in the Options column (must be exactly 10)
+2. Verify score matches the count of "Yes" entries
+3. For each "Yes" entry, confirm the PNS spec actually appears in that CSV source using semantic matching
+4. Check if options are properly prioritized (common first, then PNS-only)
+
+Provide specific feedback for each issue found.
+</validation_instructions>
+
+<output_format>
+VALIDATION_RESULT: PASS/FAIL
+
+ISSUES_FOUND:
+[List each specific issue with spec name and problem description]
+
+If no issues: "No issues found - validation passed"
+If issues found: List each issue with specific details
+
+Example issues:
+- "Power Rating: Only 8 options provided, need exactly 10"
+- "Material: Score is 3 but shows Yes/Yes/Yes/Yes (4 sources) - score mismatch"
+- "Size: Marked Yes for lms_chats but 'Size' not found in lms_chats data"
+- "Phase: Options not prioritized correctly - PNS-only options appear before common options"
+</output_format>
+
+CRITICAL: Be thorough and specific. Identify ALL issues to ensure accurate correction in Layer 2."""
+        
+        return prompt
+    
+    def _parse_validation_response(self, validation_response: str) -> Dict[str, Any]:
+        """Parse validation response to extract issues"""
+        try:
+            # Check if validation passed
+            is_valid = "VALIDATION_RESULT: PASS" in validation_response
+            
+            # Extract issues
+            issues = []
+            lines = validation_response.split('\n')
+            
+            in_issues_section = False
+            for line in lines:
+                line = line.strip()
+                
+                if "ISSUES_FOUND:" in line:
+                    in_issues_section = True
+                    continue
+                
+                if in_issues_section and line:
+                    # Skip empty lines and section headers
+                    if not line.startswith("If no issues") and not line.startswith("If issues") and not line.startswith("Example"):
+                        if line.startswith("- ") or line.startswith("•"):
+                            issues.append(line[2:].strip())  # Remove bullet point
+                        elif line and not line.startswith("VALIDATION_RESULT") and "No issues found" not in line:
+                            issues.append(line)
+            
+            # If marked as failed but no specific issues found, add general issue
+            if not is_valid and not issues:
+                issues.append("Validation failed but no specific issues identified")
+            
+            summary = "No issues found" if is_valid else f"{len(issues)} issues identified"
+            
+            logger.info(f"Validation parsing result: Valid={is_valid}, Issues={len(issues)}")
+            for issue in issues:
+                logger.info(f"Issue: {issue}")
+            
+            return {
+                "is_valid": is_valid,
+                "issues": issues,
+                "summary": summary,
+                "raw_response": validation_response
+            }
+            
+        except Exception as e:
+            logger.error(f"Error parsing validation response: {e}")
+            return {
+                "is_valid": False,
+                "issues": [f"Validation parsing error: {str(e)}"],
+                "summary": f"Validation parsing failed: {str(e)}",
+                "raw_response": validation_response
+            }
+    
+    def _build_retry_prompt(self, product_name: str, datasets: List[Dict], all_dataset_outputs: Dict, first_attempt: str, validation_issues: List[str]) -> str:
+        """Build retry prompt with validation feedback for Layer 2 correction"""
+        
+        # Extract PNS data and CSV sources
+        pns_data = all_dataset_outputs.get("pns_data", "")
+        csv_sources = {k: v for k, v in all_dataset_outputs.items() if k != "pns_data"}
+        
+        # Build CSV sources information
+        csv_data_section = "\n=== CSV SOURCES DATA FOR REFERENCE ===\n"
+        for source, data in csv_sources.items():
+            csv_data_section += f"\n--- {source.upper()} ---\n{data}\n"
+        
+        # Build validation feedback section
+        validation_feedback = "\n=== VALIDATION ISSUES FROM LAYER 1 ===\n"
+        for i, issue in enumerate(validation_issues, 1):
+            validation_feedback += f"{i}. {issue}\n"
+        
+        prompt = f"""<role>
+You are a PNS validation specialist performing Layer 2 correction. Your first attempt had validation issues that need to be fixed using specific feedback.
+</role>
+
+<task>
+Create a CORRECTED PNS validation table for {product_name} that addresses ALL validation issues identified in Layer 1.
+</task>
+
+<critical_corrections_needed>
+Your first attempt had these specific issues that MUST be fixed:
+{validation_feedback}
+
+You MUST address each issue above in your corrected response.
+</critical_corrections_needed>
+
+<pns_base_data>
+{pns_data}
+</pns_base_data>
+
+{csv_data_section}
+
+<first_attempt_with_issues>
+{first_attempt}
+</first_attempt_with_issues>
+
+<correction_guidelines>
+Based on the validation feedback, apply these corrections:
+
+1. OPTIONS COUNT CORRECTION:
+   • Ensure EXACTLY 10 options per specification
+   • Count carefully and adjust as needed
+
+2. OPTIONS PRIORITIZATION CORRECTION:
+   • First: Options that appear in BOTH PNS and at least one CSV source (common options)
+   • Then: PNS-only options to fill remaining slots
+   • Use semantic matching: "5KVA" = "5 KVA", "Steel" = "steel"
+
+3. SCORING ACCURACY CORRECTION:
+   • Score MUST equal exact count of "Yes" entries in that row
+   • Double-check each CSV source for semantic presence
+   • Be conservative - mark "No" if uncertain
+
+4. SEMANTIC MATCHING CORRECTION:
+   • Only mark "Yes" if the PNS spec semantically appears in the CSV source
+   • Examples: "Power" matches "KVA", "Motor Power", "Power Rating"
+   • Avoid false positives - verify actual presence
+
+5. DATA CONSISTENCY CORRECTION:
+   • Maintain proper ranking by score (descending)
+   • Include exactly 5 PNS specifications
+   • Ensure all data fields are complete
+</correction_guidelines>
+
+<output_requirements>
+Create the CORRECTED PNS validation table with EXACTLY this format:
+
+| Score | PNS | Options | search_keywords | whatsapp_specs | rejection_comments | lms_chats |
+
+CORRECTION REQUIREMENTS:
+• Address ALL validation issues from Layer 1
+• EXACTLY 10 options per specification (count carefully)
+• Score = exact count of "Yes" entries in that row
+• Use semantic matching but avoid false positives
+• Prioritize common options first, then PNS-only options
+• Show exactly 5 rows (top 5 PNS specs)
+
+VERIFICATION CHECKLIST:
+□ Each spec has exactly 10 comma-separated options
+□ Score equals count of "Yes" entries in same row
+□ Each "Yes" is justified by semantic presence in CSV source
+□ Options are prioritized correctly (common first, then PNS-only)
+□ All validation issues from Layer 1 are addressed
+</output_requirements>
+
+CRITICAL: This is your corrected attempt. Address every validation issue identified in Layer 1 to produce an accurate result."""
         
         return prompt
     
@@ -383,11 +708,12 @@ CRITICAL INSTRUCTIONS:
             
         except Exception as e:
             logger.error(f"Error parsing PNS validation result: {e}")
-            # Return a fallback structure for the new 6-column format
+            # Return a fallback structure for the new 7-column format
             return [{
                 'Rank': 1,
                 'Score': 'Error',
                 'PNS': 'Parse Error',
+                'Options': 'N/A',
                 'search_keywords': 'N/A',
                 'whatsapp_specs': 'N/A',
                 'rejection_comments': 'N/A',
