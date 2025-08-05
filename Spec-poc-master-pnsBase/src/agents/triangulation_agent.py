@@ -175,6 +175,10 @@ class TriangulationAgent:
         # Enhanced PNS-centric validation prompt with strict controls
         prompt = f"""<role>
 You are a PNS validation specialist. Your task is to take PNS specifications as the base and validate them against CSV data sources for {product_name}, while aggregating exactly 10 options per specification using a strict prioritization system.
+
+⚠️ CRITICAL SCORING RULE - YOU MUST FOLLOW THIS EXACTLY:
+Before writing ANY score, count the "Yes" entries in that row: search_keywords + whatsapp_specs + rejection_comments + lms_chats
+The score MUST equal this count. NO EXCEPTIONS.
 </role>
 
 <task>
@@ -193,8 +197,10 @@ PRIMARY RESPONSIBILITY: Use your AI intelligence to analyze the full PNS context
    • Prioritize common options first, then PNS-only options
    • Use semantic intelligence to identify truly common options
 
-4. ULTRA-PRECISE SCORING: Score MUST equal exact count of "Yes" entries
-   • CRITICAL: Score = Count of "Yes" in (search_keywords + whatsapp_specs + rejection_comments + lms_chats)
+4. MANDATORY SCORING PROCEDURE - FOLLOW THIS STEP-BY-STEP:
+   • STEP 1: For each row, count "Yes" in: search_keywords + whatsapp_specs + rejection_comments + lms_chats
+   • STEP 2: Write that exact number as the Score
+   • STEP 3: Double-check - Score must equal "Yes" count
    • Examples: 2 "Yes" = Score 2, 1 "Yes" = Score 1, 0 "Yes" = Score 0
    • NO EXCEPTIONS: Score must match "Yes" count exactly
    • When uncertain about presence, ALWAYS mark "No" (conservative approach)
@@ -312,7 +318,8 @@ FINAL VALIDATION CHECKLIST:
 □ Exactly 5 rows in output table
 □ All 5 PNS specification names are different (no duplicates)
 □ Each row has exactly 10 options
-□ ULTRA-STRICT SCORING: Score MUST equal exact count of "Yes" entries in that row
+□ MANDATORY SCORING: Count "Yes" entries and write that number as Score
+□ STEP-BY-STEP: Count "Yes" in search_keywords + whatsapp_specs + rejection_comments + lms_chats = Score
 □ Examples: 2 "Yes" = Score 2, 1 "Yes" = Score 1, 0 "Yes" = Score 0
 □ Conservative "Yes/No" decisions (when in doubt, choose "No")
 
@@ -320,7 +327,8 @@ CRITICAL INSTRUCTIONS - HYBRID APPROACH:
 • Use your AI intelligence for semantic analysis and smart decisions
 • EXACTLY 5 unique PNS specs - leverage your contextual understanding
 • EXACTLY 10 options per specification - no more, no less
-• ULTRA-STRICT SCORING: Score MUST equal exact count of "Yes" entries in that row
+• MANDATORY SCORING: For each row, count "Yes" entries and write that number as Score
+• STEP-BY-STEP: Count "Yes" in search_keywords + whatsapp_specs + rejection_comments + lms_chats = Score
 • Examples: 2 "Yes" entries = Score 2, 1 "Yes" entry = Score 1, 0 "Yes" entries = Score 0
 • Conservative approach: When uncertain about presence, ALWAYS mark "No"
 • Focus on quality over perfection - manual safety net will catch exact duplicates if needed
@@ -797,49 +805,28 @@ CRITICAL: This is your corrected attempt. Address every validation issue identif
             # Debug log
             logger.info(f"Successfully parsed {len(table_data)} PNS validation table rows from LLM")
             
-            # SAFETY NET: Manual post-processing validation (hybrid approach)
+            # SAFETY NET: Single comprehensive validation and correction loop
             if table_data:
-                logger.info("🛡️  SAFETY NET: Applying manual post-processing validation")
+                logger.info("🛡️  SAFETY NET: Applying comprehensive validation and correction")
                 
-                # Safety Net 1: Remove duplicates based on PNS specification name (case-insensitive)
-                original_count = len(table_data)
+                # Single loop for all safety net operations
                 seen_specs = set()
-                deduplicated_data = []
+                validated_data = []
+                duplicates_removed = 0
+                scoring_corrections = 0
                 
                 for item in table_data:
                     spec_name = item['PNS'].strip().lower()
-                    if spec_name not in seen_specs:
-                        seen_specs.add(spec_name)
-                        deduplicated_data.append(item)
-                        logger.info(f"✅ Safety net: Keeping unique spec '{item['PNS']}'")
-                    else:
-                        logger.warning(f"🚨 Safety net: LLM failed - removing duplicate spec '{item['PNS']}'")
-                
-                table_data = deduplicated_data
-                
-                if len(table_data) < original_count:
-                    logger.warning(f"🚨 Safety net activated: Removed {original_count - len(table_data)} duplicate specs that LLM missed")
-                else:
-                    logger.info("✅ Safety net: No duplicates detected - LLM handled deduplication correctly")
-                
-                # Sort by score value (descending)
-                table_data.sort(key=lambda x: x.get('_score_value', 0), reverse=True)
-                
-                # Safety Net 2: Enforce exactly 5 specifications limit
-                if len(table_data) > 5:
-                    logger.warning(f"🚨 Safety net activated: LLM returned {len(table_data)} specs, truncating to 5")
-                    table_data = table_data[:5]
-                elif len(table_data) < 5:
-                    logger.warning(f"⚠️  Safety net: Only {len(table_data)} unique specs available (less than target of 5)")
-                else:
-                    logger.info("✅ Safety net: Exactly 5 specifications - LLM followed instructions correctly")
-                
-                # Safety Net 3: Validate scoring accuracy
-                logger.info("🛡️  SAFETY NET: Validating scoring accuracy")
-                scoring_errors = []
-                
-                for item in table_data:
-                    # Count actual "Yes" entries
+                    
+                    # Check for duplicates
+                    if spec_name in seen_specs:
+                        logger.warning(f"🚨 Safety net: Removing duplicate spec '{item['PNS']}'")
+                        duplicates_removed += 1
+                        continue
+                    
+                    seen_specs.add(spec_name)
+                    
+                    # Validate and correct scoring
                     yes_count = sum([
                         1 if item.get('search_keywords', '').strip().lower() == 'yes' else 0,
                         1 if item.get('whatsapp_specs', '').strip().lower() == 'yes' else 0,
@@ -847,25 +834,40 @@ CRITICAL: This is your corrected attempt. Address every validation issue identif
                         1 if item.get('lms_chats', '').strip().lower() == 'yes' else 0
                     ])
                     
-                    # Parse expected score
-                    try:
-                        expected_score = int(item.get('Score', '0'))
-                    except (ValueError, TypeError):
-                        expected_score = 0
-                    
-                    # Check for mismatch
-                    if expected_score != yes_count:
-                        scoring_errors.append(f"'{item['PNS']}': Score={expected_score} but {yes_count} 'Yes' entries")
-                        logger.warning(f"🚨 Safety net: Scoring error for '{item['PNS']}' - Score={expected_score}, Yes count={yes_count}")
+                    current_score = item.get('Score', '0')
+                    if str(yes_count) != current_score:
+                        logger.warning(f"🔧 Safety net: Correcting '{item['PNS']}' score from {current_score} to {yes_count}")
+                        item['Score'] = str(yes_count)
+                        scoring_corrections += 1
                     else:
-                        logger.info(f"✅ Safety net: Correct scoring for '{item['PNS']}' - Score={expected_score}, Yes count={yes_count}")
+                        logger.info(f"✅ Safety net: Correct scoring for '{item['PNS']}' - Score={yes_count}")
+                    
+                    validated_data.append(item)
                 
-                if scoring_errors:
-                    logger.warning(f"🚨 Safety net activated: Found {len(scoring_errors)} scoring errors")
-                    for error in scoring_errors:
-                        logger.warning(f"   - {error}")
+                table_data = validated_data
+                
+                # Log safety net results
+                if duplicates_removed > 0:
+                    logger.warning(f"🚨 Safety net: Removed {duplicates_removed} duplicate specs")
                 else:
-                    logger.info("✅ Safety net: All scoring is accurate - LLM handled scoring correctly")
+                    logger.info("✅ Safety net: No duplicates detected")
+                
+                if scoring_corrections > 0:
+                    logger.warning(f"🔧 Safety net: Corrected {scoring_corrections} scoring errors")
+                else:
+                    logger.info("✅ Safety net: All scoring was accurate")
+                
+                # Sort by score value (descending)
+                table_data.sort(key=lambda x: x.get('_score_value', 0), reverse=True)
+                
+                # Enforce exactly 5 specifications limit
+                if len(table_data) > 5:
+                    logger.warning(f"🚨 Safety net: Truncating from {len(table_data)} to 5 specifications")
+                    table_data = table_data[:5]
+                elif len(table_data) < 5:
+                    logger.warning(f"⚠️  Safety net: Only {len(table_data)} unique specs available (less than target of 5)")
+                else:
+                    logger.info("✅ Safety net: Exactly 5 specifications")
                 
                 # Update ranks and remove the temporary sorting field
                 for new_rank, item in enumerate(table_data, 1):
@@ -874,7 +876,7 @@ CRITICAL: This is your corrected attempt. Address every validation issue identif
                         del item['_score_value']
                     logger.info(f"PNS Rank {new_rank}: '{item['PNS']}' (Score: {item['Score']})")
                 
-                logger.info(f"🎯 Hybrid approach completed: {len(table_data)} unique specs (LLM intelligence + manual safety net)")
+                logger.info(f"🎯 Hybrid approach completed: {len(table_data)} unique specs (LLM intelligence + efficient safety net)")
             
             return table_data
             
