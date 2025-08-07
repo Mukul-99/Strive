@@ -11,7 +11,7 @@ from .extraction_agent import (
     # process_pns_calls,  # Commented out - now JSON processing
     process_rejection_comments,
     process_lms_chats,
-    process_pns_data  # NEW: PNS as regular agent
+    # process_pns_data  # REMOVED: PNS no longer an agent
 )
 from .triangulation_agent import triangulate_all_results, check_all_agents_completed
 # , meta_ensemble_triangulate  # Commented out - no longer used
@@ -118,34 +118,34 @@ class SpecExtractionWorkflow:
         # Create the StateGraph
         workflow = StateGraph(SpecExtractionState)
         
-        # Add individual extraction agent nodes (PNS commented out)
+        # Add individual extraction agent nodes (CSV only)
         workflow.add_node("process_search_keywords", process_search_keywords)
         workflow.add_node("process_whatsapp_specs", process_whatsapp_specs)
         # workflow.add_node("process_pns_calls", process_pns_calls)  # Commented out - now JSON processing
         workflow.add_node("process_rejection_comments", process_rejection_comments)
         workflow.add_node("process_lms_chats", process_lms_chats)
-        workflow.add_node("process_pns_data", process_pns_data) # NEW: PNS as regular agent
+        # workflow.add_node("process_pns_data", process_pns_data) # REMOVED: PNS no longer an agent
         
         # Add coordination nodes
         workflow.add_node("wait_for_completion", self._wait_for_completion)
         workflow.add_node("triangulate_results", triangulate_all_results)
         workflow.add_node("handle_all_failed", self._handle_all_failed)
         
-        # Set entry point - 5 agents start simultaneously (PNS now included)
+        # Set entry point - 4 CSV agents start simultaneously
         workflow.add_edge(START, "process_search_keywords")
         workflow.add_edge(START, "process_whatsapp_specs") 
         # workflow.add_edge(START, "process_pns_calls")  # Commented out - now JSON processing
         workflow.add_edge(START, "process_rejection_comments")
         workflow.add_edge(START, "process_lms_chats")
-        workflow.add_edge(START, "process_pns_data") # NEW: PNS as regular agent
+        # workflow.add_edge(START, "process_pns_data") # REMOVED: PNS no longer an agent
         
-        # All agents flow to the completion checker
+        # All CSV agents flow to the completion checker
         workflow.add_edge("process_search_keywords", "wait_for_completion")
         workflow.add_edge("process_whatsapp_specs", "wait_for_completion")
         # workflow.add_edge("process_pns_calls", "wait_for_completion")  # Commented out
         workflow.add_edge("process_rejection_comments", "wait_for_completion")
         workflow.add_edge("process_lms_chats", "wait_for_completion")
-        workflow.add_edge("process_pns_data", "wait_for_completion") # NEW: PNS as regular agent
+        # workflow.add_edge("process_pns_data", "wait_for_completion") # REMOVED: PNS no longer an agent
         
         # Conditional routing based on completion status
         workflow.add_conditional_edges(
@@ -168,10 +168,9 @@ class SpecExtractionWorkflow:
     def _wait_for_completion(self, state: SpecExtractionState) -> SpecExtractionState:
         """Wait for all agents to complete and update progress"""
         
-        # Get status for all available sources (CSV files + PNS JSON)
-        available_sources = list(state["uploaded_files"].keys())  # CSV files
-        if state.get("pns_json_content"):  # Add PNS if available
-            available_sources.append("pns_data")
+        # Get status for all available CSV sources only
+        available_sources = list(state["uploaded_files"].keys())  # CSV files only
+        # PNS is no longer treated as an agent, processed separately
             
         agents_status = get_agents_status(state)
         

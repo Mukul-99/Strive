@@ -78,13 +78,13 @@ class TriangulationAgent:
         )
     
     def triangulate_results(self, state: SpecExtractionState) -> SpecExtractionState:
-        """Run PNS-centric validation against CSV sources with validation layer"""
+        """Triangulate CSV agent results with direct PNS specifications"""
         start_time = time.time()
         
         try:
-            logger.info("Starting PNS-centric validation process")
+            logger.info("Starting triangulation with CSV agents and direct PNS specs")
             
-            # Get all completed agent results using helper function
+            # Get all completed CSV agent results
             agent_results = get_agent_results(state)
             completed_agents = {
                 source: result for source, result in agent_results.items()
@@ -92,32 +92,17 @@ class TriangulationAgent:
             }
             
             if not completed_agents:
-                raise ValueError("No completed agent results for PNS validation")
+                raise ValueError("No completed CSV agent results for triangulation")
             
-            # Check if PNS data is available
-            if "pns_data" not in completed_agents:
-                logger.warning("PNS data not available - cannot perform PNS-centric validation")
-                return {
-                    "triangulated_result": "PNS has no specifications",
-                    "triangulated_table": [{
-                        'Rank': 1,
-                        'Score': 'N/A',
-                        'PNS': 'No PNS Specifications',
-                        'Options': 'N/A',
-                        'search_keywords': 'N/A',
-                        'whatsapp_specs': 'N/A',
-                        'rejection_comments': 'N/A',
-                        'lms_chats': 'N/A'
-                    }],
-                    "current_step": "completed",
-                    "progress_percentage": 100,
-                    "logs": ["PNS validation completed - no PNS data available"]
-                }
+            # Get direct PNS specifications
+            pns_specs = state.get("pns_processed_specs", [])
+            pns_processing_error = state.get("pns_processing_error", "")
             
-            # Prepare datasets for PNS validation prompt
+            # Prepare datasets for triangulation prompt
             datasets = []
             all_dataset_outputs = {}
             
+            # Add CSV agent results
             for source, result in completed_agents.items():
                 dataset_info = {
                     "source": source,
@@ -128,7 +113,27 @@ class TriangulationAgent:
                 datasets.append(dataset_info)
                 all_dataset_outputs[source] = result["extracted_specs"]
             
-            # Execute triangulation with validation layer
+            # Add PNS specifications directly (if available)
+            if pns_specs and not pns_processing_error:
+                # Format PNS specs for triangulation
+                pns_formatted = "# PNS SPECIFICATIONS (Direct from JSON)\n"
+                pns_formatted += "Rank,Specification,Options,Frequency,Status,Priority\n"
+                
+                for i, spec in enumerate(pns_specs, 1):
+                    pns_formatted += f"{i},{spec.get('spec_name', 'N/A')},{spec.get('option', 'N/A')},{spec.get('frequency', 'N/A')},{spec.get('spec_status', 'N/A')},{spec.get('importance_level', 'N/A')}\n"
+                
+                datasets.append({
+                    "source": "pns_direct",
+                    "type": "pns-json-direct",
+                    "rows_processed": len(pns_specs),
+                    "extracted_specs": pns_formatted
+                })
+                all_dataset_outputs["pns_direct"] = pns_formatted
+                logger.info(f"Added {len(pns_specs)} direct PNS specifications to triangulation")
+            else:
+                logger.warning(f"PNS data not available for triangulation: {pns_processing_error}")
+            
+            # Execute triangulation with all available data
             triangulated_result, triangulated_table, processing_logs = self._triangulate_with_validation(
                 product_name=state["product_name"],
                 datasets=datasets,
@@ -138,7 +143,7 @@ class TriangulationAgent:
             # Calculate processing time
             processing_time = time.time() - start_time
             
-            logger.info(f"PNS validation with validation layer completed in {processing_time:.2f}s")
+            logger.info(f"Triangulation with direct PNS specs completed in {processing_time:.2f}s")
             
             # Return only the keys this function should update
             return {
@@ -146,7 +151,7 @@ class TriangulationAgent:
                 "triangulated_table": triangulated_table,
                 "current_step": "completed",
                 "progress_percentage": 100,
-                "logs": processing_logs + [f"PNS validation completed successfully in {processing_time:.2f}s"]
+                "logs": processing_logs + [f"Triangulation completed successfully in {processing_time:.2f}s"]
             }
             
         except Exception as e:
@@ -163,8 +168,8 @@ class TriangulationAgent:
         """Build PNS-centric validation prompt with strict 10-option limit"""
         
         # Extract PNS data and CSV sources
-        pns_data = all_dataset_outputs.get("pns_data", "")
-        csv_sources = {k: v for k, v in all_dataset_outputs.items() if k != "pns_data"}
+        pns_direct = all_dataset_outputs.get("pns_direct", "")
+        csv_sources = {k: v for k, v in all_dataset_outputs.items() if k != "pns_direct"}
         csv_source_names = list(csv_sources.keys())
         
         # Build CSV sources information
@@ -222,7 +227,7 @@ NOTE: A manual safety net will catch any exact duplicates you miss, so focus on 
 </intelligent_deduplication_approach>
 
 <pns_base_data>
-{pns_data}
+{pns_direct}
 </pns_base_data>
 
 {csv_data_section}
@@ -439,11 +444,11 @@ CRITICAL INSTRUCTIONS - HYBRID APPROACH:
         """Build validation prompt for gap identification"""
         
         # Extract CSV sources data for validation reference
-        csv_sources = {k: v for k, v in all_dataset_outputs.items() if k != "pns_data"}
-        pns_data = all_dataset_outputs.get("pns_data", "")
+        csv_sources = {k: v for k, v in all_dataset_outputs.items() if k != "pns_direct"}
+        pns_direct = all_dataset_outputs.get("pns_direct", "")
         
         # Build source data section for reference
-        source_data_section = f"\n=== PNS DATA ===\n{pns_data}\n"
+        source_data_section = f"\n=== PNS DATA ===\n{pns_direct}\n"
         for source, data in csv_sources.items():
             source_data_section += f"\n=== {source.upper()} DATA ===\n{data}\n"
         
@@ -617,8 +622,8 @@ CRITICAL: Be thorough and specific. Identify ALL issues to ensure accurate corre
         """Build retry prompt with validation feedback for Layer 2 correction"""
         
         # Extract PNS data and CSV sources
-        pns_data = all_dataset_outputs.get("pns_data", "")
-        csv_sources = {k: v for k, v in all_dataset_outputs.items() if k != "pns_data"}
+        pns_direct = all_dataset_outputs.get("pns_direct", "")
+        csv_sources = {k: v for k, v in all_dataset_outputs.items() if k != "pns_direct"}
         
         # Build CSV sources information
         csv_data_section = "\n=== CSV SOURCES DATA FOR REFERENCE ===\n"
@@ -646,7 +651,7 @@ You MUST address each issue above in your corrected response.
 </critical_corrections_needed>
 
 <pns_base_data>
-{pns_data}
+{pns_direct}
 </pns_base_data>
 
 {csv_data_section}
@@ -928,7 +933,7 @@ class FinalTriangulationAgent:
             logger.info("Starting final triangulation between CSV results and PNS specs")
             
             csv_result = state.get("triangulated_result", "")
-            pns_specs = state.get("pns_extracted_specs", [])
+            pns_specs = state.get("pns_processed_specs", [])
             
             if not csv_result and not pns_specs:
                 raise ValueError("No data available for final triangulation")
@@ -1030,12 +1035,12 @@ class FinalTriangulationAgent:
             csv_data += "No CSV specifications available\n"
         
         # Prepare standardized PNS data
-        pns_data = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
+        pns_direct = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
         if pns_structured:
             for i, spec in enumerate(pns_structured, 1):
-                pns_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
+                pns_direct += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
         else:
-            pns_data += "No PNS specifications available\n"
+            pns_direct += "No PNS specifications available\n"
         
         prompt = f"""<role>
 You are a final consensus specialist identifying specifications that are AGREED UPON by both CSV data sources and PNS expert analysis for {product_name}.
@@ -1073,7 +1078,7 @@ STEP 4 - FINAL RANKING:
 
 <data_sources>
 {csv_data}
-{pns_data}
+{pns_direct}
 </data_sources>
 
 <consensus_rules>
@@ -1163,12 +1168,12 @@ Before submitting, ensure:
             csv_data += "No CSV specifications available\n"
         
         # Prepare standardized PNS data  
-        pns_data = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
+        pns_direct = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
         if pns_structured:
             for i, spec in enumerate(pns_structured, 1):
-                pns_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
+                pns_direct += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
         else:
-            pns_data += "No PNS specifications available\n"
+            pns_direct += "No PNS specifications available\n"
         
         prompt = f"""<role>
 You are a validation specialist checking if a final triangulation result is correct. Your job is to verify that ONLY specifications present in BOTH sources are included, with ONLY common options.
@@ -1189,7 +1194,7 @@ For each specification in the final result:
 
 <original_sources>
 {csv_data}
-{pns_data}
+{pns_direct}
 </original_sources>
 
 <final_result_to_validate>
@@ -1380,12 +1385,12 @@ OVERALL_VALIDATION:
             csv_data += "No CSV specifications available\n"
         
         # Prepare standardized PNS data
-        pns_data = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
+        pns_direct = "\n=== PNS EXTRACTED SPECIFICATIONS ===\n"
         if pns_structured:
             for i, spec in enumerate(pns_structured, 1):
-                pns_data += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
+                pns_direct += f"{i}. Spec: {spec['name']} | Options: {spec['options']} | Freq: {spec['frequency']} | Status: {spec['status']} | Priority: {spec['priority']} | Source: PNS\n"
         else:
-            pns_data += "No PNS specifications available\n"
+            pns_direct += "No PNS specifications available\n"
         
         # Prepare validation feedback
         validation_feedback = "\n=== VALIDATION ERRORS FROM FIRST ATTEMPT ===\n"
@@ -1431,7 +1436,7 @@ STEP 4 - STRICT VALIDATION:
 
 <data_sources>
 {csv_data}
-{pns_data}
+{pns_direct}
 </data_sources>
 
 <first_attempt_with_errors>
@@ -1524,11 +1529,9 @@ def final_triangulate_results(state: SpecExtractionState) -> SpecExtractionState
     return agent.final_triangulate(state)
 
 def check_all_agents_completed(state: SpecExtractionState) -> str:
-    """Check if all agents have completed processing"""
-    # Get all available sources (CSV files + PNS JSON if available)
-    available_sources = set(state["uploaded_files"].keys())  # CSV files
-    if state.get("pns_json_content"):  # Add PNS if available
-        available_sources.add("pns_data")
+    """Check if all CSV agents have completed processing"""
+    # Get all available CSV sources only (PNS is processed separately)
+    available_sources = set(state["uploaded_files"].keys())  # CSV files only
         
     agents_status = get_agents_status(state)
     

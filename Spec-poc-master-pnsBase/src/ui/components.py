@@ -600,7 +600,7 @@ def render_three_stage_results(final_results: Dict[str, Any]):
     
     with col1:
         csv_result = final_results.get("triangulated_result", "")
-        pns_specs = final_results.get("pns_extracted_specs", [])
+        pns_specs = final_results.get("pns_processed_specs", [])
         final_result = final_results.get("final_triangulated_result", "")
         
         status_parts = []
@@ -693,7 +693,7 @@ def render_pns_extraction_stage(final_results: Dict[str, Any]):
     st.markdown("### 📋 PNS Specifications Extraction")
     st.markdown("*Expert-validated specifications from PNS JSON data (max 5 specs, all options combined)*")
     
-    pns_specs = final_results.get("pns_extracted_specs", [])
+    pns_specs = final_results.get("pns_processed_specs", [])
     pns_status = final_results.get("pns_processing_status", "not_uploaded")
     pns_error = final_results.get("pns_error", "")
     
@@ -1188,7 +1188,7 @@ def download_three_stage_results(final_results: Dict[str, Any]):
                 df_csv.to_excel(writer, sheet_name='CSV_Triangulation', index=False)
             
             # Sheet 3: PNS Extracted Specs
-            pns_specs = final_results.get("pns_extracted_specs", [])
+            pns_specs = final_results.get("pns_processed_specs", [])
             if pns_specs:
                 pns_df_data = []
                 for i, spec in enumerate(pns_specs, 1):

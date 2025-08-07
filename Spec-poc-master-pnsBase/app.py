@@ -25,7 +25,7 @@ from src.ui.components import (
     render_final_results,
     render_logs_section
 )
-from src.utils.state import create_initial_state, get_agent_results
+from src.utils.state import create_initial_state, get_agent_results, process_pns_data_directly
 from src.agents.workflow import stream_spec_extraction
 
 def initialize_session_state():
@@ -157,7 +157,15 @@ def run_single_stage_workflow_blocking(product_name: str, uploaded_files: dict, 
         
         logger.info(f"Starting single-stage workflow for product: {product_name}")
         
-        # Run all agents and triangulation (0-100%)
+        # Process PNS data directly if available (before CSV agent processing)
+        if pns_json_content:
+            status_text.text("📋 Processing PNS JSON data...")
+            progress_bar.progress(10)
+            pns_updates = process_pns_data_directly(initial_state)
+            initial_state.update(pns_updates)
+            logger.info(f"PNS processing completed: {len(initial_state.get('pns_processed_specs', []))} specs extracted")
+        
+        # Run CSV agents and triangulation (10-100%)
         from src.agents.workflow import run_spec_extraction
         result_state = run_spec_extraction(initial_state)
         
