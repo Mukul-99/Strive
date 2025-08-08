@@ -7,7 +7,7 @@ from typing import List, Dict, Any
 
 # Hardcoded MCAT IDs array
 MCAT_IDS = [
-   177386
+   40871
 ]
 
 # API Configuration
@@ -33,11 +33,35 @@ def call_mcat_api(mcat_id: int) -> Dict[str, Any]:
     headers = {"Content-Type": "application/json"}
     data = {}
     
+    # Log the actual request
+    print("\n" + "="*50)
+    print("REQUEST:")
+    print(f"URL: {url}")
+    print(f"Method: POST")
+    print(f"Params: {params}")
+    print(f"Headers: {headers}")
+    print(f"Body: {data}")
+    print("="*50)
+    
     try:
-        response = requests.post(url, params=params, headers=headers, json=data, timeout=30)
+        response = requests.post(url, params=params, headers=headers, json=data, timeout=60)
+        
+        # Log the actual response
+        print("\nRESPONSE:")
+        print(f"Status Code: {response.status_code}")
+        print(f"Headers: {dict(response.headers)}")
+        try:
+            response_json = response.json()
+            print(f"Body: {json.dumps(response_json, indent=2)}")
+        except:
+            print(f"Body (text): {response.text}")
+        print("="*50)
+        
         response.raise_for_status()  # Raise exception for HTTP errors
         return response.json()
     except requests.exceptions.RequestException as e:
+        print(f"\nERROR: {str(e)}")
+        print("="*50)
         return {"error": f"API call failed: {str(e)}"}
 
 def extract_signed_url(api_response: Dict[str, Any]) -> str:
