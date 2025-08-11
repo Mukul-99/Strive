@@ -504,6 +504,39 @@ def render_individual_results(agent_results: Dict[str, Dict[str, Any]]):
                 specs_text = result.get("extracted_specs", "")
                 if specs_text:
                     display_specs_table(specs_text)
+    
+    # Add PNS Individual Results as an expandable section
+    final_results = st.session_state.get("final_results", {})
+    pns_specs = final_results.get("pns_processed_specs", [])
+    
+    if pns_specs:
+        with st.expander("🔍 PNS Individual Results", expanded=False):
+            st.markdown("*Top 5 specifications extracted from PNS JSON data.*")
+            
+            # Create the PNS results table
+            if pns_specs:
+                # Prepare data for display
+                display_data = []
+                for i, spec in enumerate(pns_specs[:5], 1):
+                    display_data.append({
+                        "Rank": i,
+                        "Specification": spec.get("spec_name", "N/A"),
+                        "Options": spec.get("option", "N/A"),
+                        "Frequency": spec.get("frequency", "N/A"),
+                        "Status": spec.get("spec_status", "N/A"),
+                        "Priority": spec.get("importance_level", "N/A")
+                    })
+                
+                # Display table
+                if display_data:
+                    df = pd.DataFrame(display_data)
+                    st.dataframe(df, use_container_width=True, hide_index=True)
+                    
+                    # Download button
+                    col1, col2 = st.columns([3, 1])
+                    with col2:
+                        if st.button("📥 Download PNS Individual Results", key="download_pns_individual"):
+                            download_pns_extraction_results(pns_specs[:5])
 
 def render_final_results(triangulated_result: str, triangulated_table: List[Dict[str, Any]]):
     """Render single-stage results: All agents triangulated together"""
@@ -558,6 +591,8 @@ def render_single_stage_results(final_results: Dict[str, Any]):
                     f"{result.get('processing_time', 0):.1f}s"
                 )
     
+
+    
     # Display PNS validation results
     st.markdown("### 🎯 PNS Validation Results")
     
@@ -588,206 +623,6 @@ def render_single_stage_results(final_results: Dict[str, Any]):
         st.markdown(triangulated_result)
     else:
         st.info("No PNS validation results available")
-
-def render_three_stage_results(final_results: Dict[str, Any]):
-    """Render 3-stage results: CSV triangulated, PNS specs, and final consensus"""
-    
-    st.markdown("## 📊 Three-Stage Analysis Results")
-    st.markdown("*Complete analysis workflow: CSV triangulation → PNS extraction → True consensus (common specs only)*")
-    
-    # Header with export button
-    col1, col2 = st.columns([3, 1])
-    
-    with col1:
-        csv_result = final_results.get("triangulated_result", "")
-        pns_specs = final_results.get("pns_processed_specs", [])
-        final_result = final_results.get("final_triangulated_result", "")
-        
-        status_parts = []
-        if csv_result: status_parts.append("CSV triangulated")
-        if pns_specs: status_parts.append(f"{len(pns_specs)} PNS specs")
-        if final_result: status_parts.append("Final consensus")
-        
-        if status_parts:
-            st.info(f"✅ Analysis completed: {' • '.join(status_parts)}")
-        else:
-            st.warning("⚠️ No results available")
-    
-    with col2:
-        if st.button("📥 Export All Results", type="primary"):
-            download_three_stage_results(final_results)
-    
-    # Create tabs for the three stages
-    tab1, tab2, tab3 = st.tabs([
-        "📊 Stage 1: CSV Triangulation", 
-        "📋 Stage 2: PNS Specifications", 
-        "🎯 Stage 3: True Consensus (Common Only)"
-    ])
-    
-    with tab1:
-        render_csv_triangulation_stage(final_results)
-    
-    with tab2:
-        render_pns_extraction_stage(final_results)
-    
-    with tab3:
-        render_final_consensus_stage(final_results)
-
-def render_csv_triangulation_stage(final_results: Dict[str, Any]):
-    """Render Stage 1: CSV triangulation results"""
-    
-    st.markdown("### 📊 CSV Data Triangulation")
-    st.markdown("*Cross-dataset analysis from 4 CSV sources*")
-    
-    triangulated_result = final_results.get("triangulated_result", "")
-    triangulated_table = final_results.get("triangulated_table", [])
-    
-    if triangulated_table:
-        # Show agent summary first
-        agent_results = get_agent_results(final_results)
-        completed_agents = {k: v for k, v in agent_results.items() if v.get("status") == "completed"}
-        
-        if completed_agents:
-            st.markdown("#### 📋 Source Summary")
-            cols = st.columns(len(completed_agents))
-            for i, (source_key, result) in enumerate(completed_agents.items()):
-                with cols[i]:
-                    source_name = SOURCE_NAMES.get(source_key, source_key)
-                    st.metric(
-                        f"{source_name}",
-                        f"{result.get('raw_data_count', 0)} rows",
-                        f"{result.get('processing_time', 0):.1f}s"
-                    )
-        
-        st.markdown("#### 🎯 Triangulated Specifications")
-        
-        # Display results table
-        df = pd.DataFrame(triangulated_table)
-        st.dataframe(
-            df,
-            use_container_width=True,
-            hide_index=True,
-            column_config={
-                "Rank": st.column_config.NumberColumn("Rank", width="small"),
-                "Specification": st.column_config.TextColumn("Specification", width="medium"),
-                "Top Options": st.column_config.TextColumn("Top Options", width="large"),
-                "Why it matters": st.column_config.TextColumn("Why it matters", width="large"),
-                "Impacts Pricing?": st.column_config.TextColumn("Impacts Pricing?", width="small"),
-                "Sources": st.column_config.TextColumn("Sources", width="medium", help="Shows which datasets mentioned this specification")
-            }
-        )
-        
-        # Download button for CSV results
-        if st.button("📥 Download CSV Results", key="download_csv_stage"):
-            download_csv_triangulation_results(triangulated_result, triangulated_table)
-    
-    elif triangulated_result:
-        st.markdown("#### 🎯 Triangulated Result")
-        st.markdown(triangulated_result)
-    else:
-        st.info("No CSV triangulation results available")
-
-def render_pns_extraction_stage(final_results: Dict[str, Any]):
-    """Render Stage 2: PNS specifications extraction"""
-    
-    st.markdown("### 📋 PNS Specifications Extraction")
-    st.markdown("*Expert-validated specifications from PNS JSON data (max 5 specs, all options combined)*")
-    
-    pns_specs = final_results.get("pns_processed_specs", [])
-    pns_status = final_results.get("pns_processing_status", "not_uploaded")
-    pns_error = final_results.get("pns_error", "")
-    
-    if pns_status == "completed" and pns_specs:
-        st.markdown(f"#### 🎯 Extracted PNS Specifications ({len(pns_specs)} specs)")
-        
-        # Create DataFrame for PNS specs (now with combined options)
-        pns_df_data = []
-        for i, spec in enumerate(pns_specs, 1):
-            pns_df_data.append({
-                "Rank": i,
-                "Specification": spec.get("spec_name", "N/A"),
-                "Options": spec.get("option", "N/A"),  # Now contains combined options
-                "Frequency": spec.get("frequency", "N/A"),  # Now contains formatted frequency string
-                "Status": spec.get("spec_status", "N/A"),  # Now contains combined status
-                "Priority": spec.get("importance_level", "N/A")
-            })
-        
-        if pns_df_data:
-            df = pd.DataFrame(pns_df_data)
-            st.dataframe(
-                df,
-                use_container_width=True,
-                hide_index=True,
-                column_config={
-                    "Rank": st.column_config.NumberColumn("Rank", width="small"),
-                    "Specification": st.column_config.TextColumn("Specification", width="medium"),
-                    "Options": st.column_config.TextColumn("Options", width="large"),  # Wider for multiple options
-                    "Frequency": st.column_config.TextColumn("Frequency", width="medium"),  # Changed to text for combined format
-                    "Status": st.column_config.TextColumn("Status", width="large", help="Multiple statuses for each option: ✅ Dominant, 🔶 Emerging, 🔍 Exploring"),  # Wider for multiple statuses
-                    "Priority": st.column_config.TextColumn("Priority", width="small")
-                }
-            )
-            
-            # Download button for PNS results
-            if st.button("📥 Download PNS Results", key="download_pns_stage"):
-                download_pns_extraction_results(pns_specs)
-    
-    elif pns_status == "failed":
-        st.error(f"❌ PNS processing failed: {pns_error}")
-    elif pns_status == "not_uploaded":
-        st.info("📤 No PNS JSON file was uploaded")
-    else:
-        st.info("⏳ PNS processing in progress...")
-
-def render_final_consensus_stage(final_results: Dict[str, Any]):
-    """Render Stage 3: Final consensus triangulation"""
-    
-    st.markdown("### 🎯 Final Consensus Triangulation") 
-    st.markdown("*True market consensus showing ONLY specifications agreed upon by both CSV and PNS sources*")
-    
-    final_result = final_results.get("final_triangulated_result", "")
-    final_table = final_results.get("final_triangulated_table", [])
-    
-    if final_table:
-        st.markdown("#### 🏆 Final Consensus Specifications")
-        
-        df = pd.DataFrame(final_table)
-        st.dataframe(
-            df,
-            use_container_width=True,
-            hide_index=True,
-            column_config={
-                "Rank": st.column_config.NumberColumn("Rank", width="small"),
-                "Specification": st.column_config.TextColumn("Specification", width="medium"),
-                "Top Options": st.column_config.TextColumn("Top Options", width="large"),
-                "Why it matters": st.column_config.TextColumn("Why it matters", width="large"),
-                "Impacts Pricing?": st.column_config.TextColumn("Impacts Pricing?", width="small")
-            }
-        )
-        
-        # Download button for final results
-        if st.button("📥 Download Final Results", key="download_final_stage"):
-            download_final_consensus_results(final_result, final_table)
-        
-        # Show validation logs if available in final_results
-        validation_logs = [log for log in final_results.get("logs", []) if "validation" in log.lower() or "retry" in log.lower()]
-        if validation_logs:
-            st.markdown("#### 🔍 Validation Process")
-            for log in validation_logs:
-                if "✅" in log:
-                    st.success(log)
-                elif "⚠️" in log:
-                    st.warning(log)
-                elif "🔄" in log:
-                    st.info(log)
-                else:
-                    st.text(log)
-    
-    elif final_result:
-        st.markdown("#### 🏆 True Consensus Result")
-        st.markdown(final_result)
-    else:
-        st.info("No consensus specifications found - this means CSV and PNS data have no common specifications. Each source has unique specs that don't overlap.")
 
 # COMMENTED OUT - Meta-ensemble results no longer used
 def render_meta_ensemble_results(final_results: Dict[str, Any]):
