@@ -16,6 +16,7 @@ class PNSProcessor:
             logger.info("Starting PNS JSON processing")
             
             if not pns_json_content or not pns_json_content.strip():
+                logger.warning("No PNS JSON content provided")
                 return {
                     "status": "failed",
                     "error": "No PNS JSON content provided",
@@ -24,11 +25,24 @@ class PNSProcessor:
             
             # Parse JSON content
             pns_data = json.loads(pns_json_content.strip())
+            logger.info(f"Successfully parsed PNS JSON with {len(pns_data)} top-level keys")
+            logger.info(f"Top-level keys: {list(pns_data.keys())}")
+            
+            # Check for spec_summary structure
+            if "spec_summary" in pns_data:
+                spec_summary = pns_data["spec_summary"]
+                if isinstance(spec_summary, dict):
+                    logger.info(f"Found spec_summary with keys: {list(spec_summary.keys())}")
+                else:
+                    logger.warning(f"spec_summary is not a dict, type: {type(spec_summary)}")
+            else:
+                logger.info("No spec_summary found, checking for specs at root level")
             
             # Extract specifications from all 4 categories
             extracted_specs = self._extract_top_specs_from_all_categories(pns_data)
             
             if not extracted_specs:
+                logger.warning("No specifications found in PNS JSON data after filtering")
                 return {
                     "status": "failed", 
                     "error": "No specifications found in PNS JSON data after filtering",
@@ -65,12 +79,23 @@ class PNSProcessor:
         
         all_specs = []
         
+        # Check if specs are nested under spec_summary (new format) or at root level (old format)
+        if "spec_summary" in pns_data and isinstance(pns_data["spec_summary"], dict):
+            # New format: specs nested under spec_summary
+            spec_container = pns_data["spec_summary"]
+            logger.info("Using new JSON format: specs nested under spec_summary")
+        else:
+            # Old format: specs at root level
+            spec_container = pns_data
+            logger.info("Using legacy JSON format: specs at root level")
+        
         # Extract from all 4 categories
         categories = ["primary_specs", "secondary_specs", "tertiary_specs", "quaternary_specs"]
         
         for category in categories:
-            if category in pns_data and isinstance(pns_data[category], list):
-                for spec in pns_data[category]:
+            if category in spec_container and isinstance(spec_container[category], list):
+                logger.info(f"Processing {category}: {len(spec_container[category])} specs found")
+                for spec in spec_container[category]:
                     if isinstance(spec, dict):
                         # Filter out product type specs
                         spec_name = spec.get("spec_name", "").lower()
@@ -81,6 +106,9 @@ class PNSProcessor:
                         processed_spec = self._process_spec_combined_options(spec, category.replace("_specs", "").title())
                         if processed_spec:
                             all_specs.append(processed_spec)
+                            logger.info(f"Added spec: {spec.get('spec_name', 'Unknown')} from {category}")
+            else:
+                logger.info(f"Category {category} not found or not a list in spec container")
         
         # Sort by frequency (descending) and take top 5
         all_specs.sort(key=lambda x: x.get("total_frequency", 0), reverse=True)
