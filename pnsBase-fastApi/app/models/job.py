@@ -2,10 +2,11 @@
 Pydantic models for job management
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 from enum import Enum
+import re
 
 class JobStatus(str, Enum):
     """Job status enumeration"""
@@ -18,7 +19,25 @@ class JobStatus(str, Enum):
 
 class JobRequest(BaseModel):
     """Request model for creating a new analysis job"""
-    mcat_id: str = Field(..., description="MCAT ID for analysis", example="6472")
+    mcat_id: str = Field(..., description="MCAT ID for analysis (numeric string)", example="6472")
+    
+    @field_validator('mcat_id')
+    @classmethod
+    def validate_mcat_id(cls, v):
+        if not v or not v.strip():
+            raise ValueError("MCAT ID cannot be empty")
+        
+        # Remove whitespace
+        v = v.strip()
+        
+        # Check if it's a valid numeric ID (allowing alphanumeric for flexibility)
+        if not re.match(r'^[a-zA-Z0-9]+$', v):
+            raise ValueError("MCAT ID must contain only alphanumeric characters")
+        
+        if len(v) < 1 or len(v) > 20:
+            raise ValueError("MCAT ID must be between 1 and 20 characters")
+            
+        return v
     
     class Config:
         json_schema_extra = {
@@ -48,7 +67,7 @@ class JobStatusResponse(BaseModel):
     """Response model for job status check"""
     job_id: str = Field(..., description="Job identifier")
     status: JobStatus = Field(..., description="Current job status")
-    progress: int = Field(default=0, description="Progress percentage (0-100)")
+    progress: int = Field(default=0, ge=0, le=100, description="Progress percentage (0-100)")
     current_step: Optional[str] = Field(None, description="Current processing step")
     created_at: datetime = Field(..., description="Job creation timestamp")
     updated_at: datetime = Field(..., description="Last update timestamp")

@@ -73,9 +73,15 @@ class JobProcessor:
         except Exception as e:
             error_msg = f"Unexpected error in job {job_id}: {str(e)}"
             logger.error(error_msg)
-            await job_manager.update_job_status(
-                job_id, JobStatus.FAILED, progress=0, error=error_msg
-            )
+            
+            # Try to update job status, but don't fail if Redis is down
+            try:
+                await job_manager.update_job_status(
+                    job_id, JobStatus.FAILED, progress=0, error=error_msg
+                )
+            except Exception as redis_error:
+                logger.error(f"Failed to update job status in Redis for {job_id}: {redis_error}")
+                # Job will remain in previous state, but at least we logged the original error
     
     async def _process_analysis_data(self, combined_data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -125,7 +131,7 @@ class JobProcessor:
                 search_keywords=individual_csv_results.get("search_keywords", []),
                 lms_chats=individual_csv_results.get("lms_chats", []),
                 rejection_comments=individual_csv_results.get("rejection_comments", []),
-                custom_spec=individual_csv_results.get("whatsapp_specs", []),  # Map whatsapp_specs to custom_spec
+                custom_spec=individual_csv_results.get("whatsapp_specs", []),
                 pns_individual=pns_individual_results
             )
             
@@ -197,28 +203,53 @@ class JobProcessor:
     
     def _parse_specs_text(self, specs_text: str) -> List[Dict[str, Any]]:
         """
-        Parse extracted specs text into structured data
+        Parse extracted specs text into structured data with robust error handling
         """
         specs = []
+        if not specs_text or not isinstance(specs_text, str):
+            logger.warning("Empty or invalid specs text provided")
+            return specs
+            
         lines = specs_text.strip().split('\n')
         
-        # Skip header lines
+        # Skip header lines and find data rows
         data_lines = []
         for line in lines:
             line = line.strip()
-            if line and not line.startswith('#') and '|' in line:
-                data_lines.append(line)
+            if line and not line.startswith('#') and not line.startswith('|---') and '|' in line:
+                # Skip table headers like "| Rank | Specification | ..."
+                if not any(header in line.lower() for header in ['rank', 'specification', 'option', 'frequency']):
+                    data_lines.append(line)
         
-        for line in data_lines:
-            parts = [part.strip() for part in line.split('|')]
-            if len(parts) >= 3:
-                try:
+        for line_num, line in enumerate(data_lines, 1):
+            try:
+                # Remove leading/trailing | characters
+                line = line.strip('|').strip()
+                parts = [part.strip() for part in line.split('|')]
+                
+                if len(parts) >= 2:  # At least specification and option
+                    # Handle frequency parsing more robustly
+                    frequency = 0
+                    if len(parts) > 2:
+                        freq_str = parts[2].strip()
+                        # Extract numbers from frequency string (e.g., "40 / 37 (Total: 77)" -> 77)
+                        import re
+                        numbers = re.findall(r'\d+', freq_str)
+                        if numbers:
+                            frequency = int(numbers[-1])  # Use the last number (usually total)
+                    
                     specs.append({
-                        "specification": parts[1] if len(parts) > 1 else "N/A",
-                        "option": parts[2] if len(parts) > 2 else "N/A",
-                        "frequency": int(parts[3]) if len(parts) > 3 and parts[3].isdigit() else 0
+                        "specification": parts[0] if parts[0] else "N/A",
+                        "option": parts[1] if len(parts) > 1 and parts[1] else "N/A", 
+                        "frequency": frequency
                     })
-                except (ValueError, IndexError):
-                    continue
+                    
+            except (ValueError, IndexError) as e:
+                logger.warning(f"Failed to parse line {line_num}: '{line}' - {e}")
+                continue
         
+<<<<<<< Current (Your changes)
+=======
+        logger.info(f"Parsed {len(specs)} specifications from text")
+>>>>>>> Incoming (Background Agent changes)
         return specs

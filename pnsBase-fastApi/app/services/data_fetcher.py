@@ -155,9 +155,9 @@ class BigQueryClient:
                 {"spec_kw": "Phase", "frequency": 15, "source": "BLNI"},
                 {"spec_kw": "Grinding Mechanism", "frequency": 12, "source": "BLNI"}
             ],
-            "custom_spec": [
-                {"spec_kw": "100kg", "frequency": 5, "source": "Custom Spec"},
-                {"spec_kw": "100 kg/hr, 80 kg/hr", "frequency": 4, "source": "Custom Spec"}
+            "whatsapp_specs": [
+                {"spec_kw": "100kg", "frequency": 5, "source": "WhatsApp Specs"},
+                {"spec_kw": "100 kg/hr, 80 kg/hr", "frequency": 4, "source": "WhatsApp Specs"}
             ]
         }
     

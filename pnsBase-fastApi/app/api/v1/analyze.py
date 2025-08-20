@@ -2,10 +2,12 @@
 Analysis endpoints for PNS specification processing
 """
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Depends
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Depends, Path
 from typing import Dict, Any
 import uuid
 import logging
+from datetime import datetime
+from pydantic import ValidationError
 
 from app.models.job import (
     JobRequest, 
@@ -76,7 +78,9 @@ async def create_analysis_job(
         )
 
 @router.get("/jobs/{job_id}/status", response_model=JobStatusResponse)
-async def get_job_status(job_id: str):
+async def get_job_status(
+    job_id: str = Path(..., description="Job ID (UUID format)", regex=r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+):
     """
     Get the current status of an analysis job
     """
@@ -89,22 +93,21 @@ async def get_job_status(job_id: str):
                 detail=f"Job {job_id} not found"
             )
         
+        # Validate job status
+        try:
+            job_status = JobStatus(job_data["status"])
+        except ValueError:
+            logger.error(f"Invalid job status '{job_data['status']}' for job {job_id}")
+            job_status = JobStatus.FAILED
+        
         return JobStatusResponse(
             job_id=job_id,
-            status=JobStatus(job_data["status"]),
+            status=job_status,
             progress=int(job_data.get("progress", 0)),
             current_step=job_data.get("current_step"),
-            created_at=job_data["created_at"],
-            updated_at=job_data["updated_at"],
+            created_at=datetime.fromisoformat(job_data["created_at"]),
+            updated_at=datetime.fromisoformat(job_data["updated_at"]),
             error=job_data.get("error")
-        )
-        
-    except ValueError as e:
-        # Handle invalid job status enum
-        logger.error(f"Invalid job status for {job_id}: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Invalid job status: {str(e)}"
         )
     except HTTPException:
         raise
@@ -116,7 +119,9 @@ async def get_job_status(job_id: str):
         )
 
 @router.get("/jobs/{job_id}/results", response_model=JobResultsResponse)
-async def get_job_results(job_id: str):
+async def get_job_results(
+    job_id: str = Path(..., description="Job ID (UUID format)", regex=r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+):
     """
     Get the results of a completed analysis job
     """
@@ -133,13 +138,14 @@ async def get_job_results(job_id: str):
         job_status = job_data["status"]
         
         if job_status == "failed":
+            error_response = ErrorResponse(
+                error=job_data.get("error", "Job failed"),
+                job_id=job_id,
+                details={"status": job_status}
+            )
             raise HTTPException(
                 status_code=400,
-                detail=ErrorResponse(
-                    error=job_data.get("error", "Job failed"),
-                    job_id=job_id,
-                    details={"status": job_status}
-                ).dict()
+                detail=error_response.error
             )
         
         if job_status != "completed":
@@ -157,7 +163,15 @@ async def get_job_results(job_id: str):
                 detail=f"Results not found for job {job_id}"
             )
         
-        return JobResultsResponse(**results)
+        # Validate results structure before creating response
+        try:
+            return JobResultsResponse(**results)
+        except Exception as e:
+            logger.error(f"Invalid results structure for job {job_id}: {e}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Invalid results format: {str(e)}"
+            )
         
     except HTTPException:
         raise
@@ -169,7 +183,9 @@ async def get_job_results(job_id: str):
         )
 
 @router.delete("/jobs/{job_id}")
-async def cleanup_job(job_id: str):
+async def cleanup_job(
+    job_id: str = Path(..., description="Job ID (UUID format)", regex=r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+):
     """
     Manually cleanup a job (for testing/admin purposes)
     """

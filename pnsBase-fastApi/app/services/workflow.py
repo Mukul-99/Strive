@@ -5,6 +5,7 @@ Properly implements the original Streamlit workflow with LangGraph state managem
 
 import logging
 import copy
+import asyncio
 from typing import Dict, Any
 from datetime import datetime
 from langgraph.graph import StateGraph, START, END
@@ -282,21 +283,21 @@ class SpecExtractionWorkflow:
                 }
             }
 
-# Global workflow instance for reuse
-_workflow_instance = None
-
 def get_workflow() -> SpecExtractionWorkflow:
-    """Get or create single workflow instance"""
-    global _workflow_instance
-    if _workflow_instance is None:
-        _workflow_instance = SpecExtractionWorkflow()
-    return _workflow_instance
+    """Create a new workflow instance for each request to avoid memory leaks"""
+    return SpecExtractionWorkflow()
 
 async def run_spec_extraction_workflow(mcat_id: str, pns_json_content: str, 
                                      csv_sources: Dict[str, Any]) -> Dict[str, Any]:
     """Main entry point for running complete spec extraction workflow"""
     workflow = get_workflow()
-    return await workflow.run_complete_workflow(mcat_id, pns_json_content, csv_sources)
+    # Run the synchronous workflow in a thread to avoid blocking the event loop
+    return await asyncio.to_thread(
+        workflow.run_complete_workflow, 
+        mcat_id, 
+        pns_json_content, 
+        csv_sources
+    )
 
 def run_spec_extraction(state: SpecExtractionState) -> SpecExtractionState:
     """Convenience function for running workflow with state"""
