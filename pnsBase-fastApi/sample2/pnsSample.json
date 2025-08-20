@@ -1,0 +1,4209 @@
+{
+  "category_name": "Commercial Atta Chakki Machine",
+  "primary_specs": [
+    {
+      "original_names": [
+        "Power",
+        "Motor Power",
+        "Horsepower",
+        "Power Supply"
+      ],
+      "spec_name": "Motor Power",
+      "importance_level": "Primary",
+      "frequency": 58,
+      "reason_for_importance": "Defines the machine's power and grinding capability. Different motor powers correspond to different model tiers and price points.",
+      "external_signals": "Motor Power in Horsepower (HP) is a standard specification used by manufacturers to define different models in a series.",
+      "spec_name_status": "Dominant",
+      "reason_for_status": "Seen in most products, and standardizing 'Power', 'Horsepower', and 'Power Supply' to 'Motor Power' adds clarity and consolidates the concept.",
+      "values": [
+        {
+          "standardized_value": "3 HP",
+          "original_values": [
+            "3 HP",
+            "3 kW"
+          ],
+          "frequency": 17,
+          "reason": "The original values were identical and standard for motor power. '3 kW' was seen used interchangeably with 3 HP and has been mapped here.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "10 HP",
+          "original_values": [
+            "10 HP",
+            "10HP"
+          ],
+          "frequency": 17,
+          "reason": "Standardized as-is. Significant frequency increase in previous batches solidifies its Dominant status.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "5 HP",
+          "original_values": [
+            "5 HP"
+          ],
+          "frequency": 14,
+          "reason": "Standardized as-is. Increased frequency confirms Dominant status.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "2 HP",
+          "original_values": [
+            "2 HP",
+            "2HP"
+          ],
+          "frequency": 5,
+          "reason": "Standardized as-is. Increased frequency confirms its Emerging status.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "7.5 HP",
+          "original_values": [
+            "7.5 HP"
+          ],
+          "frequency": 4,
+          "reason": "Standardized as-is. Increased frequency promotes this to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "22 HP",
+          "original_values": [
+            "22 HP"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New high-power value from Batch 7.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Size",
+        "Chakki Size",
+        "Grinding Stone Size",
+        "Chamber Size",
+        "Stone Size"
+      ],
+      "spec_name": "Size",
+      "importance_level": "Primary",
+      "frequency": 60,
+      "reason_for_importance": "Directly indicates the grinding stone/chamber diameter, which is a fundamental classifier for Atta Chakki models and strongly correlates with capacity and motor power. It's a key purchasing parameter.",
+      "external_signals": "Atta Chakki models are commonly referred to by their size in inches (e.g., '16 inch chakki') on e-commerce platforms and in manufacturer specifications.",
+      "spec_name_status": "Dominant",
+      "reason_for_status": "Appeared in 60 out of 110 products, indicating it's a very common and expected specification. Synonyms like 'Chakki Size' and 'Stone Size' are consolidated here.",
+      "values": [
+        {
+          "standardized_value": "14 inch",
+          "original_values": [
+            "14 inch"
+          ],
+          "frequency": 19,
+          "reason": "Standardized as-is. Frequency increased due to new products in Batch 15, 17, 21 and 22 confirming its dominant status.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "16 inch",
+          "original_values": [
+            "16 inch"
+          ],
+          "frequency": 13,
+          "reason": "Standardized as-is. Increased frequency in this batch solidifies its Dominant status.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "18 inch",
+          "original_values": [
+            "18 inch"
+          ],
+          "frequency": 12,
+          "reason": "Standardized as-is. Increased frequency in this batch.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "20 inch",
+          "original_values": [
+            "20 inch"
+          ],
+          "frequency": 4,
+          "reason": "Standardized as-is. Frequency continues to increase.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "24 inch",
+          "original_values": [
+            "24 inch"
+          ],
+          "frequency": 4,
+          "reason": "Standardized as-is. Increased frequency promotes this to an emerging value.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "12 inch",
+          "original_values": [
+            "12 inch"
+          ],
+          "frequency": 3,
+          "reason": "New value from Batch 9. Frequency increased in Batch 21 and 22, promoting to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "10 inch",
+          "original_values": [
+            "10 inch"
+          ],
+          "frequency": 2,
+          "reason": "New value from Batch 19, represents a smaller-end commercial or large domestic machine. Frequency increased in Batch 21, promoting to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "36 inch",
+          "original_values": [
+            "36 inch"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "22 inch",
+          "original_values": [
+            "22 inch"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New value from Batch 8.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "18x4.5 inch",
+          "original_values": [
+            "18x4.5 inch"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 9. Preserving original format as it's a dimensional spec.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "30 inch",
+          "original_values": [
+            "30 inch"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 10.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Capacity",
+        "Grinding Capacity",
+        "Production Capacity"
+      ],
+      "spec_name": "Grinding Capacity",
+      "importance_level": "Primary",
+      "frequency": 46,
+      "reason_for_importance": "Measures the machine's output (kg per hour), which is a critical performance metric for commercial buyers to match their business needs.",
+      "external_signals": "Capacity in kg/hr is a primary filter and specification on all major B2B and B2C marketplaces selling these machines.",
+      "spec_name_status": "Dominant",
+      "reason_for_status": "Appeared frequently (46/110 products) under synonymous names, indicating its core relevance. 'Production Capacity' is a direct equivalent. Merged 'Capacity' from Batch 22.",
+      "values": [
+        {
+          "standardized_value": "50 kg/hr",
+          "original_values": [
+            "50 kg/hr"
+          ],
+          "frequency": 8,
+          "reason": "The original values were identical and represented a clear numeric measure.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "30 kg/hr",
+          "original_values": [
+            "30 kg/hr"
+          ],
+          "frequency": 6,
+          "reason": "Standardized as-is. Frequency increase solidifies its Emerging status.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "100 kg/hr",
+          "original_values": [
+            "100 kg/hr",
+            "100kg"
+          ],
+          "frequency": 5,
+          "reason": "Standardized as-is. '100kg' was interpreted as 100 kg/hr in the context of commercial machines. Increased frequency promotes this to a dominant value.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "70 kg/hr",
+          "original_values": [
+            "70 kg/hr"
+          ],
+          "frequency": 5,
+          "reason": "The original value was clear and required no change. Increased frequency promotes this to an emerging value.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "15 kg/hr",
+          "original_values": [
+            "15 kg/hr"
+          ],
+          "frequency": 3,
+          "reason": "New value seen in Batch 21 for two different machine sizes (12 and 14 inch), indicating a new low-capacity tier. Status is Emerging. Reinforced in Batch 22.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "40 kg/hr",
+          "original_values": [
+            "40 kg/hr"
+          ],
+          "frequency": 3,
+          "reason": "New value from Batch 13, frequency increased in Batch 17 and 19. Promoted to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "200 kg/hr",
+          "original_values": [
+            "200kg/hr",
+            "200 kg/hr"
+          ],
+          "frequency": 3,
+          "reason": "Standardized to include a space for consistency.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "150 kg/hr",
+          "original_values": [
+            "150 kg/hr"
+          ],
+          "frequency": 3,
+          "reason": "Standardized as-is.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "80 kg/hr",
+          "original_values": [
+            "80 kg/hr",
+            "80kg/hr"
+          ],
+          "frequency": 2,
+          "reason": "New value from Batch 11. Increased frequency in Batch 13 promotes it to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "90 kg/hr",
+          "original_values": [
+            "90 kg/hr"
+          ],
+          "frequency": 2,
+          "reason": "New value from Batch 15. This is a common capacity for mid-range machines.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "20 kg/hr",
+          "original_values": [
+            "20 kg/hr"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "25 kg/hr",
+          "original_values": [
+            "25 kg/hr"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "500 kg/hr",
+          "original_values": [
+            "500 kg/hr"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. This high value corresponds to a 'Flour Mill Plant'.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "35 kg/hr",
+          "original_values": [
+            "35 kg/hr"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New value from Batch 7.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "400 kg/hr",
+          "original_values": [
+            "400kg/hr"
+          ],
+          "frequency": 1,
+          "reason": "New value from a 'Flour Mill Plant' in Batch 12.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "75 kg/hr",
+          "original_values": [
+            "75 kg/hr"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 16.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Phase",
+        "Motor Phase",
+        "Phase Type"
+      ],
+      "spec_name": "Phase",
+      "importance_level": "Primary",
+      "frequency": 38,
+      "reason_for_importance": "Determines the electrical compatibility (Single or Three Phase), a crucial and non-negotiable requirement for installation. It separates products into distinct residential/small-scale vs. commercial/industrial lines.",
+      "external_signals": "Electrical phase is a critical technical spec listed for all powered machinery, often used as a primary filter.",
+      "spec_name_status": "Dominant",
+      "reason_for_status": "Appeared in 38 out of 110 products, making it a common and critical differentiator. 'Phase Type' is a common synonym.",
+      "values": [
+        {
+          "standardized_value": "Single Phase",
+          "original_values": [
+            "Single Phase"
+          ],
+          "frequency": 20,
+          "reason": "Standard industry term.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "Three Phase",
+          "original_values": [
+            "Three Phase",
+            "3 Phase"
+          ],
+          "frequency": 18,
+          "reason": "Standard industry term. '3 Phase' is a common abbreviation. Frequency increased in this batch.",
+          "spec_status": "Dominant"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Grinding Mechanism",
+        "Machine Type",
+        "Grinding Type",
+        "Type",
+        "Material",
+        "Millstone Type"
+      ],
+      "spec_name": "Grinding Mechanism",
+      "importance_level": "Primary",
+      "frequency": 29,
+      "reason_for_importance": "Represents a fundamental choice in technology (traditional Stone, modern Stoneless, or Pulverizer), which affects maintenance, flour quality, and target use case. This creates a major fork in the product category.",
+      "external_signals": "The distinction between 'stoneless', 'stone-type', and 'pulverizer' flour mills is a major category split in the market.",
+      "spec_name_status": "Dominant",
+      "reason_for_status": "Explicitly mentioned or implicitly present in a significant portion of products, making it a core concept. Merged 'Machine Type', 'Grinding Type', and ambiguous uses of 'Type', 'Material', and 'Millstone Type' here.",
+      "values": [
+        {
+          "standardized_value": "Stone-based",
+          "original_values": [
+            "inferred",
+            "Stone",
+            "Normal Stone",
+            "Stone Mill"
+          ],
+          "frequency": 21,
+          "reason": "Inferred as the default mechanism for traditional chakkis, especially when 'Stoneless' is not specified. 'Stone', 'Normal Stone', 'Stone Mill', and 'Millstone Type: Stone' are direct indicators and its frequency reinforces Dominant status. Ambiguous 'Material: Stone' also mapped here.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "Pulverizer",
+          "original_values": [
+            "Pulverizer"
+          ],
+          "frequency": 3,
+          "reason": "A distinct type of grinding machine, often stoneless, but referred to by this specific name. Frequency increase promotes it to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Blade-based",
+          "original_values": [
+            "Blade"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 20, representing a type of stoneless grinding mechanism.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Stoneless",
+          "original_values": [
+            "Stoneless"
+          ],
+          "frequency": 1,
+          "reason": "Explicitly mentioned value.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Combined Atta Chakki and Rice Mill",
+          "original_values": [
+            "Combined Atta Chakki and Rice Mill"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 11 representing a distinct multi-purpose machine.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Jali-based",
+          "original_values": [
+            "Jali"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 14. 'Jali' (mesh/screen) suggests a type of pulverizer or stoneless machine that uses screens for sizing, a distinct mechanism.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Number of Grinders"
+      ],
+      "spec_name": "Number of Grinders",
+      "importance_level": "Primary",
+      "frequency": 1,
+      "reason_for_importance": "For a 'Flour Mill Plant', this spec is critical as it defines the scale and throughput capability of the entire system, distinguishing it from single-unit machines.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once in the context of a 'Flour Mill Plant', indicating a new sub-category of products where this is a key differentiator.",
+      "values": [
+        {
+          "standardized_value": "2",
+          "original_values": [
+            "2.0"
+          ],
+          "frequency": 1,
+          "reason": "Standardized to integer representation.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    }
+  ],
+  "secondary_specs": [
+    {
+      "original_names": [
+        "Inclusions",
+        "Motor",
+        "Included Components",
+        "Product Set",
+        "Motor Included",
+        "Machine Type",
+        "Motor Requirement"
+      ],
+      "spec_name": "Inclusions",
+      "importance_level": "Secondary",
+      "frequency": 14,
+      "reason_for_importance": "Describes what comes with the machine (e.g., with/without motor). This affects the final price and setup but not the machine's inherent model type.",
+      "external_signals": "Listings often specify if the motor is included.",
+      "spec_name_status": "Dominant",
+      "reason_for_status": "Seen multiple times with distinct values. 'With/Without Motor' is a very common and important distinction for buyers. Increased frequency promotes this spec to Dominant.",
+      "values": [
+        {
+          "standardized_value": "With Motor",
+          "original_values": [
+            "With Motor",
+            "Motor",
+            "Full Set with Motor",
+            "Included",
+            "Yes"
+          ],
+          "frequency": 10,
+          "reason": "Standardized as-is. 'Motor', 'Full Set with Motor', 'Included', and 'Yes' are interpreted as 'With Motor'. The increased frequency makes this value dominant.",
+          "spec_status": "Dominant"
+        },
+        {
+          "standardized_value": "Without Motor",
+          "original_values": [
+            "Without Motor"
+          ],
+          "frequency": 4,
+          "reason": "Standardized as-is. Increased frequency promotes this to an emerging value.",
+          "spec_status": "Emerging"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Brand"
+      ],
+      "spec_name": "Brand",
+      "importance_level": "Secondary",
+      "frequency": 10,
+      "reason_for_importance": "Brand is a key factor for some buyers but is secondary to the core performance and size specifications of the machine.",
+      "external_signals": "E-commerce sites often have Brand as a filter.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times. Many brands exist in the market.",
+      "values": [
+        {
+          "standardized_value": "Venus",
+          "original_values": [
+            "Venus"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 21.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Vishv Udyog",
+          "original_values": [
+            "Vishv Udyog"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Somani",
+          "original_values": [
+            "Somani"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Automize",
+          "original_values": [
+            "Automize"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New value from Batch 7.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Swastik",
+          "original_values": [
+            "Swastik"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New value from Batch 7.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Sudama Agro Engineering",
+          "original_values": [
+            "Sudama Agro Engineering"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 9.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Truejoy",
+          "original_values": [
+            "Truejoy"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 14.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Mewar",
+          "original_values": [
+            "Mewar"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Shubham",
+          "original_values": [
+            "Shubham"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Blue Star",
+          "original_values": [
+            "Blue Star"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New value from Batch 20.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Material",
+        "Body Material"
+      ],
+      "spec_name": "Material",
+      "importance_level": "Secondary",
+      "frequency": 8,
+      "reason_for_importance": "Describes the body construction of the machine, which relates to durability and longevity, but is secondary to the primary performance specifications.",
+      "external_signals": "Manufacturers often list the material (e.g., Cast Iron, Stainless Steel) in detailed specifications.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times with different values, confirming its status as a relevant secondary spec. Merged 'Body Material' into this spec.",
+      "values": [
+        {
+          "standardized_value": "Stainless Steel",
+          "original_values": [
+            "Stainless Steel"
+          ],
+          "frequency": 4,
+          "reason": "A common and important material variant. Increased frequency confirms its Emerging status.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Steel",
+          "original_values": [
+            "Steel"
+          ],
+          "frequency": 2,
+          "reason": "New value from Batch 15. Standardized as-is, represents a common material type.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Iron",
+          "original_values": [
+            "Iron"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "MS",
+          "original_values": [
+            "MS"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 13, represents Mild Steel, a common construction material.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Body Type",
+        "Model Type",
+        "Type"
+      ],
+      "spec_name": "Body Type",
+      "importance_level": "Secondary",
+      "frequency": 7,
+      "reason_for_importance": "Describes the machine's structural design or model type, which affects durability and aesthetics. It's a secondary detail after performance specs like size and capacity.",
+      "external_signals": null,
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times, indicating it is a relevant design differentiator for certain models. The ambiguous original name 'Type' has been mapped here for values like 'Khara Chakki' and 'Box Type'.",
+      "values": [
+        {
+          "standardized_value": "Emerald Type",
+          "original_values": [
+            "Emrald Type"
+          ],
+          "frequency": 3,
+          "reason": "Standardized with spelling correction from 'Emrald' to 'Emerald'.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Trolley Type",
+          "original_values": [
+            "Trolley Type",
+            "Trolley Mounted"
+          ],
+          "frequency": 2,
+          "reason": "Standardized as-is. Increased frequency from Batch 18 promotes it to Emerging status.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Khara Chakki",
+          "original_values": [
+            "Khara Chakki"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 9. It refers to a specific type of vertical stone mill.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Box Type",
+          "original_values": [
+            "Box Type"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 16. Describes a common structural design.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Warranty"
+      ],
+      "spec_name": "Warranty",
+      "importance_level": "Secondary",
+      "frequency": 7,
+      "reason_for_importance": "Warranty is an important factor for buyers making a significant purchase, but it does not define the technical model of the machine itself.",
+      "external_signals": "Warranty information is a standard part of product listings but is not typically used to define the model name.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times. Standard warranty periods are expected.",
+      "values": [
+        {
+          "standardized_value": "1 Year",
+          "original_values": [
+            "1 Year"
+          ],
+          "frequency": 3,
+          "reason": "Standardized as-is. Increased frequency promotes this to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "3 months",
+          "original_values": [
+            "3 months"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "1 Year Replacement",
+          "original_values": [
+            "1 Year Replacement"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 11, indicates a specific type of warranty.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "2 Years",
+          "original_values": [
+            "2 Years"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 14.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "6 Years",
+          "original_values": [
+            "6 years"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 19.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Power Consumption"
+      ],
+      "spec_name": "Power Consumption",
+      "importance_level": "Secondary",
+      "frequency": 5,
+      "reason_for_importance": "Indicates the operational cost and efficiency of the machine, an important secondary consideration for commercial use after power and capacity are met.",
+      "external_signals": null,
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times now with different values. This is a key operational metric for commercial users.",
+      "values": [
+        {
+          "standardized_value": "7 unit/hr",
+          "original_values": [
+            "7 unit/hr"
+          ],
+          "frequency": 2,
+          "reason": "Standardized as-is.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "2 units/hr",
+          "original_values": [
+            "2 units/hr"
+          ],
+          "frequency": 2,
+          "reason": "New value from Batch 21, seen with both 12 and 14 inch low-capacity models. Promoted to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "4 units/hr",
+          "original_values": [
+            "4 units/hr"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 22.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Chamber Type"
+      ],
+      "spec_name": "Chamber Type",
+      "importance_level": "Secondary",
+      "frequency": 4,
+      "reason_for_importance": "Describes the grinding chamber design, such as 'Double Chamber', which can impact grinding efficiency and throughput. It's a significant design feature but secondary to core metrics like size and motor power.",
+      "external_signals": null,
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen for the first time in Batch 12, this spec differentiates machine construction beyond simple body type. Increased frequency in Batch 13, 19 and 20 promotes it to Emerging.",
+      "values": [
+        {
+          "standardized_value": "Double Chamber",
+          "original_values": [
+            "Double Chamber",
+            "Double"
+          ],
+          "frequency": 3,
+          "reason": "New value from Batch 12, standardized 'Double' to this value in Batch 13. Frequency increased in Batch 19, promoting status to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Single Chamber",
+          "original_values": [
+            "Single Chamber"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New value from Batch 20.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Model",
+        "Model Name"
+      ],
+      "spec_name": "Model",
+      "importance_level": "Secondary",
+      "frequency": 4,
+      "reason_for_importance": "Refers to a specific variant or model name (e.g., 'Deluxe') assigned by the manufacturer. It helps differentiate sub-types within a primary spec combination.",
+      "external_signals": "Manufacturers use model names to distinguish their product lines.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times. Its importance will grow if model names are used consistently across listings. 'Heavy Duty' was mapped to Machine Weight Class for better standardization.",
+      "values": [
+        {
+          "standardized_value": "Deluxe",
+          "original_values": [
+            "Deluxe"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "BH5",
+          "original_values": [
+            "BH5"
+          ],
+          "frequency": 1,
+          "reason": "New model name from Batch 12.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "1618 DSP",
+          "original_values": [
+            "1618 DSP"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 18.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Motor Brand"
+      ],
+      "spec_name": "Motor Brand",
+      "importance_level": "Secondary",
+      "frequency": 3,
+      "reason_for_importance": "Specifies the manufacturer of the motor, which is a sign of quality for knowledgeable buyers, but it's a component detail, not a primary machine characteristic.",
+      "external_signals": "High-quality component brands are often mentioned as selling points.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times with different, well-known brands, indicating it's an emerging important detail.",
+      "values": [
+        {
+          "standardized_value": "Crompton",
+          "original_values": [
+            "Crompton"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Havells",
+          "original_values": [
+            "Havells"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Rathi",
+          "original_values": [
+            "Rathi"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "RPM",
+        "Motor RPM"
+      ],
+      "spec_name": "RPM",
+      "importance_level": "Secondary",
+      "frequency": 3,
+      "reason_for_importance": "Motor speed (RPM) is a technical detail that affects grinding performance, but it is often standardized for a given motor power and machine size, making it a secondary spec.",
+      "external_signals": "RPM is a standard motor specification found in detailed product data sheets.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times with the same value, promoting the spec to Emerging. 'Motor RPM' is a common synonym.",
+      "values": [
+        {
+          "standardized_value": "1440 RPM",
+          "original_values": [
+            "1440 RPM"
+          ],
+          "frequency": 3,
+          "reason": "Standardized as-is. Increased frequency promotes this value to Emerging.",
+          "spec_status": "Emerging"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Voltage"
+      ],
+      "spec_name": "Voltage",
+      "importance_level": "Secondary",
+      "frequency": 3,
+      "reason_for_importance": "Voltage is a critical electrical spec, but it's often directly correlated with the 'Phase' (e.g., Single Phase ~220V, Three Phase ~440V). 'Phase' is the more primary buyer consideration.",
+      "external_signals": "Voltage is always listed in electrical specifications.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times, now with both single and three-phase corresponding values, promoting it to Emerging.",
+      "values": [
+        {
+          "standardized_value": "440V",
+          "original_values": [
+            "440V"
+          ],
+          "frequency": 2,
+          "reason": "New value from Batch 15. This is a standard voltage for three-phase power in India.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "220V",
+          "original_values": [
+            "220V"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. Typical for single-phase.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Capacity"
+      ],
+      "spec_name": "Hopper Capacity",
+      "importance_level": "Secondary",
+      "frequency": 3,
+      "reason_for_importance": "Hopper capacity (in kg) refers to how much grain can be loaded at once, which is a convenience feature, unlike Grinding Capacity (in kg/hr) which is a primary performance metric.",
+      "external_signals": "Hopper capacity is a common secondary specification.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times. The original name 'Capacity' was ambiguous and needed to be distinguished from 'Grinding Capacity'.",
+      "values": [
+        {
+          "standardized_value": "5 kg",
+          "original_values": [
+            "5 kg"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is and disambiguated from grinding capacity.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "1 kg",
+          "original_values": [
+            "1kg"
+          ],
+          "frequency": 1,
+          "reason": "New value from an out-of-scope product ('Hop Grinder') in Batch 11.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "10 kg",
+          "original_values": [
+            "10kg"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 12, distinguished from grinding capacity by the lack of a '/hr' unit.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Type",
+        "Grinding Stone Type"
+      ],
+      "spec_name": "Orientation",
+      "importance_level": "Secondary",
+      "frequency": 2,
+      "reason_for_importance": "Describes the machine's physical orientation (e.g., vertical), which can affect its footprint and design. It's a secondary characteristic. The source spec 'Type' is ambiguous and also refers to drive mechanism.",
+      "external_signals": "Vertical and Horizontal are common descriptors for atta chakkis.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times, and represents a known, distinct design choice in the market. The original name 'Type' was ambiguous and has been standardized to 'Orientation'.",
+      "values": [
+        {
+          "standardized_value": "Vertical",
+          "original_values": [
+            "Vertical"
+          ],
+          "frequency": 2,
+          "reason": "Standardized as-is.",
+          "spec_status": "Emerging"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Stone Type"
+      ],
+      "spec_name": "Stone Type",
+      "importance_level": "Secondary",
+      "frequency": 2,
+      "reason_for_importance": "Provides additional detail about the grinding stone for traditional models. While important for final flour quality, it's a secondary choice after deciding on a stone-based mechanism and size.",
+      "external_signals": "Details about stone material or type are often found in detailed product descriptions rather than titles or primary filters.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times with distinct values, indicating it is an emerging differentiator.",
+      "values": [
+        {
+          "standardized_value": "Thin",
+          "original_values": [
+            "Thin"
+          ],
+          "frequency": 1,
+          "reason": "Original value was clear.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Diamond Stone",
+          "original_values": [
+            "Diamond Stone"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17. Refers to a premium type of grinding stone.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Type",
+        "Model"
+      ],
+      "spec_name": "Machine Weight Class",
+      "importance_level": "Secondary",
+      "frequency": 2,
+      "reason_for_importance": "Describes the build class of the machine, such as 'Heavy', which implies a more robust construction. This is a secondary characteristic that provides context but isn't a primary performance metric.",
+      "external_signals": null,
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times. The original spec name 'Type' was ambiguous, so this concept was separated into a new, clearer spec. 'Model: Heavy Duty' was also mapped here for consistency.",
+      "values": [
+        {
+          "standardized_value": "Heavy",
+          "original_values": [
+            "Heavy",
+            "Heavy Duty"
+          ],
+          "frequency": 2,
+          "reason": "New value from Batch 9, reinforced in Batch 17.",
+          "spec_status": "Emerging"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Cyclone Blower"
+      ],
+      "spec_name": "Cyclone Blower",
+      "importance_level": "Secondary",
+      "frequency": 2,
+      "reason_for_importance": "Specifies the inclusion of a cyclone blower for dust collection and cleaner operation. This is a significant feature that defines a product variant, but doesn't change the core machine model (e.g., size, power).",
+      "external_signals": "Models 'with cyclone' are often advertised as premium or cleaner options.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen for the first time in Batch 15 with both 'Yes' and 'No' values for the same base model, confirming it's a key differentiating feature.",
+      "values": [
+        {
+          "standardized_value": "Yes",
+          "original_values": [
+            "Yes"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "No",
+          "original_values": [
+            "No"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Output Quality"
+      ],
+      "spec_name": "Output Quality",
+      "importance_level": "Secondary",
+      "frequency": 2,
+      "reason_for_importance": "Describes the quality of the final product (flour). 'Choker Less' means less bran, which is an important performance characteristic for buyers but secondary to core metrics like capacity.",
+      "external_signals": null,
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen twice in Batch 15, indicating it is an emerging specification used to describe machine performance.",
+      "values": [
+        {
+          "standardized_value": "Choker Less",
+          "original_values": [
+            "Choker Less"
+          ],
+          "frequency": 2,
+          "reason": "Standardized as-is.",
+          "spec_status": "Emerging"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Grinding Stone Brand",
+        "Stone Brand"
+      ],
+      "spec_name": "Stone Brand",
+      "importance_level": "Secondary",
+      "frequency": 2,
+      "reason_for_importance": "Similar to 'Motor Brand', the brand of the grinding stone is a quality indicator for a key component, but it's a secondary purchasing consideration.",
+      "external_signals": null,
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen a few times now, suggesting stone brand is an emerging differentiator.",
+      "values": [
+        {
+          "standardized_value": "Gajraj",
+          "original_values": [
+            "Gajraj"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Karnavati",
+          "original_values": [
+            "Karnavati"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 19.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Feature"
+      ],
+      "spec_name": "Features",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Describes value-added features like cyclone for dust collection, which can be a significant differentiator but doesn't change the core machine model.",
+      "external_signals": "Features like 'with cyclone' are often highlighted as selling points for cleaner operation.",
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once, but 'cyclone' is a known and significant feature in this category.",
+      "values": [
+        {
+          "standardized_value": "With Cyclone",
+          "original_values": [
+            "With Cyclone"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New spec from Batch 7.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Motor Configuration"
+      ],
+      "spec_name": "Motor Configuration",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Specifies the number of motors, which can indicate a more complex or powerful design (e.g., separate motors for grinding and other functions). It's an important technical detail.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. Distinguishes more complex machine designs from standard single-motor setups.",
+      "values": [
+        {
+          "standardized_value": "Double Motor",
+          "original_values": [
+            "Double Motor"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New spec from Batch 7.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Shaft Size"
+      ],
+      "spec_name": "Shaft Size",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Specific technical detail about the machine's construction, important for durability and repairs, but secondary to performance metrics.",
+      "external_signals": "Component dimensions are typically found in detailed technical datasheets.",
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. Indicates a more detailed level of specification that some buyers require.",
+      "values": [
+        {
+          "standardized_value": "60 mm",
+          "original_values": [
+            "60 mm"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Bearing Number"
+      ],
+      "spec_name": "Bearing Number",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "A very specific component identifier, crucial for maintenance and replacement parts. It's a secondary detail that adds significant value for long-term ownership.",
+      "external_signals": "Bearing numbers are standard industrial parts identifiers.",
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. This level of detail is typically associated with high-end or industrial-grade machinery.",
+      "values": [
+        {
+          "standardized_value": "6212/6208",
+          "original_values": [
+            "6212/6208"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Generator Capacity"
+      ],
+      "spec_name": "Generator Capacity",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Specifies the required power from a generator, which is a critical operational requirement for buyers without stable grid power. It's secondary because it's an external requirement, not an intrinsic feature of the machine itself.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once, but represents an important consideration for a subset of commercial users.",
+      "values": [
+        {
+          "standardized_value": "10 KVA",
+          "original_values": [
+            "10 KVA"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Type"
+      ],
+      "spec_name": "Drive Type",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Describes the drive mechanism (e.g., pulley) connecting the motor to the grinding chamber. It's a key engineering detail but secondary to core performance specs.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. The original spec name 'Type' was ambiguous and has been standardized to 'Drive Type' to differentiate it from 'Orientation'.",
+      "values": [
+        {
+          "standardized_value": "Pulley Type",
+          "original_values": [
+            "Pulley Type"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New spec from Batch 8.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Stone Material"
+      ],
+      "spec_name": "Stone Material",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Specifies the material of the grinding stones, which is a quality indicator affecting durability and flour texture. It's a secondary detail compared to the machine's size and capacity.",
+      "external_signals": "Manufacturers sometimes list stone material (e.g., emery, granite) in detailed specifications.",
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. This is a new spec that distinguishes different types of stone-based chakkis.",
+      "values": [
+        {
+          "standardized_value": "Granite",
+          "original_values": [
+            "Granite"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Motor Placement"
+      ],
+      "spec_name": "Motor Placement",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Specifies the physical location of the motor, which can affect the machine's footprint, balance, and design. It's a secondary engineering detail.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. This provides more specific design information about the machine's construction.",
+      "values": [
+        {
+          "standardized_value": "Side Mounted",
+          "original_values": [
+            "Side Mounted"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Winding Material"
+      ],
+      "spec_name": "Motor Winding Material",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Indicates the material used in the motor's windings (e.g., Copper), which is a key quality and performance indicator for the motor itself. This is an important detail for discerning buyers.",
+      "external_signals": "Copper windings are often advertised as a sign of a high-quality, efficient motor.",
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. This is a specific component detail that differentiates motor quality.",
+      "values": [
+        {
+          "standardized_value": "Copper",
+          "original_values": [
+            "Copper"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Wheels"
+      ],
+      "spec_name": "Wheels",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Specifies if the machine is fitted with wheels, indicating portability. This is a convenience feature, secondary to core performance specs.",
+      "external_signals": "Portable or trolley models are often advertised with wheels.",
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. This is a simple binary feature.",
+      "values": [
+        {
+          "standardized_value": "Yes",
+          "original_values": [
+            "Yes"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Stone Temper"
+      ],
+      "spec_name": "Stone Temper",
+      "importance_level": "Secondary",
+      "frequency": 1,
+      "reason_for_importance": "Describes the hardness or treatment of the grinding stone, which affects its longevity and grinding quality. This is a specific quality detail for stone-based models.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. This is a niche but important quality attribute of the grinding stone.",
+      "values": [
+        {
+          "standardized_value": "Full Temper",
+          "original_values": [
+            "Full Temper"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    }
+  ],
+  "tertiary_specs": [
+    {
+      "original_names": [
+        "Grinding Material",
+        "Application",
+        "Usage/Application",
+        "Grain Type"
+      ],
+      "spec_name": "Grinding Material",
+      "importance_level": "Tertiary",
+      "frequency": 10,
+      "reason_for_importance": "Describes what materials the machine can grind. This is generally assumed to be standard grains like wheat (atta) for this category, making it a tertiary detail.",
+      "external_signals": "This is often mentioned in product descriptions but is not a primary filter.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times. The values are standard for an atta chakki.",
+      "values": [
+        {
+          "standardized_value": "Wheat",
+          "original_values": [
+            "Wheat Grinding",
+            "Wheat"
+          ],
+          "frequency": 4,
+          "reason": "Standardized from 'Wheat Grinding'. Implies standard grain grinding.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Sugar Grinding",
+          "original_values": [
+            "Sugar Grinding"
+          ],
+          "frequency": 2,
+          "reason": "New value from Batch 19, indicates a specific use case beyond standard grains. Increased frequency promotes it to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Aata, Besan",
+          "original_values": [
+            "Aata, Besan"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 9.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Atta, Sattu, Besan, Spices",
+          "original_values": [
+            "Atta, Sattu, Besan, Spices"
+          ],
+          "frequency": 1,
+          "reason": "New, more comprehensive value from Batch 10.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Flour",
+          "original_values": [
+            "Flour"
+          ],
+          "frequency": 1,
+          "reason": "Generic value from Batch 12. Implies standard grains.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Flour and Spices",
+          "original_values": [
+            "Flour and Spices"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 18.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Usage/Application",
+        "Usage",
+        "Use"
+      ],
+      "spec_name": "Usage/Application",
+      "importance_level": "Tertiary",
+      "frequency": 10,
+      "reason_for_importance": "The value 'Commercial' is an assumed default for this entire category. 'Domestic' is an outlier but doesn't differentiate between the core commercial models.",
+      "external_signals": "The category itself is defined as commercial.",
+      "spec_name_status": "Dominant",
+      "reason_for_status": "Seen frequently. While 'Commercial' is inherent, the appearance of 'Domestic' indicates some overlap at the lower end of the product range.",
+      "values": [
+        {
+          "standardized_value": "Commercial",
+          "original_values": [
+            "Commercial"
+          ],
+          "frequency": 9,
+          "reason": "Standardized as-is.",
+          "spec_status": "Settled"
+        },
+        {
+          "standardized_value": "Domestic",
+          "original_values": [
+            "Domestic"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is. New value from Batch 7.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Power Source"
+      ],
+      "spec_name": "Power Source",
+      "importance_level": "Tertiary",
+      "frequency": 7,
+      "reason_for_importance": "For commercial atta chakkis, 'Electric' is the overwhelmingly common power source. While 'Engine' or 'Solar' driven models exist for off-grid use, they are niche requirements. Thus, the spec is generally assumed.",
+      "external_signals": "Vast majority of modern commercial atta chakkis are electric.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen a few times with distinct and important values, elevating it from Exploring to Emerging.",
+      "values": [
+        {
+          "standardized_value": "Electric",
+          "original_values": [
+            "Electric"
+          ],
+          "frequency": 2,
+          "reason": "Standard industry term.",
+          "spec_status": "Settled"
+        },
+        {
+          "standardized_value": "Solar",
+          "original_values": [
+            "Solar"
+          ],
+          "frequency": 2,
+          "reason": "A niche, but distinct power source. Increased frequency promotes it to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Engine",
+          "original_values": [
+            "Engine"
+          ],
+          "frequency": 2,
+          "reason": "A distinct and important alternative power source. Increased frequency promotes it to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Diesel Engine",
+          "original_values": [
+            "Diesel Engine"
+          ],
+          "frequency": 1,
+          "reason": "A specific type of engine-driven power source. New value from Batch 7.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Automation Grade",
+        "Operation Mode"
+      ],
+      "spec_name": "Automation Grade",
+      "importance_level": "Tertiary",
+      "frequency": 5,
+      "reason_for_importance": "Specifies the level of automation. While 'Automatic' is common for this category, it doesn't typically differentiate models as much as primary performance specs.",
+      "external_signals": null,
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen multiple times. Most commercial machines are expected to be automatic, making this a default characteristic.",
+      "values": [
+        {
+          "standardized_value": "Automatic",
+          "original_values": [
+            "Automatic",
+            "Fully Automatic"
+          ],
+          "frequency": 3,
+          "reason": "Standardized as-is. 'Fully Automatic' is a common synonym. Frequency increase promotes status to Emerging.",
+          "spec_status": "Emerging"
+        },
+        {
+          "standardized_value": "Semi-Automatic",
+          "original_values": [
+            "Semi-Automatic"
+          ],
+          "frequency": 2,
+          "reason": "Standardized as-is. Increased frequency in this batch promotes it to Emerging status.",
+          "spec_status": "Emerging"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Condition"
+      ],
+      "spec_name": "Condition",
+      "importance_level": "Tertiary",
+      "frequency": 2,
+      "reason_for_importance": "Describes whether the product is new or used, which affects price and warranty but not the technical specifications of the model itself.",
+      "external_signals": "Used equipment is a separate market segment, but the underlying product model is the same.",
+      "spec_name_status": "Emerging",
+      "reason_for_status": "Seen for the first time in Batch 15 with both 'New' and 'Second Hand' values, indicating it's a relevant descriptor for listings.",
+      "values": [
+        {
+          "standardized_value": "New",
+          "original_values": [
+            "New"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Second Hand",
+          "original_values": [
+            "Second Hand"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Origin"
+      ],
+      "spec_name": "Origin",
+      "importance_level": "Tertiary",
+      "frequency": 1,
+      "reason_for_importance": "Indicates the manufacturing origin of the product. This can be an influencing factor for some buyers but is not a technical specification and does not define the model.",
+      "external_signals": "Country or region of origin is often listed in product details.",
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen for the first time in Batch 11. Its relevance and frequency need to be monitored.",
+      "values": [
+        {
+          "standardized_value": "Gujarat",
+          "original_values": [
+            "Gujarat"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 11.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Length"
+      ],
+      "spec_name": "Length",
+      "importance_level": "Tertiary",
+      "frequency": 1,
+      "reason_for_importance": "Ancillary dimension that describes the machine's size but is less critical for model definition than the primary 'Size' (chamber/stone diameter).",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. Its importance may increase if it becomes a common differentiator for specific body types.",
+      "values": [
+        {
+          "standardized_value": "3 ft",
+          "original_values": [
+            "3 ft"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17. Preserving original format as it's a dimensional spec.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Frame Size"
+      ],
+      "spec_name": "Frame Size",
+      "importance_level": "Tertiary",
+      "frequency": 1,
+      "reason_for_importance": "A specific construction detail about the machine's frame. It's an indicator of build quality but is a tertiary detail for model classification.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen once. Provides more granular information about the machine's build.",
+      "values": [
+        {
+          "standardized_value": "1.5 inch",
+          "original_values": [
+            "1.5 inch"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 17. Preserving original format as it's a dimensional spec.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    }
+  ],
+  "quaternary_specs": [
+    {
+      "original_names": [
+        "product_type"
+      ],
+      "spec_name": "Mentioned Product Type",
+      "importance_level": "Quaternary",
+      "frequency": 3,
+      "reason_for_importance": "Tracks mentions of product types that are outside the core 'Commercial Atta Chakki Machine' category, such as 'Hop Grinder', 'Chap Cutter', or parts like 'Atta Chakki Machine Body'. This helps in identifying and filtering out irrelevant data without discarding the information completely.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Created in Batch 11 to handle out-of-scope product mentions. Updated in Batch 19 with 'Chap Cutter' and in Batch 22 with 'Atta Chakki Machine Body'.",
+      "values": [
+        {
+          "standardized_value": "Atta Chakki Machine Body",
+          "original_values": [
+            "Atta Chakki Machine Body"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 22. Represents a component part, not a full machine.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Hop Grinder",
+          "original_values": [
+            "Hop Grinder"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 11.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "Chap Cutter",
+          "original_values": [
+            "Chap Cutter"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 19, identified as an out-of-scope product type.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Price",
+        "MRP"
+      ],
+      "spec_name": "Price",
+      "importance_level": "Quaternary",
+      "frequency": 2,
+      "reason_for_importance": "Price is a commercial attribute, not a technical specification of the product itself. While critical for transactions, it does not define the model.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen multiple times. It is not a feature of the machine.",
+      "values": [
+        {
+          "standardized_value": "20000.0",
+          "original_values": [
+            "20000.0"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "18500.0",
+          "original_values": [
+            "18500.0"
+          ],
+          "frequency": 1,
+          "reason": "New value from Batch 14.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Weight"
+      ],
+      "spec_name": "Weight",
+      "importance_level": "Quaternary",
+      "frequency": 2,
+      "reason_for_importance": "This spec was seen only for 'Atta Mixing Machine', which is a different product category. It's irrelevant for defining Commercial Atta Chakki Machine models.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen twice, but only on out-of-scope products.",
+      "values": [
+        {
+          "standardized_value": "10 kg",
+          "original_values": [
+            "10kg"
+          ],
+          "frequency": 1,
+          "reason": "Standardized to include space for consistency.",
+          "spec_status": "Exploring"
+        },
+        {
+          "standardized_value": "5 kg",
+          "original_values": [
+            "5kg"
+          ],
+          "frequency": 1,
+          "reason": "Standardized to include space for consistency.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Color"
+      ],
+      "spec_name": "Color",
+      "importance_level": "Quaternary",
+      "frequency": 1,
+      "reason_for_importance": "Cosmetic attribute with negligible impact on the functional performance or purchasing decision for a commercial machine.",
+      "external_signals": "Color is rarely a filter or a key selling point for industrial or commercial machinery.",
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Appeared once with a non-standard value, suggesting it's not a structured or important spec.",
+      "values": [
+        {
+          "standardized_value": "Olive Oil",
+          "original_values": [
+            "Olive Oil"
+          ],
+          "frequency": 1,
+          "reason": "Highly specific and likely non-standard color name.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Order Quantity"
+      ],
+      "spec_name": "Order Quantity",
+      "importance_level": "Quaternary",
+      "frequency": 1,
+      "reason_for_importance": "This is a transactional detail, not an intrinsic product specification. It's tracked for context but doesn't define the product model.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen for the first time in Batch 14. This is a commercial term, not a technical spec.",
+      "values": [
+        {
+          "standardized_value": "50",
+          "original_values": [
+            "50.0"
+          ],
+          "frequency": 1,
+          "reason": "Standardized to integer representation.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    },
+    {
+      "original_names": [
+        "Offer"
+      ],
+      "spec_name": "Offer",
+      "importance_level": "Quaternary",
+      "frequency": 1,
+      "reason_for_importance": "This is a promotional or sales-related term, not a technical product specification.",
+      "external_signals": null,
+      "spec_name_status": "Exploring",
+      "reason_for_status": "Seen for the first time in Batch 14. This is a commercial term.",
+      "values": [
+        {
+          "standardized_value": "1 free on 15",
+          "original_values": [
+            "1 free on 15"
+          ],
+          "frequency": 1,
+          "reason": "Standardized as-is.",
+          "spec_status": "Exploring"
+        }
+      ],
+      "change_history": []
+    }
+  ],
+  "refined_model_products": [
+    {
+      "name": "Atta Chakki Machine - 14 inch, 50 kg/hr, 3 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "14 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "50 kg/hr",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "3 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Material",
+          "spec_value": "Stainless Steel",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Stone Type",
+          "spec_value": "Diamond Stone",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Stone Temper",
+          "spec_value": "Full Temper",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Grinding Material",
+          "spec_value": "Atta, Sattu, Besan, Spices",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Automation Grade",
+          "spec_value": "Semi-Automatic",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Usage/Application",
+          "spec_value": "Commercial",
+          "spec_status": "Settled"
+        }
+      ],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "This model is based on a unique combination of key specs (Size, Capacity, Power). It has been reinforced by multiple partial matches. Data from Batch 11 provided the 'Single Phase' spec, completing the core profile for this entry-level commercial model.",
+        "secondary_spec_rationale": "The inclusion 'With Motor' was added based on new data that partially matched this model's profile and was re-confirmed in Batch 11. Batch 13 added 'Material: Stainless Steel'. Batch 17 added stone quality details like 'Diamond Stone' and 'Full Temper' from a strong partial match, enriching the model's profile.",
+        "tertiary_spec_rationale": "The range of grindable materials was added from a partial match in Batch 10. Batch 17 added 'Automation Grade: Semi-Automatic'. Batch 18 added 'Usage/Application: Commercial' from a strong partial match, confirming the expected usage."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 1 from Product 1.",
+          "Updated in Batch 5: Frequency increased and 'Inclusions: With Motor' added based on a partial match.",
+          "Updated in Batch 8: Frequency increased due to another partial match reinforcing the 'Inclusions: With Motor' spec.",
+          "Updated in Batch 10: Frequency increased. Added Tertiary Spec 'Grinding Material'. Promoted to Confirmed due to consistent reinforcement.",
+          "Updated in Batch 11: Frequency increased. Added 'Phase: Single Phase' from a new product, making the model more complete. Updated name to reflect this.",
+          "Updated in Batch 12: Frequency increased due to a strong partial match on Size, Grinding Mechanism, and Inclusions.",
+          "Updated in Batch 13: Frequency increased and 'Material: Stainless Steel' added from a partial match.",
+          "Updated in Batch 14: Frequency increased due to a partial match on 'Motor Power: 3 HP'.",
+          "Updated in Batch 15: Frequency increased due to partial matches with 14 inch size.",
+          "Updated in Batch 17: Frequency increased. Added secondary specs 'Stone Type' and 'Stone Temper' and tertiary spec 'Automation Grade' from a partial match on size and motor power.",
+          "Updated in Batch 18: Frequency increased. Added tertiary spec 'Usage/Application: Commercial' from a strong partial match.",
+          "Updated in Batch 22: Frequency increased due to a generic partial match for a 14 inch product."
+        ]
+      },
+      "frequency_seen": 13,
+      "scratchpad": "This model was significantly strengthened in Batch 11 with the addition of the 'Phase' spec, confirming its position as a well-defined, common model. Batch 17 added more granular quality specs for the stone."
+    },
+    {
+      "name": "Atta Chakki Machine - 18 inch, 150 kg/hr, 10 HP, Three Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "18 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "150 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "10 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Body Type",
+          "spec_value": "Emerald Type",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Model",
+          "spec_value": "Deluxe",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Generator Capacity",
+          "spec_value": "10 KVA",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "This combination of high-performance specs (18 inch, 150 kg/hr, 10 HP) was seen twice in Batch 3 and reinforced by products in Batch 4 & 6, providing very strong evidence for this model. 'Three Phase' was inferred as it's standard for a 10 HP motor and later confirmed.",
+        "secondary_spec_rationale": "The 'Emerald Type' body style and 'Deluxe' model name were consistently mentioned with this configuration. Batch 6 added 'Generator Capacity', indicating a power requirement for this heavy-duty model. Batch 20 added 'Inclusions: With Motor' based on a partial match.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 3 from Products 4 and 5.",
+          "Updated in Batch 4: Frequency increased from 2 to 3 and 'Model: Deluxe' added from new data.",
+          "Updated in Batch 6: Frequency increased from 3 to 4. Added 'Generator Capacity' from a new matching product.",
+          "Updated in Batch 7: No direct update, but the increase in frequency for specs like '18 inch' reinforces its definition.",
+          "Updated in Batch 15: Frequency increased due to partial matches with 10 HP motors.",
+          "Updated in Batch 19: Frequency increased due to a partial match on 'Size: 18 inch'.",
+          "Updated in Batch 20: Frequency increased due to partial match. Added 'Inclusions: With Motor'.",
+          "Updated in Batch 21: Frequency increased due to a generic partial match on 'Size: 18 inch'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 11,
+      "scratchpad": "Very strong signal for this model due to repeated identical products. The combination of specs is logical for a heavy-duty machine. This model fills a gap between the 16-inch and 20-inch models."
+    },
+    {
+      "name": "Atta Chakki Machine - 16 inch, 50 kg/hr, 5 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "16 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "50 kg/hr",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "5 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Material",
+          "spec_value": "Iron",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Motor Brand",
+          "spec_value": "Havells",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Hopper Capacity",
+          "spec_value": "5 kg",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Orientation",
+          "spec_value": "Vertical",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Grinding Material",
+          "spec_value": "Wheat",
+          "spec_status": "Emerging"
+        }
+      ],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "This model represents a very common configuration. Originally created with a 3 HP motor, data from Batch 2 (Products 2, 3, 5) strongly indicates that a 5 HP motor is standard for this size and capacity. The combination is now seen multiple times.",
+        "secondary_spec_rationale": "Secondary specs like Material, Motor Brand, and Hopper Capacity have been added from various products that match this model's primary spec profile. Batch 4 added 'Orientation: Vertical', and Batch 5 added 'Inclusions: With Motor'. 'Orientation' was reinforced in Batch 6.",
+        "tertiary_spec_rationale": "An 'Engine' powered variant was also seen for this configuration (Batch 2, Product 3), indicating an important but less common sub-type. Batch 16 added 'Grinding Material' based on a direct match."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 1 from Product 4 (as 3 HP).",
+          "Updated in Batch 2: Motor Power changed from 3 HP to 5 HP based on data from products 2, 3, and 5. Frequency increased. Promoted to Confirmed.",
+          "Updated in Batch 4: Frequency increased and 'Orientation: Vertical' added from new data.",
+          "Updated in Batch 5: Frequency increased. 'Inclusions: With Motor' added based on a strong partial match.",
+          "Updated in Batch 6: Spec 'Orientation: Vertical' reinforced by a new product.",
+          "Updated in Batch 7: No direct update, but the '5 HP' spec value was promoted to Dominant status based on overall data, strengthening the model's core.",
+          "Updated in Batch 13: Frequency increased due to a partial match on 'Size: 16 inch'.",
+          "Updated in Batch 15: No direct update, but confidence in 5HP models is high.",
+          "Updated in Batch 16: Frequency increased due to a strong partial match (Size: 16 inch, Motor Power: 5 HP). Added tertiary spec 'Grinding Material'.",
+          "Updated in Batch 18: Frequency increased due to a generic partial match on 'Size: 16 inch'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 9,
+      "scratchpad": "This model was significantly reinforced and corrected in Batch 2. The shift from 3 HP to 5 HP is a key learning. It represents a popular small commercial, single-phase machine. New data confirms its prevalence."
+    },
+    {
+      "name": "Atta Chakki Machine - 14 inch, 30 kg/hr, 3 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "14 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "30 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "3 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [
+        {
+          "spec_name": "Automation Grade",
+          "spec_value": "Automatic",
+          "spec_status": "Emerging"
+        }
+      ],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Identifies a model in the 14-inch category with a specific 30 kg/hr capacity. It sits between the existing 20 kg/hr and 50 kg/hr models for this size. In Batch 13, 'Motor Power: 3 HP' was added from a new product, completing the primary spec profile. Batch 17 provided another full match on the primary specs.",
+        "secondary_spec_rationale": "Secondary specs like Material (MS, Stainless Steel) and Brand (Mewar, Blue Star) have been observed, indicating it is produced by multiple manufacturers. To keep the model clean, these are noted in reasoning rather than listed.",
+        "tertiary_spec_rationale": "Batch 20 added 'Automation Grade: Automatic' based on a new product that perfectly matched the primary specs."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 4 from Product 2.",
+          "Updated in Batch 6: Frequency increased due to a partial match on capacity and phase, strengthening the model's validity.",
+          "Updated in Batch 13: Added 'Motor Power: 3 HP' and 'Material: MS' from new product. Promoted to Confirmed due to complete primary spec set and repeated sightings.",
+          "Updated in Batch 14: Frequency increased due to a partial match on 'Motor Power: 3 HP'.",
+          "Updated in Batch 15: Frequency increased due to partial matches with 14 inch size.",
+          "Updated in Batch 17: Frequency increased due to a direct match. Added 'Brand: Mewar'.",
+          "Updated in Batch 20: Frequency increased from a direct match. Added 'Automation Grade: Automatic'. Secondary specs like Material and Brand were diversified, so they are now noted in reasoning instead of being listed to avoid misrepresenting a single brand/material.",
+          "Updated in Batch 22: Frequency increased due to a partial match on key primary specs from a new product."
+        ]
+      },
+      "frequency_seen": 9,
+      "scratchpad": "This model was significantly enriched in Batch 13, completing its primary specs and justifying its promotion to 'Confirmed'. The direct match in Batch 17 and 20 solidifies its position as a common model. Brand and Material specs were removed from the model definition to better represent it as a multi-manufacturer product."
+    },
+    {
+      "name": "Atta Chakki Machine - 100 kg/hr, 10 HP, Three Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "100 kg/hr",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "10 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "This model is defined by its high capacity and motor power. It is distinct from the 7.5 HP, 100 kg/hr model because of the different motor. Size is missing but the other specs form a logical high-performance tier.",
+        "secondary_spec_rationale": "No secondary specs were provided for this specific combination initially, but 'Inclusions' was added from new data.",
+        "tertiary_spec_rationale": "No tertiary specs were provided."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 2 from Product 1.",
+          "Updated in Batch 5: Frequency increased. 'Inclusions: With Motor' added based on a partial match.",
+          "Updated in Batch 15: Frequency increased significantly due to multiple partial matches with 10 HP motors. Promoted to Confirmed due to high confidence from repeated sightings.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 6,
+      "scratchpad": "This could be a 20 inch or 24 inch model. The combination of 100 kg/hr and 10 HP is logical. The consistent appearance of 10 HP motors confirms the validity of this model tier."
+    },
+    {
+      "name": "Atta Chakki Machine - 80 kg/hr, 10 HP, Three Phase, Double Chamber",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "80 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "10 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Chamber Type",
+          "spec_value": "Double Chamber",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Hopper Capacity",
+          "spec_value": "10 kg",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Model",
+          "spec_value": "BH5",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Grinding Material",
+          "spec_value": "Flour",
+          "spec_status": "Exploring"
+        }
+      ],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 12 data. While lacking Size, the combination of a high-power 10 HP motor and the unique 'Double Chamber' feature defined a distinct model. Batch 13 added Grinding Capacity and Phase, creating a complete primary spec profile.",
+        "secondary_spec_rationale": "The model is well-defined with several unique secondary specs (Chamber Type, Hopper Capacity, Model Name) from the source product.",
+        "tertiary_spec_rationale": "Grinding Material was explicitly mentioned."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 12.",
+          "Updated in Batch 13: Added 'Grinding Capacity: 80 kg/hr' and 'Phase: Three Phase'. Model promoted to Confirmed.",
+          "Updated in Batch 15: Frequency increased due to partial matches with 10 HP motors.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 6,
+      "scratchpad": "This model was significantly enriched in Batch 13, adding key primary specs and allowing its promotion to 'Confirmed'. The 'Double Chamber' feature makes it a unique, high-performance model. Size is the only missing core spec."
+    },
+    {
+      "name": "Atta Chakki Machine - 14 inch, 20 kg/hr, 2 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "14 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "20 kg/hr",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "2 HP",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Warranty",
+          "spec_value": "1 Year",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Brand",
+          "spec_value": "Shubham",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Motor Brand",
+          "spec_value": "Rathi",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Machine Weight Class",
+          "spec_value": "Heavy",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Placement",
+          "spec_value": "Side Mounted",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Motor Winding Material",
+          "spec_value": "Copper",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Wheels",
+          "spec_value": "Yes",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Length",
+          "spec_value": "3 ft",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Frame Size",
+          "spec_value": "1.5 inch",
+          "spec_status": "Exploring"
+        }
+      ],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "This model represents a lower-specification version of the 14-inch model, featuring a smaller motor (2 HP vs. 3 HP) and lower capacity (20 kg/hr vs. 50 kg/hr). Batch 17 added 'Phase: Single Phase' from a highly detailed product, completing the primary spec profile.",
+        "secondary_spec_rationale": "No secondary specs were available initially, but Batch 14 added a '1 Year' warranty. Batch 17 added a rich set of secondary specs (Brand, Motor Brand, Weight Class, etc.), making it a very well-defined model.",
+        "tertiary_spec_rationale": "Batch 17 added dimensional specs 'Length' and 'Frame Size'."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 3 from Product 2.",
+          "Updated in Batch 14: Frequency increased. Added 'Warranty: 1 Year' and confirmed 'Grinding Mechanism: Stone-based'. Promoted to Confirmed due to strong reinforcement.",
+          "Updated in Batch 15: Frequency increased due to partial matches with 14 inch size.",
+          "Updated in Batch 17: Frequency increased. Added 'Phase: Single Phase' and a large number of secondary and tertiary specs from a very detailed product, solidifying its Confirmed status.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 5,
+      "scratchpad": "New lower-end 14 inch model identified. Batch 14 data was crucial in confirming its specs. Batch 17 provided a wealth of new details, turning this from a basic model into a very richly defined one."
+    },
+    {
+      "name": "Atta Chakki Machine - 18 inch, 70 kg/hr, 5 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "18 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "70 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "5 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Stone Type",
+          "spec_value": "Thin",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Power Consumption",
+          "spec_value": "4 units/hr",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Forms a distinct mid-range model based on Size and Capacity. The model was initially missing a motor power. Data from Batch 22 provided 'Motor Power: 5 HP', which completed the primary spec profile and allowed for its promotion to Confirmed status.",
+        "secondary_spec_rationale": "The inclusion of 'Stone Type' adds a layer of detail specific to this stone-based model. Batch 20 added 'Inclusions: With Motor' from a partial match. Batch 22 added the 'Power Consumption' spec from a new, detailed product, enriching the model further.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 1.",
+          "Updated in Batch 19: Frequency increased due to a partial match on 'Size: 18 inch'.",
+          "Updated in Batch 20: Frequency increased due to partial match. Added 'Inclusions: With Motor'.",
+          "Updated in Batch 22: Frequency increased. Added 'Motor Power: 5 HP' and 'Power Consumption: 4 units/hr' from a direct match, allowing promotion to Confirmed. Name updated."
+        ]
+      },
+      "frequency_seen": 4,
+      "scratchpad": "This 'Potential' model was significantly enriched in Batch 22 with the missing 'Motor Power' spec, making it a fully defined and Confirmed model. It now represents a clear configuration in the 18-inch class."
+    },
+    {
+      "name": "Atta Chakki Machine - 24 inch, 200 kg/hr, 10 HP, Three Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "24 inch",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "200 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "10 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Warranty",
+          "spec_value": "1 Year",
+          "spec_status": "Emerging"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Condition",
+          "spec_value": "New",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Power Source",
+          "spec_value": "Electric",
+          "spec_status": "Settled"
+        }
+      ],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Represents a large-scale, industrial model defined by its large size and Three Phase power requirement. Batch 15 added the '10 HP' Motor Power spec. Batch 18 added the crucial 'Grinding Capacity: 200 kg/hr', completing the primary spec profile and justifying promotion to Confirmed.",
+        "secondary_spec_rationale": "Batch 18 added 'Warranty: 1 Year' from the new product data.",
+        "tertiary_spec_rationale": "The 'Condition' spec was added from Batch 15 data. Batch 18 added 'Power Source: Electric', confirming the default."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 1 from Product 2.",
+          "Updated in Batch 15: Frequency increased to 3. Added 'Motor Power: 10 HP' from new data, significantly strengthening the model. Added 'Condition' spec based on new data.",
+          "Updated in Batch 18: Frequency increased. Added 'Grinding Capacity: 200 kg/hr', 'Warranty: 1 Year', and 'Power Source: Electric' from a detailed product. Promoted to Confirmed.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 4,
+      "scratchpad": "High-end model. The addition of Grinding Capacity in this batch was the final piece needed to make this a Confirmed and well-defined model."
+    },
+    {
+      "name": "Atta Chakki Machine - 12 inch, 15 kg/hr, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "12 inch",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "15 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Power Consumption",
+          "spec_value": "2 units/hr",
+          "spec_status": "Emerging"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 9 data representing a new small-sized model (12 inch). The model was significantly enriched in Batch 21 with key primary specs (Grinding Capacity, Phase). Batch 22 provided a reinforcing product, justifying its promotion to Confirmed status.",
+        "secondary_spec_rationale": "Batch 21 added 'Power Consumption', a key operational detail.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred. Motor Power is the key missing primary spec, likely 1-2 HP."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 9.",
+          "Updated in Batch 21: Frequency increased. Added 'Grinding Capacity: 15 kg/hr', 'Phase: Single Phase', and 'Power Consumption: 2 units/hr' from a detailed new product. Name updated to reflect enrichment.",
+          "Updated in Batch 22: Frequency increased from a strong partial match. Promoted to Confirmed due to repeated sightings and strong primary spec definition."
+        ]
+      },
+      "frequency_seen": 3,
+      "scratchpad": "This model was very generic but was perfectly enriched by data in Batch 21. The reinforcing data in Batch 22 confirms it as a common entry-level commercial or large domestic machine."
+    },
+    {
+      "name": "Atta Chakki Machine - 20 inch, 100 kg/hr, 7.5 HP, Three Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "20 inch",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "100 kg/hr",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "7.5 HP",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Warranty",
+          "spec_value": "1 Year",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Brand",
+          "spec_value": "Vishv Udyog",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "RPM",
+          "spec_value": "1440 RPM",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Voltage",
+          "spec_value": "220V",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Brand",
+          "spec_value": "Crompton",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a single, highly detailed product record from Batch 2. The comprehensive set of primary specs (Size, Capacity, Power, Phase) makes this a very strong and realistic model combination, justifying immediate confirmation.",
+        "secondary_spec_rationale": "A rich set of secondary specs were available from the source product, providing a detailed profile of a higher-end commercial machine.",
+        "tertiary_spec_rationale": "Standard tertiary specs like 'Usage/Application: Commercial' are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 2 from Product 4.",
+          "Updated in Batch 15: RPM spec reinforced.",
+          "Updated in Batch 20: Frequency increased due to a partial match.",
+          "Updated in Batch 21: Frequency increased due to a generic partial match on 'Size: 20 inch'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 3,
+      "scratchpad": "This is a perfect example of a well-defined product. The 220V on a Three Phase machine is unusual (typically 415V/440V in India), but recorded as specified. This might be a data error or a specific configuration. Value for Size spec '20 inch' promoted to Emerging."
+    },
+    {
+      "name": "Atta Chakki Machine - 5 HP, Three Phase, Double Chamber",
+      "primary_specs": [
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "5 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Chamber Type",
+          "spec_value": "Double Chamber",
+          "spec_status": "Emerging"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Grinding Material",
+          "spec_value": "Sugar Grinding",
+          "spec_status": "Emerging"
+        }
+      ],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 15. This model captures a combination not previously seen: a 5 HP motor with a Three Phase connection. Batch 19 provided a reinforcing product with a key 'Double Chamber' feature, justifying its promotion to Confirmed. Batch 20 reinforced the primary specs again.",
+        "secondary_spec_rationale": "The 'Double Chamber' feature, added in Batch 19, is a significant differentiator for this model. A variant with 'Single Chamber' was seen in Batch 20, confirming the primary spec combination is common.",
+        "tertiary_spec_rationale": "Batch 19 also provided a specific application: 'Sugar Grinding'."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 15.",
+          "Updated in Batch 19: Frequency increased. Added 'Chamber Type: Double Chamber' and 'Grinding Material: Sugar Grinding' from a new product. Promoted to Confirmed due to strong reinforcement and new differentiating features. Name updated.",
+          "Updated in Batch 20: Frequency increased due to a match on primary specs. Noted a 'Single Chamber' variant.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 3,
+      "scratchpad": "This model was a 'Potential' model that was significantly strengthened by data in Batch 19, allowing it to become 'Confirmed'. It highlights a distinct product variant: a Three Phase, 5 HP machine. The new data in Batch 20 confirms the primary specs are common, with variations in chamber type (Single vs Double)."
+    },
+    {
+      "name": "Atta Chakki Machine - 18 inch, 80 kg/hr, 5 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "18 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "80 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "5 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a well-defined product in Batch 11. This model establishes a new, clear configuration for the 18-inch size with a specific capacity (80 kg/hr) and motor combination. It is distinct from the 70 kg/hr and 150 kg/hr models for this size.",
+        "secondary_spec_rationale": "Batch 20 added 'Inclusions: With Motor' based on a partial match, a common feature for this type of machine.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 11.",
+          "Updated in Batch 19: Frequency increased due to a partial match on 'Size: 18 inch'.",
+          "Updated in Batch 20: Frequency increased due to partial match. Added 'Inclusions: With Motor'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 3,
+      "scratchpad": "This is a strong potential model as all core primary specs are present. It helps to better define the 18-inch product landscape."
+    },
+    {
+      "name": "Atta Chakki Machine - 18 inch, 100 kg/hr, 22 HP, Three Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "18 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "100 kg/hr",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "22 HP",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 7 data. This model represents a high-power variant in the 18-inch class, with a significantly higher motor power (22 HP) than other seen models of this size. 'Three Phase' and 'Stone-based' are inferred as it's a standard requirement for such a powerful motor.",
+        "secondary_spec_rationale": "Batch 20 added 'Inclusions: With Motor' based on a partial match.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 7.",
+          "Updated in Batch 19: Frequency increased due to a partial match on 'Size: 18 inch'.",
+          "Updated in Batch 20: Frequency increased due to partial match. Added 'Inclusions: With Motor'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 3,
+      "scratchpad": "The 22 HP motor is a new high-end data point. This model likely targets heavy commercial use. The 100 kg/hr capacity for a 22 HP motor is noted and will be monitored against future data for consistency."
+    },
+    {
+      "name": "Atta Chakki Machine - 18 inch, 75 kg/hr, 7.5 HP",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "18 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "75 kg/hr",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "7.5 HP",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Grinding Material",
+          "spec_value": "Wheat",
+          "spec_status": "Emerging"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a new, well-defined combination of primary specs from Batch 16. This model identifies a specific performance point in the 18-inch category (75 kg/hr with a 7.5 HP motor), which is distinct from other 18-inch models.",
+        "secondary_spec_rationale": "Batch 20 added 'Inclusions: With Motor' based on a partial match.",
+        "tertiary_spec_rationale": "'Grinding Material' was captured from the source data."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 16.",
+          "Updated in Batch 19: Frequency increased due to a partial match on 'Size: 18 inch'.",
+          "Updated in Batch 20: Frequency increased due to partial match. Added 'Inclusions: With Motor'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 3,
+      "scratchpad": "This is a strong new potential model as its core primary specs are defined. The 'Phase' is missing, but for a 7.5 HP motor it could be either Single or Three Phase, so awaiting more data to confirm. This model adds more detail to the 18-inch product range."
+    },
+    {
+      "name": "Atta Chakki Machine - 14 inch, 90 kg/hr, 10 HP, Three Phase, Pulley Type",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "14 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "10 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "90 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Drive Type",
+          "spec_value": "Pulley Type",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Material",
+          "spec_value": "Steel",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Voltage",
+          "spec_value": "440V",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "Without Motor",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Cyclone Blower",
+          "spec_value": "Yes",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "RPM",
+          "spec_value": "1440 RPM",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Output Quality",
+          "spec_value": "Choker Less",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Power Consumption",
+          "spec_value": "7 unit/hr",
+          "spec_status": "Emerging"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Confirmed",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 8. Represents a high-power configuration (10 HP) for a 14-inch machine. Batch 15 provided critical missing specs: Grinding Capacity (90 kg/hr) and Phase (Three Phase), completing its primary profile.",
+        "secondary_spec_rationale": "This model introduces the 'Pulley Type' drive mechanism. Batch 15 added a rich set of secondary specs (Material, Voltage, Inclusions, Cyclone Blower, RPM, etc.), making it a very well-defined model.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 8.",
+          "Updated in Batch 15: Frequency increased to 3. Added 'Grinding Capacity', 'Phase', and a large number of secondary specs from two new products. Promoted to Confirmed due to complete primary spec set and high detail.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 3,
+      "scratchpad": "A 10 HP motor on a 14-inch chakki is a very high power-to-size ratio. The detailed specs from Batch 15 confirm this is a specific, high-performance model variant."
+    },
+    {
+      "name": "Atta Chakki Machine - 14 inch, 35 kg/hr, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "14 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "35 kg/hr",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Brand",
+          "spec_value": "Swastik",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a well-defined product in Batch 7. This model introduces a new capacity point (35 kg/hr) for the popular 14-inch size, distinguishing it from the existing 20, 30, and 50 kg/hr variants.",
+        "secondary_spec_rationale": "Brand 'Swastik' was included from the source product.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred. Motor Power is missing but is likely to be around 2-3 HP for this configuration."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 7.",
+          "Updated in Batch 15: Frequency increased due to partial matches with 14 inch size.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 3,
+      "scratchpad": "This adds another granularity level to the 14-inch category. Awaiting Motor Power information for this configuration."
+    },
+    {
+      "name": "Atta Chakki Machine - 16 inch, 70 kg/hr, 7.5 HP, Khara Chakki",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "16 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "70 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "7.5 HP",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Body Type",
+          "spec_value": "Khara Chakki",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Brand",
+          "spec_value": "Sudama Agro Engineering",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a highly detailed product in Batch 9. This represents a new configuration for the 16-inch size, featuring a higher power motor (7.5 HP) and capacity (70 kg/hr) than previously seen models of this size.",
+        "secondary_spec_rationale": "The model is well-defined with the 'Khara Chakki' body type and a specific brand, which are important differentiators.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred. Phase is likely Three Phase for a 7.5 HP motor."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 9.",
+          "Updated in Batch 22: Frequency increased due to a partial match on Size and Grinding Capacity."
+        ]
+      },
+      "frequency_seen": 2,
+      "scratchpad": "This is a strong new potential model because it's well-specified. A new 'Trolley Type' model with the same Size and Motor Power was seen in Batch 18, suggesting these are two distinct body styles for a similar performance class."
+    },
+    {
+      "name": "Atta Chakki Machine - 20 inch, 10 HP",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "20 inch",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "10 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [
+        {
+          "spec_name": "Grinding Material",
+          "spec_value": "Wheat",
+          "spec_status": "Emerging"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 17 data. This model captures a new combination of a 20-inch size with a powerful 10 HP motor. While capacity and phase are missing, this pairing is logical for a high-performance machine.",
+        "secondary_spec_rationale": "No secondary specs were available in the source data.",
+        "tertiary_spec_rationale": "'Grinding Material' was explicitly mentioned."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 17.",
+          "Updated in Batch 20: Frequency increased due to a partial match.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 2,
+      "scratchpad": "This new potential model helps bridge the gap between other 20-inch models (like the 7.5HP variant) and the higher-power 10HP models where size was previously unknown. Awaiting more data to confirm capacity and phase."
+    },
+    {
+      "name": "Atta Chakki Machine - 16 inch, 40 kg/hr, 3 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "16 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "3 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "40 kg/hr",
+          "spec_status": "Emerging"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 18 data. This represents a logical combination: a 16-inch machine with a 3 HP motor and Single Phase connection. Batch 19 added a crucial 'Grinding Capacity' of 40 kg/hr, making this a much more complete and viable model.",
+        "secondary_spec_rationale": "No secondary specs were provided in the source data.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 18.",
+          "Updated in Batch 19: Frequency increased. Added 'Grinding Capacity: 40 kg/hr' from a new product, enriching the model's profile. Name updated.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 2,
+      "scratchpad": "This potential model was significantly strengthened in this batch with the addition of a grinding capacity. It adds more granularity to the popular 16-inch size category."
+    },
+    {
+      "name": "Combined Atta Chakki and Rice Mill - 3 HP, Three Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Combined Atta Chakki and Rice Mill",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "3 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 11 data. This model represents a distinct product sub-category: a combined-function machine. The 'Combined Atta Chakki and Rice Mill' value for Grinding Mechanism is the key differentiator.",
+        "secondary_spec_rationale": "No secondary specs were provided.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 11.",
+          "Updated in Batch 14: Frequency increased due to a partial match on 'Motor Power: 3 HP'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 2,
+      "scratchpad": "This is the first model of a combined machine. This could be a new fork in the category. Awaiting more data to see if other specs like 'Size' are relevant for this type."
+    },
+    {
+      "name": "Atta Chakki Pulverizer - 25 kg/hr, 3 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Pulverizer",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "25 kg/hr",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "3 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [
+        {
+          "spec_name": "Usage/Application",
+          "spec_value": "Commercial",
+          "spec_status": "Settled"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "This is the first small-scale Pulverizer model identified. It's defined by its grinding mechanism, creating a new sub-category. The combination of low capacity, motor power, and single phase makes it a distinct product for smaller commercial setups.",
+        "secondary_spec_rationale": "No secondary specs were available.",
+        "tertiary_spec_rationale": "Usage/Application was explicitly mentioned and is included."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 4 from Product 3.",
+          "Updated in Batch 14: Frequency increased due to a partial match on 'Motor Power: 3 HP'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 2,
+      "scratchpad": "Important to establish this new 'Pulverizer' sub-category. Specs like 'Size' may not apply to pulverizers in the same way as stone chakkis. Awaiting more data on pulverizers to understand their unique key specs."
+    },
+    {
+      "name": "Atta Chakki Machine - 14 inch, 40 kg/hr, 5 HP, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "14 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "40 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "5 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 13. This model captures a plausible combination of capacity, motor power, and phase. Batch 17 added the crucial 'Size: 14 inch' spec, making the model much stronger and more defined.",
+        "secondary_spec_rationale": "Batch 17 added 'Inclusions: With Motor' from a product matching this profile.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 13.",
+          "Updated in Batch 17: Frequency increased. Added 'Size: 14 inch' and 'Inclusions: With Motor' based on a new product, making this a much more complete and viable model.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 2,
+      "scratchpad": "New potential model representing a specific performance point (40 kg/hr with 5 HP motor). The addition of 'Size' in batch 17 significantly strengthened its validity."
+    },
+    {
+      "name": "Atta Chakki Machine - 10 inch",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "10 inch",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Warranty",
+          "spec_value": "6 Years",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Stone Brand",
+          "spec_value": "Karnavati",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "Without Motor",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Brand",
+          "spec_value": "Venus",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 19 data. This model represents a new, smaller size class (10 inch). The size itself is the primary differentiator. 'Stone-based' is inferred from the presence of a 'Stone Brand'. Batch 21 added a new product for this size.",
+        "secondary_spec_rationale": "The model is defined with a specific warranty period and stone brand from Batch 19. Batch 21 added a new variant with 'Brand: Venus' and 'Inclusions: Without Motor', which have been added to this model to reflect the diversity of specs seen for this emerging size.",
+        "tertiary_spec_rationale": "Standard tertiary specs like Motor Power and Capacity are missing and will need more data to be populated."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 19.",
+          "Updated in Batch 21: Frequency increased. Added 'Inclusions: Without Motor' and 'Brand: Venus' from a new product.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 2,
+      "scratchpad": "This potential model for the smallest size seen (10 inch) has been reinforced. It seems to have diverse secondary specs, including both 'with' and 'without motor' variants, which is common. Awaiting more data to confirm primary specs."
+    },
+    {
+      "name": "Engine-Powered Blade Grinder - 70 kg/hr",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Blade-based",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "70 kg/hr",
+          "spec_status": "Emerging"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [
+        {
+          "spec_name": "Power Source",
+          "spec_value": "Engine",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Usage/Application",
+          "spec_value": "Commercial",
+          "spec_status": "Settled"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a unique product in Batch 20 featuring a 'Blade' grinding mechanism. This, combined with the 'Engine' power source, defines a new niche model for off-grid or specific mobile applications.",
+        "secondary_spec_rationale": "No secondary specs were provided in the source data.",
+        "tertiary_spec_rationale": "The Power Source and Usage were explicitly mentioned and are key to defining this model's niche."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 20.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This is the first model with a 'Blade-based' mechanism and 'Engine' power source. It represents a new sub-category of non-electric, stoneless grinders. Awaiting more data to populate missing primary specs like Motor Power equivalent or Size."
+    },
+    {
+      "name": "Atta Chakki Machine - 100 kg/hr, 5 HP, Single Phase, Trolley Type",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "100 kg/hr",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "5 HP",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Body Type",
+          "spec_value": "Trolley Type",
+          "spec_status": "Emerging"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a well-defined product in Batch 8. This combination (100 kg/hr with a 5 HP single-phase motor) defines a specific mid-to-high capacity model. 'Stone-based' is inferred.",
+        "secondary_spec_rationale": "The 'Trolley Type' body is a new feature for portability or specific installations.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 8.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This is a strong potential model as it has multiple primary specs. The Size is missing, but is likely in the 16-18 inch range. The 'Trolley Type' is a good differentiator."
+    },
+    {
+      "name": "Atta Chakki Machine - 16 inch, 7.5 HP, Trolley Type",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "16 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "7.5 HP",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Body Type",
+          "spec_value": "Trolley Type",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Model",
+          "spec_value": "1618 DSP",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Grinding Material",
+          "spec_value": "Flour and Spices",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Automation Grade",
+          "spec_value": "Semi-Automatic",
+          "spec_status": "Emerging"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a detailed product in Batch 18. This model identifies a new combination for the 16-inch size, featuring a 7.5 HP motor. It's distinct from another 16-inch, 7.5 HP model that has a 'Khara Chakki' body type, suggesting these are different variants.",
+        "secondary_spec_rationale": "The model is well-defined with a specific Body Type ('Trolley Type') and manufacturer model name, which are key differentiators.",
+        "tertiary_spec_rationale": "Grinding material and automation grade were captured from the source data."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 18.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This new potential model, along with the 'Khara Chakki' variant, helps define the 7.5 HP segment within the 16-inch size category. Phase is missing but is likely Three Phase for this motor power."
+    },
+    {
+      "name": "Stoneless Atta Chakki Machine - 200 kg/hr",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "200 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stoneless",
+          "spec_status": "Exploring"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [
+        {
+          "spec_name": "Power Source",
+          "spec_value": "Electric",
+          "spec_status": "Settled"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "This model is defined by the 'Stoneless' mechanism, placing it in a separate sub-category. The high capacity is a key defining feature.",
+        "secondary_spec_rationale": "No secondary specs were provided.",
+        "tertiary_spec_rationale": "'Power Source' is included as it was explicitly mentioned, but it's a tertiary detail."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 1 from Product 5.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "First stoneless model. Specs like 'Size' may not apply in the same way. Awaiting more data on stoneless variants to understand their key differentiators. A new stone-based 200 kg/hr model was seen in batch 10, reinforcing the importance of the Grinding Mechanism spec."
+    },
+    {
+      "name": "Flour Mill Plant - 500 kg/hr, 2 Grinders",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "500 kg/hr",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Number of Grinders",
+          "spec_value": "2",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created a new model for a 'Flour Mill Plant', a distinct product type. Defined by its very high capacity (500 kg/hr) and the new primary spec 'Number of Grinders', which signifies a multi-unit system rather than a single machine.",
+        "secondary_spec_rationale": "No secondary specs were available.",
+        "tertiary_spec_rationale": "Standard tertiary specs like 'Phase: Three Phase' and 'Power Source: Electric' are inferred for a plant of this scale."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 5 from a 'Flour Mill Plant' product.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This represents a new, larger-scale product segment within the category. The primary specs differ from standard chakkis. Will monitor for more 'Plant' type products to better define their key attributes, such as motor power per grinder."
+    },
+    {
+      "name": "Atta Chakki Machine - 16 inch, Without Motor",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "16 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "Without Motor",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Orientation",
+          "spec_value": "Vertical",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Brand",
+          "spec_value": "Somani",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Creates a model for a common size (16 inch) but with the specific and important distinction of being sold 'Without Motor'. This is a key purchasing option that affects price and setup.",
+        "secondary_spec_rationale": "The model is enriched with brand and orientation details from the source product.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 6 from a product specifying 'Without Motor'.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This model captures an important variation (Without Motor) for a popular size. It's distinct from the main 16-inch model which includes a motor."
+    },
+    {
+      "name": "Atta Chakki Machine - 36 inch",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "36 inch",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Warranty",
+          "spec_value": "3 months",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Shaft Size",
+          "spec_value": "60 mm",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Bearing Number",
+          "spec_value": "6212/6208",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Stone Brand",
+          "spec_value": "Gajraj",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "This model represents a new, very large size class (36 inch) for heavy industrial use. The size itself is a primary differentiator for a top-tier machine.",
+        "secondary_spec_rationale": "The model is well-defined with several specific technical secondary specs (Shaft Size, Bearing Number, Stone Brand), indicating a detailed product listing for a high-end machine.",
+        "tertiary_spec_rationale": "Standard tertiary specs like 'Phase: Three Phase' are inferred for a machine of this size."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 6 from a detailed product record for a 36-inch machine.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "New high-end model identified. The detailed secondary specs suggest this is a real product configuration. Awaiting more data to populate missing primary specs like Motor Power and Grinding Capacity."
+    },
+    {
+      "name": "Atta Chakki Machine - 22 inch, Solar Powered",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "22 inch",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [
+        {
+          "spec_name": "Power Source",
+          "spec_value": "Solar",
+          "spec_status": "Emerging"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a unique product in Batch 8 with a new large size (22 inch) and a rare power source. 'Stone-based' is inferred as the default.",
+        "secondary_spec_rationale": "No secondary specs provided.",
+        "tertiary_spec_rationale": "The 'Solar' power source is a key, albeit tertiary, differentiator for this model, targeting off-grid applications."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 8.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This model introduces a new size (22 inch) and a niche power source. Awaiting more data to populate other primary specs like Motor Power and Grinding Capacity."
+    },
+    {
+      "name": "Atta Chakki Machine - 18x4.5 inch, Heavy",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "18x4.5 inch",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Machine Weight Class",
+          "spec_value": "Heavy",
+          "spec_status": "Emerging"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 9 data. This model introduces a new dimensional format for Size (18x4.5 inch), which likely refers to both diameter and thickness of the stone. 'Stone-based' is inferred.",
+        "secondary_spec_rationale": "The 'Heavy' weight class was explicitly mentioned, indicating a robust build, and has been captured as a new secondary spec.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 9.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "The '18x4.5 inch' size is a new format and needs to be monitored. The 'Heavy' type has been standardized to a new secondary spec 'Machine Weight Class' for clarity."
+    },
+    {
+      "name": "Atta Chakki Machine - 200 kg/hr, Stone-based",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "200 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Inclusions",
+          "spec_value": "With Motor",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Stone Material",
+          "spec_value": "Granite",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a product in Batch 10. Defines a high-capacity, stone-based model. It's distinct from the existing 200 kg/hr model which is stoneless, highlighting the importance of the Grinding Mechanism spec.",
+        "secondary_spec_rationale": "Secondary specs 'Inclusions' and the new 'Stone Material' were captured from the source product, providing extra detail.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 10.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "New high-capacity stone-based model. Awaiting more data to populate missing primary specs like Size and Motor Power."
+    },
+    {
+      "name": "Atta Chakki Machine - 30 inch, Three Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "30 inch",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Three Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 10 data. Represents a new large-size class (30 inch), sitting between the 24-inch and 36-inch models. The size and phase define a heavy-duty product tier.",
+        "secondary_spec_rationale": "No secondary specs were provided.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 10.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "New high-end model defined primarily by its size. Awaiting more data to populate key primary specs like Grinding Capacity and Motor Power."
+    },
+    {
+      "name": "Stainless Steel Pulverizer - 2 HP",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Pulverizer",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "2 HP",
+          "spec_status": "Emerging"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Material",
+          "spec_value": "Stainless Steel",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Warranty",
+          "spec_value": "1 Year Replacement",
+          "spec_status": "Exploring"
+        }
+      ],
+      "tertiary_specs": [
+        {
+          "spec_name": "Origin",
+          "spec_value": "Gujarat",
+          "spec_status": "Exploring"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 11 data. This defines a new, smaller pulverizer model (2 HP), distinct from the existing 3 HP model. The 'Pulverizer' mechanism is the primary classifier.",
+        "secondary_spec_rationale": "This model is well-defined with secondary specs for material and warranty, adding useful detail.",
+        "tertiary_spec_rationale": "'Origin' was explicitly mentioned and captured."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 11.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This new pulverizer model helps build out this sub-category. It is missing key primary specs like 'Grinding Capacity' and 'Phase', which are needed to make it a confirmed model."
+    },
+    {
+      "name": "Flour Mill Plant - 400 kg/hr",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "400 kg/hr",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 12 data for a 'Flour Mill Plant'. This model defines a new capacity tier (400 kg/hr) for the plant sub-category, distinct from the existing 500 kg/hr model.",
+        "secondary_spec_rationale": "No secondary specs were provided.",
+        "tertiary_spec_rationale": "Key specs like 'Number of Grinders' and 'Motor Power' are inferred to be high but are missing."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 12.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "New potential model for the 'Flour Mill Plant' sub-category. Awaiting more details to fully define it."
+    },
+    {
+      "name": "Solar Atta Chakki Machine - 50 kg/hr",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "50 kg/hr",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [
+        {
+          "spec_name": "Power Source",
+          "spec_value": "Solar",
+          "spec_status": "Emerging"
+        }
+      ],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 12 data. This model combines a common capacity (50 kg/hr) with the niche 'Solar' power source, creating a distinct product for off-grid applications. It's different from the other solar model which has an unknown capacity.",
+        "secondary_spec_rationale": "No secondary specs were provided.",
+        "tertiary_spec_rationale": "The 'Solar' power source is the key differentiator for this model."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 12.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This helps to build out the 'Solar' powered sub-category with a specific performance metric. Awaiting more data to populate missing primary specs like Size and Motor Power."
+    },
+    {
+      "name": "Jali-based Atta Chakki Machine - 2 HP",
+      "primary_specs": [
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Jali-based",
+          "spec_status": "Exploring"
+        },
+        {
+          "spec_name": "Motor Power",
+          "spec_value": "2 HP",
+          "spec_status": "Emerging"
+        }
+      ],
+      "secondary_specs": [],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from Batch 14. This model introduces a new 'Jali-based' grinding mechanism, which likely refers to a pulverizer-style machine that uses screens/meshes. It's a small-scale model with a 2 HP motor.",
+        "secondary_spec_rationale": "No secondary specs were provided.",
+        "tertiary_spec_rationale": "Standard tertiary specs like Phase (likely Single Phase) are inferred."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 14.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This new model is important as it identifies a new 'Jali-based' mechanism, which could be a significant sub-type of stoneless or pulverizer machines. Awaiting more data to populate other key specs like Grinding Capacity."
+    },
+    {
+      "name": "Atta Chakki Machine - 14 inch, 15 kg/hr, Single Phase",
+      "primary_specs": [
+        {
+          "spec_name": "Size",
+          "spec_value": "14 inch",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Capacity",
+          "spec_value": "15 kg/hr",
+          "spec_status": "Emerging"
+        },
+        {
+          "spec_name": "Phase",
+          "spec_value": "Single Phase",
+          "spec_status": "Dominant"
+        },
+        {
+          "spec_name": "Grinding Mechanism",
+          "spec_value": "Stone-based",
+          "spec_status": "Dominant"
+        }
+      ],
+      "secondary_specs": [
+        {
+          "spec_name": "Power Consumption",
+          "spec_value": "2 units/hr",
+          "spec_status": "Emerging"
+        }
+      ],
+      "tertiary_specs": [],
+      "Model_status": "Potential",
+      "reasoning_trace": {
+        "primary_spec_rationale": "Created from a detailed product in Batch 21. This model identifies a new low-capacity tier (15 kg/hr) for the popular 14-inch size. This configuration is distinct from other 14-inch models.",
+        "secondary_spec_rationale": "The model includes a 'Power Consumption' spec, providing useful operational cost information.",
+        "tertiary_spec_rationale": "Standard tertiary specs are inferred. The key missing primary spec is Motor Power, which is likely to be around 1-2 HP for this configuration."
+      },
+      "source_info": {
+        "from_call_recordings": true,
+        "from_pdf": false,
+        "iteration_history": [
+          "Created in Batch 21.",
+          "Not updated in Batch 22."
+        ]
+      },
+      "frequency_seen": 1,
+      "scratchpad": "This new potential model adds another level of granularity to the 14-inch segment. The 15 kg/hr capacity was also seen in a 12-inch model in this same batch, suggesting this is a new emerging standard for smaller machines."
+    }
+  ],
+  "scratchpad": "Batch 22: Key Learnings & Actions:\n1. Model Enrichment and Promotion: \n   - The 'Potential' model 'Atta Chakki Machine - 18 inch, 70 kg/hr, Single Phase' was significantly enriched with a 'Motor Power: 5 HP' and 'Power Consumption: 4 units/hr' from a new product. With a complete primary spec set, it has been promoted to 'Confirmed' and renamed.\n   - The 'Potential' model 'Atta Chakki Machine - 12 inch, 15 kg/hr, Single Phase' was reinforced by a new product. Given its repeated sightings and well-defined primary specs, it has been promoted to 'Confirmed'.\n2. Model Reinforcement: \n   - The 'Atta Chakki Machine - 14 inch, 30 kg/hr, 3 HP, Single Phase' model was reinforced by a new product with matching capacity and power.\n   - The 'Atta Chakki Machine - 16 inch, 70 kg/hr, 7.5 HP, Khara Chakki' model was reinforced by a new product with matching size and capacity.\n   - The dominant 'Atta Chakki Machine - 14 inch, 50 kg/hr, 3 HP, Single Phase' model was reinforced by a product mentioning only a '14 inch' size.\n3. Spec Schema Updates: \n   - Added 'Capacity' as an original name for 'Grinding Capacity'.\n   - Added a new value '4 units/hr' to 'Power Consumption'.\n   - Increased frequencies for Motor Power (3HP, 5HP), Size (12, 14, 16, 18 inch), Grinding Capacity (15, 30, 70 kg/hr), and Phase (Single Phase).\n   - A product mentioning 'Atta Chakki Machine Body' was logged under the 'Mentioned Product Type' quaternary spec to track out-of-scope but related queries.\n4. Overall Insights: This batch was crucial for solidifying the product landscape. It allowed for the promotion of two 'Potential' models to 'Confirmed' by filling in missing primary specs or providing repeated evidence. This demonstrates the value of iterative refinement in building a robust and accurate category structure.",
+  "prompt_version": "V3"
+}
