@@ -248,8 +248,5 @@ class JobProcessor:
                 logger.warning(f"Failed to parse line {line_num}: '{line}' - {e}")
                 continue
         
-<<<<<<< Current (Your changes)
-=======
         logger.info(f"Parsed {len(specs)} specifications from text")
->>>>>>> Incoming (Background Agent changes)
         return specs
